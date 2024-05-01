@@ -24,7 +24,7 @@ export PG_CONN_STR=postgres://user:pass@server:5432/db
 
 Change directory to `application/main` and ensure that there's a completed `terraform.tfvars` file:
 
-```terraform
+```hcl
 k3s_database_password = "pass"
 
 k3s_database_root_password = "pass"
