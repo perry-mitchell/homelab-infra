@@ -1,6 +1,6 @@
 # Perry's Homelab Infrastructure
 
-> OpenTofu configuration for my homelab
+> OpenTofu + Puppet configuration for my homelab
 
 ## About
 
