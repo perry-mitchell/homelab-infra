@@ -32,15 +32,15 @@ module "k3s_db_user" {
     new_username = var.database_user
 }
 
-# module "k3s_db_user" {
-#     source = "../mysql-database"
+module "k3s_db" {
+    source = "../mysql-database"
 
-#     depends_on = [ module.k3s_db_user ]
+    depends_on = [ module.k3s_db_user ]
 
-#     providers = {
-#         mysql = mysql
-#     }
+    providers = {
+        mysql = mysql
+    }
 
-#     attach_users = [var.database_user]
-#     database = var.database_name
-# }
+    attach_users = [var.database_user]
+    database = var.database_name
+}

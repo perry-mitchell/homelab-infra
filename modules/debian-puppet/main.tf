@@ -1,12 +1,7 @@
-# locals {
-#     puppet_variables_contents = join("\n", [for key, value in var.env : format("$%s", "${key} = '${value}'")])
-# }
-
 locals {
     puppet_bin = "/opt/puppetlabs/bin/puppet"
     puppet_deb_remote_path = "${var.work_directory}/puppet.deb"
     puppet_file_remote_path = "${var.work_directory}/provision.pp"
-    # puppet_variables = format("class { 'variables': %s }\n\n", local.puppet_variables_contents)
     puppet_variables = join("\n", [for key, value in var.vars : format("$%s", "${key} = '${value}'")])
     puppet_variables_remote_path = "${var.work_directory}/variables.txt"
 }
