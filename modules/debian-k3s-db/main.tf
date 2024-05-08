@@ -1,4 +1,13 @@
+terraform {
+    required_providers {
+        mysql = {
+            source = "petoju/mysql"
+        }
+    }
+}
+
 provider "mysql" {
+    alias = "main"
     endpoint = "${var.server_ip}:3306"
     username = "root"
     password = var.mysql_root_password
@@ -24,7 +33,7 @@ module "k3s_db_user" {
     depends_on = [ module.k3s_db_provisioning ]
 
     providers = {
-        mysql = mysql
+        mysql = mysql.main
     }
 
     new_host = "%"
@@ -38,7 +47,7 @@ module "k3s_db" {
     depends_on = [ module.k3s_db_user ]
 
     providers = {
-        mysql = mysql
+        mysql = mysql.main
     }
 
     attach_users = [var.database_user]

@@ -1,7 +1,7 @@
 terraform {
     required_providers {
-        azurerm = {
-            source = "hashicorp/mysql"
+        mysql = {
+            source = "petoju/mysql"
         }
     }
 }
