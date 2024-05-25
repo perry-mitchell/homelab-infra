@@ -25,6 +25,8 @@ export PG_CONN_STR=postgres://user:pass@server:5432/db
 Change directory to `application/main` and ensure that there's a completed `terraform.tfvars` file:
 
 ```hcl
+k3s_cluster_token = "abc123"
+
 k3s_database_password = "pass"
 
 k3s_database_root_password = "pass"
@@ -41,13 +43,21 @@ k3s_database_server = {
 k3s_servers = {
     example1 = {
         ip = "ip1"
+        labels = {
+            name = "one"
+        }
         password = ""
+        server = true
         user = "root"
         work_dir = "/root"
     }
     example2 = {
         ip = "ip2"
+        labels = {
+            name = "two"
+        }
         password = ""
+        server = true
         user = "root"
         work_dir = "/root"
     }
