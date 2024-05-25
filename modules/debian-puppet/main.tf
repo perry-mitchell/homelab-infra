@@ -2,7 +2,7 @@ locals {
     puppet_bin = "/opt/puppetlabs/bin/puppet"
     puppet_deb_remote_path = "${var.work_directory}/puppet.deb"
     puppet_file_remote_path = "${var.work_directory}/provision.pp"
-    puppet_variables = join("\n", [for key, value in var.vars : format("$%s", "${key} = '${value}'")])
+    puppet_variables = join("\n", [for key, value in var.vars : format("$%s", "${key} = base64('decode', '${base64encode(value)}')")])
     puppet_variables_remote_path = "${var.work_directory}/variables.txt"
 }
 
@@ -62,7 +62,7 @@ resource "null_resource" "provision" {
     }
 
     provisioner "file" {
-        content = local.puppet_variables
+        content = "${local.puppet_variables}\n"
         destination = local.puppet_variables_remote_path
     }
 

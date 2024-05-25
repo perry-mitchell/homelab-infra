@@ -1,3 +1,7 @@
+variable "agent_token" {
+    type = string
+}
+
 variable "cluster_token" {
     type = string
 }

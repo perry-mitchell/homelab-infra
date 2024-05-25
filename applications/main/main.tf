@@ -25,6 +25,7 @@ module "server_k3s" {
 
     source = "../../modules/debian-k3s"
 
+    agent_token = var.k3s_agent_token
     cluster_token = var.k3s_cluster_token
     database_uri = module.server_k3s_db.connection_uri
     node_labels = each.value.labels

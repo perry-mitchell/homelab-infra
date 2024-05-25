@@ -1,3 +1,7 @@
+variable "k3s_agent_token" {
+    type = string
+}
+
 variable "k3s_cluster_token" {
     type = string
 }
