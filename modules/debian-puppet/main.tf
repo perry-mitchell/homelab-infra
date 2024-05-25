@@ -34,7 +34,7 @@ resource "null_resource" "puppet" {
     provisioner "remote-exec" {
         inline = [
             "apt-get update",
-            "apt-get upgrade",
+            "apt-get upgrade -y",
             "apt-get install wget -y",
             "wget https://apt.puppet.com/puppet7-release-focal.deb -O ${local.puppet_deb_remote_path}",
             "dpkg -i ${local.puppet_deb_remote_path}",

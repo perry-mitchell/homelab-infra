@@ -1,3 +1,7 @@
+variable "k3s_cluster_token" {
+    type = string
+}
+
 variable "k3s_database_password" {
     type = string
 }
@@ -22,7 +26,9 @@ variable "k3s_database_server" {
 variable "k3s_servers" {
     type = map(object({
         ip = string
+        labels = map(string)
         password = string
+        server = bool
         user = string
         work_dir = string
     }))

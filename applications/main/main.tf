@@ -25,7 +25,11 @@ module "server_k3s" {
 
     source = "../../modules/debian-k3s"
 
+    cluster_token = var.k3s_cluster_token
+    database_uri = module.server_k3s_db.connection_uri
+    node_labels = each.value.labels
     server_ip = each.value.ip
+    server_node = each.value.server
     server_password = each.value.password
     server_user = each.value.user
     work_directory = each.value.work_dir
