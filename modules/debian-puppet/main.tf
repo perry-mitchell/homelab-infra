@@ -53,10 +53,10 @@ resource "null_resource" "puppet" {
     }
 }
 
-resource "null_resource" "provision" {
+resource "terraform_data" "provision" {
     depends_on = [ null_resource.provision_script, null_resource.puppet ]
 
-    triggers = {
+    triggers_replace = {
         puppet_config_hash = filemd5(var.puppet_file)
         puppet_variables = local.puppet_variables
     }

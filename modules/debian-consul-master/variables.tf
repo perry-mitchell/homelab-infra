@@ -1,3 +1,7 @@
+variable "consul_encryption_key" {
+    type = string
+}
+
 variable "server_ip" {
     type = string
 }

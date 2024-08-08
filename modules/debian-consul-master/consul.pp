@@ -49,9 +49,54 @@ package { "consul":
     require => Exec["hashicorp-apt-update"]
 }
 
-exec { "create-consul-gossip-key":
-    unless => "test -f /root/gossip.key",
-    command => "consul keygen > /root/gossip.key",
-    path => $exec_path,
-    require => Package["consul"]
+file { "/etc/consul.d/consul.hcl":
+    ensure => file,
+    content => "${consul_hcl}",
+    notify => Service["consul"]
+}
+
+file { "/etc/consul.d/server.hcl":
+    ensure => file,
+    content => "${server_hcl}",
+    notify => Service["consul"]
+}
+
+file { "/usr/lib/systemd/system/consul.service":
+    ensure => file,
+    content => "${consul_service}",
+    notify => Service["consul"]
+}
+
+service { "consul":
+    ensure  => true,
+    enable  => true,
+    require => [
+        Package["consul"],
+        File["/etc/consul.d/consul.hcl"],
+        File["/etc/consul.d/server.hcl"],
+        File["/usr/lib/systemd/system/consul.service"]
+    ]
+}
+
+##
+## dnsmasq
+##
+
+package { "dnsmasq":
+    ensure => installed,
+    require => Exec["initial-apt-update"]
+}
+
+service { "dnsmasq":
+    ensure  => true,
+    enable  => true,
+    require => [
+        Package["dnsmasq"]
+    ]
+}
+
+file { "/etc/dnsmasq.d/10-consul":
+    ensure => file,
+    content => "${ten_consul}",
+    notify  => Service["dnsmasq"]
 }
