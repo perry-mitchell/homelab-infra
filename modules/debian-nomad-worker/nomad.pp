@@ -76,3 +76,29 @@ service { "nomad":
         File["/etc/systemd/system/nomad.service"]
     ]
 }
+
+##
+## Nomad Plugins
+##
+
+exec { "nomad-cni-ref-plugins":
+    path => $exec_path,
+    provider => "shell",
+    command => 'export ARCH_CNI=$( [ $(uname -m) = aarch64 ] && echo arm64 || echo amd64) && export CNI_PLUGIN_VERSION=v1.5.1 && curl -L -o cni-plugins.tgz "https://github.com/containernetworking/plugins/releases/download/${CNI_PLUGIN_VERSION}/cni-plugins-linux-${ARCH_CNI}-${CNI_PLUGIN_VERSION}".tgz && mkdir -p /opt/cni/bin && tar -C /opt/cni/bin -xzf cni-plugins.tgz',
+    notify => Service["nomad"]
+}
+
+package { "consul-cni":
+    ensure => installed,
+    require => [
+        Exec["nomad-cni-ref-plugins"],
+        Exec["hashicorp-apt-update"]
+    ],
+    notify => Service["nomad"]
+}
+
+package { "dmidecode":
+    ensure => installed,
+    require => Exec["initial-apt-update"],
+    notify => Service["nomad"]
+}
