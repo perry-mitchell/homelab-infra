@@ -10,3 +10,7 @@ variable "consul_master" {
         work_dir = string
     })
 }
+
+variable "state_encryption_passphrase" {
+    type = string
+}
