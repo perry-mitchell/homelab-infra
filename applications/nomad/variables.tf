@@ -20,6 +20,16 @@ variable "nomad_master" {
     })
 }
 
+variable "nomad_workers" {
+    type = list(object({
+        name = string
+        ip = string
+        password = string
+        user = string
+        work_dir = string
+    }))
+}
+
 variable "state_encryption_passphrase" {
     type = string
 }
