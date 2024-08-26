@@ -15,6 +15,11 @@ package { "gpg":
     require => Exec["initial-apt-update"]
 }
 
+package { "coreutils":
+    ensure => installed,
+    require => Exec["initial-apt-update"]
+}
+
 ##
 ## Repo setup
 ##
@@ -42,62 +47,32 @@ exec { "hashicorp-apt-update":
 }
 
 ##
-## Consul
+## Nomad
 ##
 
-package { "consul":
+package { "nomad":
     ensure => installed,
     require => Exec["hashicorp-apt-update"]
 }
 
-file { "/etc/consul.d/consul.hcl":
+file { "/etc/nomad.d/nomad.hcl":
     ensure => file,
-    content => "${consul_hcl}",
-    notify => Service["consul"]
+    content => "${nomad_hcl}",
+    notify => Service["nomad"]
 }
 
-file { "/etc/consul.d/server.hcl":
+file { "/etc/systemd/system/nomad.service":
     ensure => file,
-    content => "${server_hcl}",
-    notify => Service["consul"]
+    content => "${nomad_service}",
+    notify => Service["nomad"]
 }
 
-file { "/usr/lib/systemd/system/consul.service":
-    ensure => file,
-    content => "${consul_service}",
-    notify => Service["consul"]
-}
-
-service { "consul":
+service { "nomad":
     ensure  => true,
     enable  => true,
     require => [
-        Package["consul"],
-        File["/etc/consul.d/consul.hcl"],
-        File["/etc/consul.d/server.hcl"],
-        File["/usr/lib/systemd/system/consul.service"]
+        Package["nomad"],
+        File["/etc/nomad.d/nomad.hcl"],
+        File["/etc/systemd/system/nomad.service"]
     ]
-}
-
-##
-## dnsmasq
-##
-
-package { "dnsmasq":
-    ensure => installed,
-    require => Exec["initial-apt-update"]
-}
-
-service { "dnsmasq":
-    ensure  => true,
-    enable  => true,
-    require => [
-        Package["dnsmasq"]
-    ]
-}
-
-file { "/etc/dnsmasq.d/10-consul":
-    ensure => file,
-    content => "${ten_consul}",
-    notify  => Service["dnsmasq"]
 }
