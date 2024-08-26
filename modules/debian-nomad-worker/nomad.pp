@@ -21,6 +21,28 @@ package { "coreutils":
 }
 
 ##
+## QEMU
+##
+
+package { "qemu-utils":
+    ensure => installed,
+    require => Exec["initial-apt-update"],
+    notify => Service["nomad"]
+}
+
+package { "qemu-system-x86":
+    ensure => installed,
+    require => Exec["initial-apt-update"],
+    notify => Service["nomad"]
+}
+
+package { "qemu-system-gui":
+    ensure => installed,
+    require => Exec["initial-apt-update"],
+    notify => Service["nomad"]
+}
+
+##
 ## Repo setup
 ##
 
@@ -100,5 +122,65 @@ package { "consul-cni":
 package { "dmidecode":
     ensure => installed,
     require => Exec["initial-apt-update"],
+    notify => Service["nomad"]
+}
+
+##
+## Docker
+##
+
+exec { "docker-apt-key":
+    path => $exec_path,
+    command => 'curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker.gpg',
+    require => [
+        Package["gpg"],
+        Package["curl"]
+    ],
+    onlyif => ["test ! -f /usr/share/keyrings/docker.gpg"]
+}
+
+file { "/etc/apt/sources.list.d/docker.list":
+    ensure => file,
+    content => "deb [arch=amd64 signed-by=/usr/share/keyrings/docker.gpg] https://download.docker.com/linux/debian bookworm stable",
+    require => Exec["docker-apt-key"]
+}
+
+exec { "docker-apt-update":
+    path => $exec_path,
+    command => "apt-get update",
+    require => [
+        File["/etc/apt/sources.list.d/docker.list"],
+        Exec["hashicorp-apt-update"]
+    ]
+}
+
+package { "docker-ce":
+    ensure => installed,
+    require => Exec["docker-apt-update"],
+    notify => Service["nomad"]
+}
+package { "docker-ce-cli":
+    ensure => installed,
+    require => Exec["docker-apt-update"],
+    notify => Service["nomad"]
+}
+package { "containerd.io":
+    ensure => installed,
+    require => Exec["docker-apt-update"],
+    notify => Service["nomad"]
+}
+package { "docker-buildx-plugin":
+    ensure => installed,
+    require => Exec["docker-apt-update"],
+    notify => Service["nomad"]
+}
+package { "docker-compose-plugin":
+    ensure => installed,
+    require => Exec["docker-apt-update"],
+    notify => Service["nomad"]
+}
+package { "docker-compose":
+    ensure => installed,
+    require => Exec["docker-apt-update"],
     notify => Service["nomad"]
 }
