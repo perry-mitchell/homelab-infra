@@ -7,7 +7,8 @@ module "nomad_provisioning" {
     server_user = var.server_user
     vars = {
         nomad_hcl = templatefile("${path.module}/nomad.hcl.tftpl", {
-            consul_master_ip = var.consul_master_ip
+            consul_master_ip = var.consul_master_ip,
+            gossip_key = var.consul_encryption_key
         })
         nomad_service = templatefile("${path.module}/nomad.service.tftpl", {})
     }

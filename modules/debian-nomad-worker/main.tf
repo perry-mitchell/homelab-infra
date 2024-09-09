@@ -7,7 +7,6 @@ module "nomad_provisioning" {
     server_user = var.server_user
     vars = {
         nomad_hcl = templatefile("${path.module}/nomad.hcl.tftpl", {
-            consul_master_ip = var.consul_master_ip
             nomad_server_ip = var.nomad_master_ip
             nomad_worker_ip = var.server_ip
         })

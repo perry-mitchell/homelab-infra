@@ -1,7 +1,6 @@
 log_level = "INFO"
-data_dir  = "/var/lib/nomad"
+data_dir = "/opt/nomad/data"
 datacenter = "nak4"
-bind_addr = "0.0.0.0"
 
 advertise {
     http = "${nomad_worker_ip}"
@@ -14,10 +13,14 @@ client {
   servers = ["${nomad_server_ip}:4647"]
 }
 
+ui {
+  enabled = false
+}
+
 ports {
   http = 4646
 }
 
 consul {
-  address = "${consul_master_ip}:8500"
+  address = "127.0.0.1:8500"
 }

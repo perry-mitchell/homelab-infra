@@ -52,7 +52,7 @@ package { "consul":
 
 file { "/etc/consul.d/consul.hcl":
     ensure => file,
-    content => "${consul_hcl}",
+    content => "${client_hcl}",
     notify => Service["consul"]
 }
 
@@ -78,27 +78,4 @@ service { "consul":
         File["/etc/consul.d/consul.hcl"],
         File["/usr/lib/systemd/system/consul.service"]
     ]
-}
-
-##
-## dnsmasq
-##
-
-package { "dnsmasq":
-    ensure => installed,
-    require => Exec["initial-apt-update"]
-}
-
-service { "dnsmasq":
-    ensure  => true,
-    enable  => true,
-    require => [
-        Package["dnsmasq"]
-    ]
-}
-
-file { "/etc/dnsmasq.d/10-consul":
-    ensure => file,
-    content => "${ten_consul}",
-    notify  => Service["dnsmasq"]
 }

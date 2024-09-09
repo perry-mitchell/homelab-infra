@@ -1,4 +1,12 @@
-variable "nomad_master_ip" {
+variable "consul_encryption_key" {
+    type = string
+}
+
+variable "consul_master_ip" {
+    type = string
+}
+
+variable "node_name" {
     type = string
 }
 
