@@ -6,7 +6,29 @@ locals {
     puppet_variables_remote_path = "${var.work_directory}/variables.txt"
 }
 
+resource "null_resource" "work_dir" {
+    triggers = {
+        work_directory = var.work_directory
+    }
+
+    provisioner "remote-exec" {
+        inline = [
+            "mkdir -p ${var.work_directory}"
+        ]
+    }
+
+    connection {
+        host = var.server_ip
+        type = "ssh"
+        user = var.server_user
+        password = var.server_password
+        agent = false
+    }
+}
+
 resource "null_resource" "provision_script" {
+    depends_on = [ null_resource.work_dir ]
+
     triggers = {
         puppet_config_remote = local.puppet_file_remote_path,
         puppet_config_hash = filemd5(var.puppet_file)
@@ -27,6 +49,8 @@ resource "null_resource" "provision_script" {
 }
 
 resource "null_resource" "puppet" {
+    depends_on = [ null_resource.provision_script ]
+
     triggers = {
         puppet_remote_path = local.puppet_deb_remote_path
     }
@@ -59,6 +83,7 @@ resource "terraform_data" "provision" {
     triggers_replace = {
         puppet_config_hash = filemd5(var.puppet_file)
         puppet_variables = local.puppet_variables
+        "a" = 1
     }
 
     provisioner "file" {
@@ -70,7 +95,8 @@ resource "terraform_data" "provision" {
         inline = [
             "cat ${local.puppet_variables_remote_path} ${local.puppet_file_remote_path} > ${var.work_directory}/target.pp",
             "${local.puppet_bin} module install puppetlabs-stdlib --version 4.9.1",
-            "${local.puppet_bin} apply ${var.work_directory}/target.pp"
+            "${local.puppet_bin} apply ${var.work_directory}/target.pp",
+            "rm ${var.work_directory}/target.pp"
         ]
     }
 

@@ -125,6 +125,12 @@ package { "dmidecode":
     notify => Service["nomad"]
 }
 
+package { "nfs-common":
+    ensure => installed,
+    require => Exec["initial-apt-update"],
+    notify => Service["nomad"]
+}
+
 ##
 ## Docker
 ##

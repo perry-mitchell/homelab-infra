@@ -9,18 +9,28 @@ advertise {
 }
 
 client {
-  enabled = true
-  servers = ["${nomad_server_ip}:4647"]
+    enabled = true
+    servers = ["${nomad_server_ip}:4647"]
+    options {
+        "docker.privileged.enabled" = "true"
+        "driver.raw_exec.enable"    = "1"
+    }
 }
 
 ui {
-  enabled = false
+    enabled = false
 }
 
 ports {
-  http = 4646
+    http = 4646
 }
 
 consul {
-  address = "127.0.0.1:8500"
+    address = "127.0.0.1:8500"
 }
+
+#plugin "docker" {
+#    config {
+#        allow_privileged = true
+#    }
+#}

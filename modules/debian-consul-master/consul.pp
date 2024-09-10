@@ -70,7 +70,7 @@ file { "/opt/consul":
 }
 
 service { "consul":
-    ensure  => true,
+    ensure  => running,
     enable  => true,
     require => [
         Package["consul"],
@@ -90,7 +90,7 @@ package { "dnsmasq":
 }
 
 service { "dnsmasq":
-    ensure  => true,
+    ensure  => running,
     enable  => true,
     require => [
         Package["dnsmasq"]

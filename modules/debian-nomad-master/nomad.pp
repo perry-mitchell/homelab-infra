@@ -68,7 +68,7 @@ file { "/etc/systemd/system/nomad.service":
 }
 
 service { "nomad":
-    ensure  => true,
+    ensure  => running,
     enable  => true,
     require => [
         Package["nomad"],

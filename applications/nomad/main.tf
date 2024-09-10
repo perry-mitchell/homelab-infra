@@ -1,3 +1,4 @@
+#region Provisioning
 module "consul_master" {
     source = "../../modules/debian-consul-master"
 
@@ -31,12 +32,11 @@ module "nomad_worker" {
 
     depends_on = [ module.nomad_master ]
 
-    # consul_master_ip = var.consul_master.ip
     nomad_master_ip = var.nomad_master.ip
     server_ip = each.value.ip
     server_password = each.value.password
     server_user = each.value.user
-    work_directory = each.value.work_dir
+    work_directory = "${each.value.work_dir}/nomad"
 }
 
 module "nomad_worker_consul_agent" {
@@ -54,5 +54,16 @@ module "nomad_worker_consul_agent" {
     server_ip = each.value.ip
     server_password = each.value.password
     server_user = each.value.user
-    work_directory = each.value.work_dir
+    work_directory = "${each.value.work_dir}/consul"
 }
+#endregion
+
+#region Storage
+module "nomad_nfs" {
+    source = "../../modules/nomad-nfs"
+
+    depends_on = [module.nomad_master, module.nomad_worker]
+
+    datacenter = var.datacenter
+}
+#endregion

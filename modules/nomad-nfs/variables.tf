@@ -1,0 +1,3 @@
+variable "datacenter" {
+    type = string
+}

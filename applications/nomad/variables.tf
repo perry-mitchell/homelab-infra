@@ -11,6 +11,11 @@ variable "consul_master" {
     })
 }
 
+variable "datacenter" {
+    type = string
+    default = "nak4"
+}
+
 variable "nomad_master" {
     type = object({
         ip = string
