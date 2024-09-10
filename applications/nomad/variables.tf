@@ -38,3 +38,12 @@ variable "nomad_workers" {
 variable "state_encryption_passphrase" {
     type = string
 }
+
+variable "storage_backends" {
+    type = object({
+      alpha = object({
+        mount = string
+        server = string
+      })
+    })
+}

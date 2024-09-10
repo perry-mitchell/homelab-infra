@@ -1,5 +1,5 @@
 job "storage-controller" {
-  datacenters = ["nak4"]
+  datacenters = ["${datacenter}"]
   type        = "service"
 
   group "controller" {
@@ -11,18 +11,18 @@ job "storage-controller" {
 
         args = [
           "--type=controller",
-          "--node-id=${attr.unique.hostname}",
-          "--nfs-server=192.168.0.100:/mnt/user/nomad_appdata",
+          "--node-id=$${attr.unique.hostname}",
+          "--nfs-server=${nfs_server}:${nfs_mount}",
           "--mount-options=defaults",
         ]
 
-        network_mode = "host" # required so the mount works even after stopping the container
+        network_mode = "host"
 
         privileged = true
       }
 
       csi_plugin {
-        id        = "nfs" # Whatever you like, but node & controller config needs to match
+        id        = "nfs-${plugin_name}"
         type      = "controller"
         mount_dir = "/csi"
       }

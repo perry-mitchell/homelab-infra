@@ -1,5 +1,5 @@
 job "storage-node" {
-  datacenters = ["nak4"]
+  datacenters = ["${datacenter}"]
   type        = "system"
 
   group "node" {
@@ -11,8 +11,8 @@ job "storage-node" {
 
         args = [
           "--type=node",
-          "--node-id=${attr.unique.hostname}",
-          "--nfs-server=192.168.0.100:/mnt/user/nomad_appdata",
+          "--node-id=$${attr.unique.hostname}",
+          "--nfs-server=${nfs_server}:${nfs_mount}",
           "--mount-options=defaults",
         ]
 
@@ -22,7 +22,7 @@ job "storage-node" {
       }
 
       csi_plugin {
-        id        = "nfs"
+        id        = "nfs-${plugin_name}"
         type      = "node"
         mount_dir = "/csi"
       }

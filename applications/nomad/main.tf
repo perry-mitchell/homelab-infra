@@ -65,5 +65,10 @@ module "nomad_nfs" {
     depends_on = [module.nomad_master, module.nomad_worker]
 
     datacenter = var.datacenter
+    storage = {
+        mount = var.storage_backends.alpha.mount
+        name = "alpha"
+        server = var.storage_backends.alpha.server
+    }
 }
 #endregion
