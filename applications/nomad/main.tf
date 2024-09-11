@@ -58,6 +58,14 @@ module "nomad_worker_consul_agent" {
 }
 #endregion
 
+locals {
+    storage_config = {
+        mount = var.storage_backends.alpha.mount
+        name = "alpha"
+        server = var.storage_backends.alpha.server
+    }
+}
+
 #region Storage
 module "nomad_nfs" {
     source = "../../modules/nomad-nfs"
@@ -65,10 +73,35 @@ module "nomad_nfs" {
     depends_on = [module.nomad_master, module.nomad_worker]
 
     datacenter = var.datacenter
-    storage = {
-        mount = var.storage_backends.alpha.mount
-        name = "alpha"
-        server = var.storage_backends.alpha.server
+    storage = local.storage_config
+}
+#endregion
+
+#region Apps
+module "app_smokeping" {
+    source = "../../modules/nomad-service"
+
+    depends_on = [ module.nomad_nfs ]
+    datacenter = var.datacenter
+    image = "lscr.io/linuxserver/smokeping:latest"
+    name = "smokeping"
+    ports = {
+        "80" = "80"
     }
+    resources = {
+        cpu = 250
+        memory = 250
+    }
+    storage = local.storage_config
+    volumes = [
+        {
+            container_directory = "/config"
+            remote_directory = "config"
+        },
+        {
+            container_directory = "/data"
+            remote_directory = "data"
+        }
+    ]
 }
 #endregion
