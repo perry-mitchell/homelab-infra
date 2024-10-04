@@ -3,6 +3,7 @@ job "${name}" {
     type        = "service"
 
     group "application" {
+        %{ if volume_id != null }
         volume "appdata" {
             type            = "csi"
             source          = "${volume_id}"
@@ -10,12 +11,15 @@ job "${name}" {
             attachment_mode = "file-system"
             access_mode     = "multi-node-multi-writer"
         }
+        %{ endif }
 
         network {
-            port "http" {
-                // dynamic = 8000
-                // static = 8080  # Or use "dynamic = 8080" for dynamic allocation
+            %{ for ext, int in ports }
+            port "port_${ext}" {
+                static = ${ext}
+                to = ${int}
             }
+            %{ endfor }
         }
 
         task "application" {
@@ -24,11 +28,10 @@ job "${name}" {
             config {
                 image = "${image}"
                 ports = [
-                    "http"
+                    %{ for ext, int in ports }
+                    "port_${ext}"
+                    %{ endfor }
                 ]
-                port_map {
-                    http = 80
-                }
                 volumes = [
                     %{ for volume in volumes ~}
                     "$${NOMAD_ALLOC_DIR}/appdata/${name}/${volume.remote_directory}:${volume.container_directory}",
@@ -36,21 +39,25 @@ job "${name}" {
                 ]
             }
 
+            %{ for ext, int in ports }
             service {
-                name = "${name}"
-                port = "http"
+                name = "${name}-${ext}"
+                port = "port_${ext}"
             }
+            %{ endfor }
 
             resources {
                 cpu    = ${cpu}
                 memory = ${memory}
             }
 
+            %{ if volume_id != null }
             volume_mount {
                 volume = "appdata"
                 destination = "$${NOMAD_ALLOC_DIR}/appdata"
                 read_only = false
             }
+            %{ endif }
         }
     }
 }

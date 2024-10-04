@@ -5,7 +5,8 @@ resource "nomad_job" "service" {
         image = var.image
         memory = var.resources.memory
         name = var.name
-        volume_id = nomad_csi_volume.container_storage.id
+        ports = var.ports
+        volume_id = var.storage != null ? nomad_csi_volume.container_storage.0.id : null
         volumes = var.volumes
     })
 }

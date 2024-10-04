@@ -28,6 +28,7 @@ variable "resources" {
 }
 
 variable "storage" {
+    default = null
     type = object({
         mount = string
         name = string
