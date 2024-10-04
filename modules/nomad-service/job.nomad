@@ -11,16 +11,34 @@ job "${name}" {
             access_mode     = "multi-node-multi-writer"
         }
 
+        network {
+            port "http" {
+                // dynamic = 8000
+                // static = 8080  # Or use "dynamic = 8080" for dynamic allocation
+            }
+        }
+
         task "application" {
             driver = "docker"
 
             config {
                 image = "${image}"
+                ports = [
+                    "http"
+                ]
+                port_map {
+                    http = 80
+                }
                 volumes = [
                     %{ for volume in volumes ~}
                     "$${NOMAD_ALLOC_DIR}/appdata/${name}/${volume.remote_directory}:${volume.container_directory}",
                     %{ endfor }
                 ]
+            }
+
+            service {
+                name = "${name}"
+                port = "http"
             }
 
             resources {
