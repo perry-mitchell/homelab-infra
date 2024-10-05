@@ -16,6 +16,10 @@ variable "datacenter" {
     default = "nak4"
 }
 
+variable "db_mariadb_root" {
+    type = string
+}
+
 variable "nomad_master" {
     type = object({
         ip = string

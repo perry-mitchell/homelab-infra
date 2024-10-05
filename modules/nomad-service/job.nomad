@@ -32,11 +32,13 @@ job "${name}" {
                     "port_${ext}"
                     %{ endfor }
                 ]
-                volumes = [
-                    %{ for volume in volumes ~}
-                    "$${NOMAD_ALLOC_DIR}/appdata/${name}/${volume.remote_directory}:${volume.container_directory}",
-                    %{ endfor }
-                ]
+                %{ for volume in volumes ~}
+                mount {
+                    type = "volume"
+                    target = "${volume.container_directory}"
+                    source = "appdata"
+                }
+                %{ endfor }
                 %{ for mount in mounts ~}
                 mount {
                     type = "bind"
@@ -56,6 +58,12 @@ job "${name}" {
             resources {
                 cpu    = ${cpu}
                 memory = ${memory}
+            }
+
+            env = {
+                %{ for key, value in environment }
+                "${key}" = "${value}"
+                %{ endfor }
             }
 
             %{ if volume_id != null }

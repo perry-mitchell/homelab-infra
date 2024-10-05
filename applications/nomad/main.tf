@@ -77,38 +77,66 @@ module "nomad_nfs" {
 }
 #endregion
 
-#region Apps
-module "app_smokeping" {
+#region Databases
+module "db_mariadb" {
     source = "../../modules/nomad-service"
 
     depends_on = [ module.nomad_nfs ]
     datacenter = var.datacenter
-    image = "lscr.io/linuxserver/smokeping:latest"
-    name = "smokeping"
+    image = "mariadb:latest"
+    name = "mariadb"
     ports = {
-        "35000" = "80"
+      "35002" = "3306"
     }
     resources = {
-        cpu = 250
-        memory = 250
+        cpu = 500
+        memory = 1500
+    }
+    environment = {
+        MARIADB_ROOT_PASSWORD = var.db_mariadb_root
     }
     storage = local.storage_config
-    mounts = [
-        {
-            directory = "/config"
-            files = [
-                {
-                    contents = file("${path.module}/config/smokeping/Targets")
-                    filename = "Targets"
-                }
-            ]
-        }
-    ]
     volumes = [
         {
-            container_directory = "/data"
-            remote_directory = "data"
+            container_directory = "/var/lib/mysql"
+            remote_directory = "mysql"
         }
     ]
 }
+#endregion
+
+#region Apps
+# module "app_smokeping" {
+#     source = "../../modules/nomad-service"
+
+#     depends_on = [ module.nomad_nfs ]
+#     datacenter = var.datacenter
+#     image = "lscr.io/linuxserver/smokeping:latest"
+#     name = "smokeping"
+#     ports = {
+#         "35000" = "80"
+#     }
+#     resources = {
+#         cpu = 250
+#         memory = 250
+#     }
+#     storage = local.storage_config
+#     mounts = [
+#         {
+#             directory = "/config"
+#             files = [
+#                 {
+#                     contents = file("${path.module}/config/smokeping/Targets")
+#                     filename = "Targets"
+#                 }
+#             ]
+#         }
+#     ]
+#     volumes = [
+#         {
+#             container_directory = "/data"
+#             remote_directory = "data"
+#         }
+#     ]
+# }
 #endregion
