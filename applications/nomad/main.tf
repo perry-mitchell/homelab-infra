@@ -96,12 +96,11 @@ module "db_mariadb" {
         MARIADB_ROOT_PASSWORD = var.db_mariadb_root
     }
     storage = local.storage_config
-    volumes = [
-        {
+    volumes = {
+        "mysql" = {
             container_directory = "/var/lib/mysql"
-            remote_directory = "mysql"
         }
-    ]
+    }
 }
 #endregion
 

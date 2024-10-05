@@ -6,12 +6,11 @@ data "nomad_plugin" "container_storage" {
 }
 
 resource "nomad_csi_volume" "container_storage" {
-    depends_on  = [data.nomad_plugin.container_storage]
-    count = var.storage != null ? 1 : 0
+    for_each = var.storage != null ? var.volumes : {}
 
     plugin_id   = data.nomad_plugin.container_storage.0.id
-    volume_id   = "container_${var.name}"
-    name        = "container_${var.name}"
+    volume_id   = "service_${var.name}_${each.key}"
+    name = "service_${var.name}_${each.key}"
 
     capacity_min = "10GiB"
     capacity_max = "20GiB"

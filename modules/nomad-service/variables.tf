@@ -50,9 +50,8 @@ variable "storage" {
 }
 
 variable "volumes" {
-    default = []
-    type = list(object({
+    default = {}
+    type = map(object({
         container_directory = string
-        remote_directory = string
     }))
 }

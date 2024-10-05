@@ -3,15 +3,15 @@ job "${name}" {
     type        = "service"
 
     group "application" {
-        %{ if volume_id != null }
-        volume "appdata" {
-            type            = "csi"
-            source          = "${volume_id}"
+        %{ for volume_name, config in volumes }
+        volume "${volume_name}" {
+            type = "csi"
+            source = "service_${name}_${volume_name}"
             read_only       = false
             attachment_mode = "file-system"
             access_mode     = "multi-node-multi-writer"
         }
-        %{ endif }
+        %{ endfor }
 
         network {
             %{ for ext, int in ports }
@@ -32,13 +32,6 @@ job "${name}" {
                     "port_${ext}"
                     %{ endfor }
                 ]
-                %{ for volume in volumes ~}
-                mount {
-                    type = "volume"
-                    target = "${volume.container_directory}"
-                    source = "appdata"
-                }
-                %{ endfor }
                 %{ for mount in mounts ~}
                 mount {
                     type = "bind"
@@ -66,13 +59,12 @@ job "${name}" {
                 %{ endfor }
             }
 
-            %{ if volume_id != null }
+            %{ for volume_name, config in volumes }
             volume_mount {
-                volume = "appdata"
-                destination = "$${NOMAD_ALLOC_DIR}/appdata"
-                read_only = false
+                volume = "${volume_name}"
+                destination = "${config.container_directory}"
             }
-            %{ endif }
+            %{ endfor }
 
             %{ for mount in mounts ~}
                 %{ for file in mount.files ~}
