@@ -105,37 +105,36 @@ module "db_mariadb" {
 #endregion
 
 #region Apps
-# module "app_smokeping" {
-#     source = "../../modules/nomad-service"
+module "app_smokeping" {
+    source = "../../modules/nomad-service"
 
-#     depends_on = [ module.nomad_nfs ]
-#     datacenter = var.datacenter
-#     image = "lscr.io/linuxserver/smokeping:latest"
-#     name = "smokeping"
-#     ports = {
-#         "35000" = "80"
-#     }
-#     resources = {
-#         cpu = 250
-#         memory = 250
-#     }
-#     storage = local.storage_config
-#     mounts = [
-#         {
-#             directory = "/config"
-#             files = [
-#                 {
-#                     contents = file("${path.module}/config/smokeping/Targets")
-#                     filename = "Targets"
-#                 }
-#             ]
-#         }
-#     ]
-#     volumes = [
-#         {
-#             container_directory = "/data"
-#             remote_directory = "data"
-#         }
-#     ]
-# }
+    depends_on = [ module.nomad_nfs ]
+    datacenter = var.datacenter
+    image = "lscr.io/linuxserver/smokeping:latest"
+    name = "smokeping"
+    ports = {
+        "35000" = "80"
+    }
+    resources = {
+        cpu = 250
+        memory = 250
+    }
+    storage = local.storage_config
+    mounts = [
+        {
+            directory = "/config"
+            files = [
+                {
+                    contents = file("${path.module}/config/smokeping/Targets")
+                    filename = "Targets"
+                }
+            ]
+        }
+    ]
+    volumes = {
+        "data" = {
+            container_directory = "/data"
+        }
+    }
+}
 #endregion
