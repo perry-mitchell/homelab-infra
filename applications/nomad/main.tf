@@ -93,42 +93,22 @@ module "app_smokeping" {
         memory = 250
     }
     storage = local.storage_config
-    volumes = [
+    mounts = [
         {
-            container_directory = "/config"
-            remote_directory = "config"
-        },
+            directory = "/config"
+            files = [
+                {
+                    contents = file("${path.module}/config/smokeping/Targets")
+                    filename = "Targets"
+                }
+            ]
+        }
+    ]
+    volumes = [
         {
             container_directory = "/data"
             remote_directory = "data"
         }
     ]
-}
-
-module "app_demo" {
-    source = "../../modules/nomad-service"
-
-    depends_on = [ module.nomad_nfs ]
-    datacenter = var.datacenter
-    image = "shelleg/demo-nodejs-http-server:latest"
-    name = "demo"
-    ports = {
-        "35001" = "8080"
-    }
-    resources = {
-        cpu = 250
-        memory = 250
-    }
-    # storage = local.storage_config
-    # volumes = [
-    #     {
-    #         container_directory = "/config"
-    #         remote_directory = "config"
-    #     },
-    #     {
-    #         container_directory = "/data"
-    #         remote_directory = "data"
-    #     }
-    # ]
 }
 #endregion

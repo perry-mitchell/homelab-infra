@@ -11,6 +11,19 @@ variable "image" {
     type = string
 }
 
+variable "mounts" {
+    default = []
+    type = list(object({
+        # filename = string
+        directory = string
+        files = list(object({
+            contents = string
+            filename = string
+        }))
+        # contents = string
+    }))
+}
+
 variable "name" {
     type = string
 }

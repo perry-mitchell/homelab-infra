@@ -37,6 +37,13 @@ job "${name}" {
                     "$${NOMAD_ALLOC_DIR}/appdata/${name}/${volume.remote_directory}:${volume.container_directory}",
                     %{ endfor }
                 ]
+                %{ for mount in mounts ~}
+                mount {
+                    type = "bind"
+                    source = "local${mount.directory}"
+                    target = "${mount.directory}"
+                }
+                %{ endfor }
             }
 
             %{ for ext, int in ports }
@@ -58,6 +65,17 @@ job "${name}" {
                 read_only = false
             }
             %{ endif }
+
+            %{ for mount in mounts ~}
+                %{ for file in mount.files ~}
+                template {
+                    data = <<EOF
+${file.contents}
+EOF
+                    destination = "local${mount.directory}/${file.filename}"
+                }
+                %{ endfor }
+            %{ endfor }
         }
     }
 }
