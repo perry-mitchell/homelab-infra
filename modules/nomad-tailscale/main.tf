@@ -27,5 +27,6 @@ resource "nomad_job" "service" {
         name = var.name
         tailscale_auth_key = var.tailscale_auth_key
         tailscale_hostname = var.tailscale_hostname
+        tailscale_routes = var.tailscale_routes
     })
 }

@@ -73,89 +73,92 @@ module "nomad_nfs" {
     depends_on = [module.nomad_master, module.nomad_worker]
 
     datacenter = var.datacenter
-    storage = local.storage_config
+    mount = local.storage_config.mount
+    name = "alpha"
+    server = local.storage_config.server
 }
 #endregion
 
-# #region Databases
-# module "db_mariadb" {
-#     source = "../../modules/nomad-service"
+#region Databases
+module "db_mariadb" {
+    source = "../../modules/nomad-service"
 
-#     depends_on = [ module.nomad_nfs ]
-#     datacenter = var.datacenter
-#     environment = {
-#         MARIADB_ROOT_PASSWORD = var.db_mariadb_root
-#         TZ = "Europe/Helsinki"
-#     }
-#     image = "mariadb:latest"
-#     name = "mariadb"
-#     ports = {
-#       "35002" = "3306"
-#     }
-#     resources = {
-#         cpu = 500
-#         memory = 1500
-#     }
-#     storage = local.storage_config
-#     volumes = {
-#         "mysql" = {
-#             container_directory = "/var/lib/mysql"
-#         }
-#     }
-# }
-# #endregion
+    depends_on = [ module.nomad_nfs ]
+    datacenter = var.datacenter
+    environment = {
+        MARIADB_ROOT_PASSWORD = var.db_mariadb_root
+        TZ = "Europe/Helsinki"
+    }
+    image = "mariadb:latest"
+    name = "mariadb"
+    ports = {
+      "35002" = "3306"
+    }
+    resources = {
+        cpu = 500
+        memory = 1500
+    }
+    storage = local.storage_config
+    volumes = {
+        "mysql" = {
+            container_directory = "/var/lib/mysql"
+        }
+    }
+}
+#endregion
 
-# #region Daemons
-# module "daemon_tailscale" {
-#     source = "../../modules/nomad-tailscale"
+#region Daemons
+module "daemon_tailscale" {
+    source = "../../modules/nomad-tailscale"
 
-#     depends_on = [ module.nomad_nfs ]
-#     datacenter = var.datacenter
-#     name = "tailscale"
-#     resources = {
-#         cpu = 150
-#         memory = 100
-#     }
-#     storage = local.storage_config
-#     tailscale_auth_key = var.tailscale_container_auth
-#     tailscale_hostname = "tailscale-nomad"
-# }
-# #endregion
+    depends_on = [ module.nomad_nfs ]
+    datacenter = var.datacenter
+    name = "tailscale"
+    resources = {
+        cpu = 150
+        memory = 100
+    }
+    storage = local.storage_config
+    tailscale_auth_key = var.tailscale_container_auth
+    tailscale_hostname = "tailscale-nomad"
+    tailscale_routes = "192.168.0.0/24,192.168.200.0/24,192.168.201.0/24"
+}
+#endregion
 
-# #region Apps
-# module "app_smokeping" {
-#     source = "../../modules/nomad-service"
+#region Apps
+module "app_smokeping" {
+    source = "../../modules/nomad-service"
 
-#     depends_on = [ module.nomad_nfs ]
-#     datacenter = var.datacenter
-#     environment = {
-#       TZ = "Europe/Helsinki"
-#     }
-#     image = "lscr.io/linuxserver/smokeping:latest"
-#     name = "smokeping"
-#     ports = {
-#         "35000" = "80"
-#     }
-#     resources = {
-#         cpu = 250
-#         memory = 250
-#     }
-#     mounts = [
-#         {
-#             directory = "/config"
-#             files = [
-#                 {
-#                     contents = file("${path.module}/config/smokeping/Targets")
-#                     filename = "Targets"
-#                 }
-#             ]
-#         }
-#     ]
-#     storage = local.storage_config
-#     volumes = {
-#         "data" = {
-#             container_directory = "/data"
-#         }
-#     }
-# }
-# #endregion
+    depends_on = [ module.nomad_nfs ]
+    datacenter = var.datacenter
+    environment = {
+      TZ = "Europe/Helsinki"
+    }
+    image = "lscr.io/linuxserver/smokeping:latest"
+    name = "smokeping"
+    ports = {
+        "35000" = "80"
+    }
+    resources = {
+        cpu = 250
+        memory = 250
+    }
+    mounts = [
+        {
+            directory = "/config"
+            files = [
+                {
+                    contents = file("${path.module}/config/smokeping/Targets")
+                    filename = "Targets"
+                }
+            ]
+        }
+    ]
+    storage = local.storage_config
+    volumes = {
+        "data" = {
+            container_directory = "/data"
+        }
+    }
+}
+#endregion

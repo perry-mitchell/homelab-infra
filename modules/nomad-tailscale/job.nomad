@@ -32,8 +32,9 @@ job "${name}" {
 
             env = {
                 TS_AUTHKEY    = "${tailscale_auth_key}"
-                TS_EXTRA_ARGS = "--advertise-tags=tag:container"
+                TS_EXTRA_ARGS = "--advertise-tags=tag:container --accept-routes --advertise-exit-node"
                 TS_HOSTNAME   = "${tailscale_hostname}"
+                TS_ROUTES     = "${tailscale_routes}"
                 TS_STATE_DIR  = "/var/lib/tailscale"
             }
 

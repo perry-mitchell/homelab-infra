@@ -28,3 +28,7 @@ variable "tailscale_auth_key" {
 variable "tailscale_hostname" {
     type = string
 }
+
+variable "tailscale_routes" {
+    type = string
+}
