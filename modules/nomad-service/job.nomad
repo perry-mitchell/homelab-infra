@@ -22,7 +22,7 @@ job "${name}" {
             %{ endfor }
         }
 
-        task "application" {
+        task "${name}" {
             driver = "docker"
 
             config {

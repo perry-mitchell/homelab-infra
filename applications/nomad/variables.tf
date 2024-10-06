@@ -51,3 +51,7 @@ variable "storage_backends" {
       })
     })
 }
+
+variable "tailscale_container_auth" {
+    type = string
+}

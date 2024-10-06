@@ -77,64 +77,85 @@ module "nomad_nfs" {
 }
 #endregion
 
-#region Databases
-module "db_mariadb" {
-    source = "../../modules/nomad-service"
+# #region Databases
+# module "db_mariadb" {
+#     source = "../../modules/nomad-service"
 
-    depends_on = [ module.nomad_nfs ]
-    datacenter = var.datacenter
-    image = "mariadb:latest"
-    name = "mariadb"
-    ports = {
-      "35002" = "3306"
-    }
-    resources = {
-        cpu = 500
-        memory = 1500
-    }
-    environment = {
-        MARIADB_ROOT_PASSWORD = var.db_mariadb_root
-    }
-    storage = local.storage_config
-    volumes = {
-        "mysql" = {
-            container_directory = "/var/lib/mysql"
-        }
-    }
-}
-#endregion
+#     depends_on = [ module.nomad_nfs ]
+#     datacenter = var.datacenter
+#     environment = {
+#         MARIADB_ROOT_PASSWORD = var.db_mariadb_root
+#         TZ = "Europe/Helsinki"
+#     }
+#     image = "mariadb:latest"
+#     name = "mariadb"
+#     ports = {
+#       "35002" = "3306"
+#     }
+#     resources = {
+#         cpu = 500
+#         memory = 1500
+#     }
+#     storage = local.storage_config
+#     volumes = {
+#         "mysql" = {
+#             container_directory = "/var/lib/mysql"
+#         }
+#     }
+# }
+# #endregion
 
-#region Apps
-module "app_smokeping" {
-    source = "../../modules/nomad-service"
+# #region Daemons
+# module "daemon_tailscale" {
+#     source = "../../modules/nomad-tailscale"
 
-    depends_on = [ module.nomad_nfs ]
-    datacenter = var.datacenter
-    image = "lscr.io/linuxserver/smokeping:latest"
-    name = "smokeping"
-    ports = {
-        "35000" = "80"
-    }
-    resources = {
-        cpu = 250
-        memory = 250
-    }
-    storage = local.storage_config
-    mounts = [
-        {
-            directory = "/config"
-            files = [
-                {
-                    contents = file("${path.module}/config/smokeping/Targets")
-                    filename = "Targets"
-                }
-            ]
-        }
-    ]
-    volumes = {
-        "data" = {
-            container_directory = "/data"
-        }
-    }
-}
-#endregion
+#     depends_on = [ module.nomad_nfs ]
+#     datacenter = var.datacenter
+#     name = "tailscale"
+#     resources = {
+#         cpu = 150
+#         memory = 100
+#     }
+#     storage = local.storage_config
+#     tailscale_auth_key = var.tailscale_container_auth
+#     tailscale_hostname = "tailscale-nomad"
+# }
+# #endregion
+
+# #region Apps
+# module "app_smokeping" {
+#     source = "../../modules/nomad-service"
+
+#     depends_on = [ module.nomad_nfs ]
+#     datacenter = var.datacenter
+#     environment = {
+#       TZ = "Europe/Helsinki"
+#     }
+#     image = "lscr.io/linuxserver/smokeping:latest"
+#     name = "smokeping"
+#     ports = {
+#         "35000" = "80"
+#     }
+#     resources = {
+#         cpu = 250
+#         memory = 250
+#     }
+#     mounts = [
+#         {
+#             directory = "/config"
+#             files = [
+#                 {
+#                     contents = file("${path.module}/config/smokeping/Targets")
+#                     filename = "Targets"
+#                 }
+#             ]
+#         }
+#     ]
+#     storage = local.storage_config
+#     volumes = {
+#         "data" = {
+#             container_directory = "/data"
+#         }
+#     }
+# }
+# #endregion
