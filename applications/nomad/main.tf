@@ -156,7 +156,50 @@ module "app_smokeping" {
     ]
     storage = local.storage_config
     volumes = {
-        "data" = {
+        data = {
+            container_directory = "/data"
+        }
+    }
+}
+
+module "app_minecraft_argon" {
+    source = "../../modules/nomad-service"
+
+    depends_on = [ module.nomad_nfs ]
+    datacenter = var.datacenter
+    environment = {
+        ENABLE_ROLLING_LOGS = "true"
+        EULA = "TRUE"
+        GUI = "FALSE"
+        JVM_XX_OPTS = "-XX:MaxRAMPercentage=80"
+        MEMORY = ""
+        TYPE = "SPIGOT"
+        TZ = "Europe/Helsinki"
+        # Minecraft server properties:
+        DIFFICULTY = "easy"
+        MAX_BUILD_HEIGHT = "512"
+        MAX_WORLD_SIZE = "100000"
+        MODE = "SURVIVAL"
+        MOTD = "Welcome to Argon. Go forth and b̴̠́̏u̶͈̟̮͌͋͒̀̊͘͜i̵͖͌́l̴̗͊̃͘͜d̶͎̑̈́̍̐̀͝"
+        PVP = "false"
+        SERVER_NAME = "Argon"
+        SEED = "34352807432"
+        SNOOPER_ENABLED = "false"
+        SPAWN_PROTECTION = "1"
+        VIEW_DISTANCE = "10"
+    }
+    image = "itzg/minecraft-server:latest"
+    name = "minecraft-argon"
+    ports = {
+        "25565" = "25565"
+    }
+    resources = {
+      cpu = 1500
+      memory = 8192
+    }
+    storage = local.storage_config
+    volumes = {
+        data = {
             container_directory = "/data"
         }
     }
