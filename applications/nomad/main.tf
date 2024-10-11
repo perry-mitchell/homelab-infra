@@ -188,7 +188,7 @@ module "app_minecraft_argon" {
         SPAWN_PROTECTION = "1"
         VIEW_DISTANCE = "10"
     }
-    image = "itzg/minecraft-server:latest"
+    image = "itzg/minecraft-server:stable"
     name = "minecraft-argon"
     ports = {
         "25565" = "25565"
