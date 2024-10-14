@@ -3,18 +3,22 @@ job "storage-controller" {
     type        = "service"
 
     group "controller" {
-        task "plugin" {
+        task "controller" {
             driver = "docker"
 
             config {
-                image = "registry.k8s.io/sig-storage/nfsplugin:v4.1.0"
+                image = "registry.gitlab.com/rocketduck/csi-plugin-nfs:0.7.0"
 
                 args = [
-                    "--v=5",
-                    "--nodeid=$${attr.unique.hostname}",
-                    "--endpoint=unix:///csi/csi.sock",
-                    "--drivername=nfs.csi.k8s.io"
+                    "--type=controller",
+                    "--node-id=$${attr.unique.hostname}",
+                    "--nfs-server=${nfs_server}:${nfs_mount}",
+                    "--mount-options=defaults",
                 ]
+
+                network_mode = "host"
+
+                privileged = true
             }
 
             csi_plugin {
@@ -24,8 +28,8 @@ job "storage-controller" {
             }
 
             resources {
-                cpu    = 100
-                memory = 32
+                cpu    = 200
+                memory = 128
             }
         }
     }
