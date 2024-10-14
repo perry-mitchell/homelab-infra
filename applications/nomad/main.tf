@@ -267,47 +267,47 @@ module "app_minecraft_argon" {
     ]
 }
 
-# module "app_minecraft_router" {
-#     source = "../../modules/nomad-service"
+module "app_minecraft_router" {
+    source = "../../modules/nomad-service"
 
-#     depends_on = [ module.app_minecraft_argon ]
-#     datacenter = var.datacenter
-#     environment = {
-#         JVM_XX_OPTS = "-XX:MaxRAMPercentage=90"
-#         MEMORY = ""
-#         REPLACE_ENV_VARIABLES = "TRUE"
-#         TYPE = "BUNGEECORD"
-#     }
-#     image = "itzg/mc-proxy:stable"
-#     name = "minecraft-router"
-#     mounts = [
-#         {
-#             directory = "/config"
-#             files = [
-#                 {
-#                     contents = file("${path.module}/config/minecraft/bungeecord.yml")
-#                     filename = "config.yml"
-#                 }
-#             ]
-#         }
-#     ]
-#     ports = {
-#         "25565" = "25577"
-#     }
-#     resources = {
-#         cpu = 350
-#         memory = 768
-#     }
-#     storage = local.storage_config
-#     volumes = [
-#         {
-#             container_directory = "/server"
-#             mount_name = "data"
-#         },
-#         {
-#             container_directory = "/plugins"
-#             mount_name = "plugins"
-#         }
-#     ]
-# }
+    depends_on = [ module.app_minecraft_argon ]
+    datacenter = var.datacenter
+    environment = {
+        JVM_XX_OPTS = "-XX:MaxRAMPercentage=90"
+        MEMORY = ""
+        REPLACE_ENV_VARIABLES = "TRUE"
+        TYPE = "BUNGEECORD"
+    }
+    image = "itzg/mc-proxy:stable"
+    name = "minecraft-router"
+    mounts = [
+        {
+            directory = "/config"
+            files = [
+                {
+                    contents = file("${path.module}/config/minecraft/bungeecord.yml")
+                    filename = "config.yml"
+                }
+            ]
+        }
+    ]
+    ports = {
+        "25565" = "25577"
+    }
+    resources = {
+        cpu = 350
+        memory = 768
+    }
+    storage = local.storage_config
+    volumes = [
+        {
+            container_directory = "/server"
+            mount_name = "data"
+        },
+        {
+            container_directory = "/plugins"
+            mount_name = "plugins"
+        }
+    ]
+}
 #endregion
