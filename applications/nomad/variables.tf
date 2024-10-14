@@ -48,6 +48,8 @@ variable "storage_backends" {
       alpha = object({
         mount = string
         server = string
+        server_password = string
+        server_user = string
       })
     })
 }

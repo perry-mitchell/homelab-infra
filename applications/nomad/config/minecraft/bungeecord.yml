@@ -1,0 +1,12 @@
+server_connect_timeout: 5000
+online_mode: true
+servers:
+    argon:
+        motd: "Main survival server"
+        restricted: false
+        address:  minecraft-argon-25566.service.consul:25566
+listeners:
+    - query_port: 25577
+      priorities:
+        - argon
+      max_players: 5
