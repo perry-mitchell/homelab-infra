@@ -2,6 +2,31 @@ variable "datacenter" {
     type = string
 }
 
+variable "docker_cap_add" {
+    default = []
+    type = set(string)
+}
+
+variable "docker_hostname" {
+    default = null
+    type = string
+}
+
+variable "docker_network_mode" {
+    default = null
+    type = string
+}
+
+variable "docker_privileged" {
+    default = false
+    type = bool
+}
+
+variable "docker_volumes" {
+    default = []
+    type = set(string)
+}
+
 variable "environment" {
     default = {}
     type = map(string)

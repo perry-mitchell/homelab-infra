@@ -151,24 +151,6 @@ module "db_mariadb" {
 }
 #endregion
 
-#region Daemons
-# module "daemon_tailscale" {
-#     source = "../../modules/nomad-tailscale"
-
-#     depends_on = [ module.nomad_nfs ]
-#     datacenter = var.datacenter
-#     name = "tailscale"
-#     resources = {
-#         cpu = 150
-#         memory = 100
-#     }
-#     storage = local.storage_config
-#     tailscale_auth_key = var.tailscale_container_auth
-#     tailscale_hostname = "tailscale-nomad"
-#     tailscale_routes = "192.168.0.0/24,192.168.200.0/24,192.168.201.0/24"
-# }
-#endregion
-
 #region Apps
 module "app_smokeping" {
     source = "../../modules/nomad-service"
@@ -203,6 +185,38 @@ module "app_smokeping" {
         {
             container_directory = "/data"
             mount_name = "data"
+        }
+    ]
+}
+
+module "app_tailscale" {
+    source = "../../modules/nomad-service"
+
+    depends_on = [ module.nomad_nfs ]
+    datacenter = var.datacenter
+    docker_cap_add = ["NET_ADMIN", "SYS_MODULE"]
+    docker_hostname = "tailscale-nomad"
+    docker_network_mode = "bridge"
+    docker_privileged = true
+    docker_volumes = ["/dev/net/tun:/dev/net/tun"]
+    environment = {
+        TS_AUTHKEY    = "${var.tailscale_container_auth}"
+        TS_EXTRA_ARGS = "--advertise-tags=tag:container --accept-routes --advertise-exit-node"
+        TS_HOSTNAME   = "tailscale-nomad"
+        TS_ROUTES     = "192.168.0.0/24,192.168.200.0/24,192.168.201.0/24"
+        TS_STATE_DIR  = "/var/lib/tailscale"
+    }
+    image = "tailscale/tailscale:latest"
+    name = "tailscale"
+    resources = {
+        cpu = 150
+        memory = 100
+    }
+    storage = local.storage_config
+    volumes = [
+        {
+            container_directory = "/var/lib/tailscale"
+            mount_name = "var"
         }
     ]
 }

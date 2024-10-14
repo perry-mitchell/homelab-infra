@@ -39,6 +39,17 @@ job "${name}" {
                     target = "${mount.directory}"
                 }
                 %{ endfor }
+                cap_add = ${jsonencode(docker_cap_add)}
+                volumes = ${jsonencode(docker_volumes)}
+                %{ if docker_network_mode != null }
+                network_mode = "${docker_network_mode}"
+                %{ endif }
+                %{ if docker_privileged == true }
+                privileged = true
+                %{ endif }
+                %{ if docker_hostname != null }
+                hostname = "${docker_hostname}"
+                %{ endif }
             }
 
             %{ for ext, int in ports }
