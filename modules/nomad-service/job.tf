@@ -1,4 +1,8 @@
 resource "nomad_job" "service" {
+    depends_on = [
+        nomad_csi_volume_registration.container_storage
+    ]
+
     jobspec = templatefile("${path.module}/job.nomad", {
         cpu = var.resources.cpu
         datacenter = var.datacenter

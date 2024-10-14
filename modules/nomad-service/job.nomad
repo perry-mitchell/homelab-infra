@@ -3,10 +3,10 @@ job "${name}" {
     type        = "service"
 
     group "application" {
-        %{ for volume_name, config in volumes }
-        volume "${volume_name}" {
+        %{ for _, volume in volumes }
+        volume "${volume.mount_name}" {
             type = "csi"
-            source = "service_${name}_${volume_name}"
+            source = "service_${name}_${volume.mount_name}"
             read_only       = false
             attachment_mode = "file-system"
             access_mode     = "multi-node-multi-writer"
@@ -59,10 +59,10 @@ job "${name}" {
                 %{ endfor }
             }
 
-            %{ for volume_name, config in volumes }
+            %{ for _, volume in volumes }
             volume_mount {
-                volume = "${volume_name}"
-                destination = "${config.container_directory}"
+                volume = "${volume.mount_name}"
+                destination = "${volume.container_directory}"
             }
             %{ endfor }
 

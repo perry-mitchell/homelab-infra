@@ -46,12 +46,16 @@ variable "storage" {
         mount = string
         name = string
         server = string
+        server_chown = string
+        server_password = string
+        server_user = string
     })
 }
 
 variable "volumes" {
-    default = {}
-    type = map(object({
+    default = []
+    type = set(object({
         container_directory = string
+        mount_name = string
     }))
 }
