@@ -7,7 +7,7 @@ job "storage-node" {
             driver = "docker"
 
             config {
-                image = "registry.k8s.io/sig-storage/nfsplugin:v4.1.0"
+                image = "registry.k8s.io/sig-storage/nfsplugin:v4.8.0"
 
                 args = [
                     "--v=5",
