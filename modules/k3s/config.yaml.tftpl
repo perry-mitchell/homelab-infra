@@ -1,0 +1,13 @@
+write-kubeconfig-mode: "0644"
+tls-san:
+  - "acheron.local"
+cluster-init: ${is_cluster_init}
+
+cluster-cidr: "10.42.0.0/16"
+service-cidr: "10.43.0.0/16"
+advertise-address: "${server_ip}"
+bind-address: "${server_ip}"
+
+node-name: "${node_name}"
+
+token: "${cluster_token}"
