@@ -6,6 +6,10 @@ variable "cluster_token" {
     type = string
 }
 
+variable "main_server_ip" {
+    type = string
+}
+
 variable "node_name" {
     type = string
 }

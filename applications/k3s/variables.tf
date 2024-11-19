@@ -1,5 +1,4 @@
 variable "cluster_db_root_password" {
-    sensitive = true
     type = string
 }
 
@@ -8,12 +7,10 @@ variable "cluster_init_node" {
 }
 
 variable "cluster_token" {
-    sensitive = true
     type = string
 }
 
 variable "nodes" {
-    sensitive = true
     type = set(object({
         is_master = bool
         name = string
@@ -24,6 +21,5 @@ variable "nodes" {
 }
 
 variable "state_encryption_passphrase" {
-    sensitive = true
     type = string
 }
