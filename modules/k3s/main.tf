@@ -1,6 +1,6 @@
 locals {
     config_filename = var.cluster_init ? "config.master-init.yaml.tftpl" : "config.master-join.yaml.tftpl"
-    work_directory = "/tmp/tf-k3s-${formatdate("YYYYMMDD", timestamp())}"
+    work_directory = "/tmp/tf-k3s-${formatdate("YYYYMMDD", "2024-11-24T21:07:45+02:00")}"
 }
 
 module "nomad_provisioning" {

@@ -17,5 +17,14 @@ terraform {
         }
     }
 
-    required_providers {}
+    required_providers {
+        helm = {
+            source = "opentofu/helm"
+            version = "2.16.1"
+        }
+        kubernetes = {
+            source = "opentofu/kubernetes"
+            version = "2.33.0"
+        }
+    }
 }

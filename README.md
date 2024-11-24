@@ -8,13 +8,14 @@ This is a infra-as-code representation of the newer portion of my **homelab**. I
 
 ### Requirements
 
-This project assumes you already have X servers ready for provisioning via this configuration (`/applications/main`), based on **Debian 12**. You need 1 server for the k3s database (HA).
+This project assumes you already have X servers ready for provisioning via this configuration (`/applications/k3s`), based on **Debian 12**.
 
-You additionally need another postgres database for tofu state.
+You need to have the local software installed:
+
+ * OpenTofu CLI
+ * `sshpass`
 
 ## Usage
-
-Ensure you have the latest `tofu` executable installed.
 
 Export a postgres connection string:
 
@@ -22,48 +23,10 @@ Export a postgres connection string:
 export PG_CONN_STR=postgres://user:pass@server:5432/db
 ```
 
-Change directory to `application/main` and ensure that there's a completed `terraform.tfvars` file:
+Change directory to `application/k3s` and ensure that there's a completed `terraform.tfvars` file:
 
 ```hcl
-k3s_agent_token = "def456"
-
-k3s_cluster_token = "abc123"
-
-k3s_database_password = "pass"
-
-k3s_database_root_password = "pass"
-
-k3s_database_username = "k3smaster"
-
-k3s_database_server = {
-    ip = "ip"
-    password = ""
-    user = "root"
-    work_dir = "/root"
-}
-
-k3s_servers = {
-    example1 = {
-        ip = "ip1"
-        labels = {
-            name = "one"
-        }
-        password = ""
-        server = true
-        user = "root"
-        work_dir = "/root"
-    }
-    example2 = {
-        ip = "ip2"
-        labels = {
-            name = "two"
-        }
-        password = ""
-        server = true
-        user = "root"
-        work_dir = "/root"
-    }
-}
+<TBA>
 ```
 
 Run `tofu init` to get started. After init run `tofu apply` to start provisioning.

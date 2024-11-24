@@ -44,3 +44,20 @@ module "k3s_master_join" {
     server_password = each.value.password
     server_user = each.value.user
 }
+
+module "k3s_auth" {
+    source = "../../modules/k3s-local-kubeconfig"
+
+    server_ip = local.initial_node.ip
+    server_password = local.initial_node.password
+    server_user = local.initial_node.user
+    timestamp = "2024-11-24"
+}
+
+# resource "kubernetes_namespace" "test" {
+#     depends_on = [ module.k3s_auth ]
+
+#     metadata {
+#         name = "test-namespace"
+#     }
+# }
