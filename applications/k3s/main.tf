@@ -54,17 +54,17 @@ module "k3s_auth" {
     timestamp = "2024-11-24"
 }
 
-# module "ingress" {
-#   source = "../../modules/k8s-ingress"
+module "ingress" {
+  source = "../../modules/k8s-ingress"
 
-#   depends_on = [ module.k3s_auth ]
-# }
+  depends_on = [ module.k3s_auth ]
+}
 
-# module "dashboard" {
-#   source = "../../modules/k8s-dashboard"
+module "dashboard" {
+  source = "../../modules/k8s-dashboard"
 
-#   depends_on = [ module.k3s_auth ]
-# }
+  depends_on = [ module.k3s_auth ]
+}
 
 # resource "kubernetes_namespace" "test" {
 #     depends_on = [ module.k3s_auth ]

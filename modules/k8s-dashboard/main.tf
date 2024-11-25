@@ -22,11 +22,18 @@ resource "helm_release" "kubernetes_dashboard" {
 resource "kubernetes_ingress_v1" "dashboard" {
     metadata {
         name = "dashboard-ingress"
+        namespace = resource.kubernetes_namespace.dashboard.metadata[0].name
+        annotations = {
+            "nginx.ingress.kubernetes.io/backend-protocol" = "HTTPS"
+            "nginx.ingress.kubernetes.io/ssl-redirect" = "true"
+        }
     }
 
     depends_on = [ helm_release.kubernetes_dashboard ]
 
     spec {
+        ingress_class_name = "nginx"
+
         rule {
             host = "dashboard.acheron.local"
 
@@ -37,9 +44,9 @@ resource "kubernetes_ingress_v1" "dashboard" {
 
                     backend {
                         service {
-                            name = "kubernetes-dashboard-web"
+                            name = "kubernetes-dashboard-kong-proxy"
                             port {
-                                number = 8000
+                                number = 443
                             }
                         }
                     }
@@ -47,4 +54,41 @@ resource "kubernetes_ingress_v1" "dashboard" {
             }
         }
     }
+}
+
+resource "kubernetes_service_account" "admin_user" {
+    metadata {
+        name = "admin-user"
+        namespace = resource.kubernetes_namespace.dashboard.metadata[0].name
+    }
+}
+
+resource "kubernetes_cluster_role_binding" "admin_user" {
+    metadata {
+        name = "admin-user"
+    }
+
+    role_ref {
+        api_group = "rbac.authorization.k8s.io"
+        kind      = "ClusterRole"
+        name      = "cluster-admin"
+    }
+
+    subject {
+        kind      = "ServiceAccount"
+        name      = "admin-user"
+        namespace = resource.kubernetes_namespace.dashboard.metadata[0].name
+    }
+}
+
+resource "kubernetes_secret" "admin_user" {
+    metadata {
+        name = "admin-user"
+        namespace = resource.kubernetes_namespace.dashboard.metadata[0].name
+        annotations = {
+            "kubernetes.io/service-account.name" = "admin-user"
+        }
+    }
+
+    type = "kubernetes.io/service-account-token"
 }

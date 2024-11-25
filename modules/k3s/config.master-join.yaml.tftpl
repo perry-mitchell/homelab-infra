@@ -1,6 +1,8 @@
 write-kubeconfig-mode: "0644"
 tls-san:
   - "acheron.local"
+disable:
+  - traefik
 
 server: "https://${main_server_ip}:6443"
 
