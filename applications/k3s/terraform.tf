@@ -26,5 +26,9 @@ terraform {
             source = "opentofu/kubernetes"
             version = "2.33.0"
         }
+        pihole = {
+            source = "ryanwholey/pihole"
+            version = "0.2.0"
+        }
     }
 }

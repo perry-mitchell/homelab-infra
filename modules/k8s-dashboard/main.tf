@@ -1,3 +1,11 @@
+module "dns" {
+    source = "../dns-name"
+
+    cluster_fqdn = var.dns_config.cluster_fqdn
+    host_ip = var.dns_config.host_ip
+    subdomain_name = var.dns_config.subdomain_name
+}
+
 resource "kubernetes_namespace" "dashboard" {
   metadata {
     name = "kubernetes-dashboard"
@@ -35,7 +43,7 @@ resource "kubernetes_ingress_v1" "dashboard" {
         ingress_class_name = "nginx"
 
         rule {
-            host = "dashboard.acheron.local"
+            host = module.dns.dns_name
 
             http {
                 path {
