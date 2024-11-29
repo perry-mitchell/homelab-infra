@@ -161,15 +161,21 @@ resource "random_password" "kimai_database_user" {
     length = 32
     special = false
 }
-module "kimai_database_user" {
-    source = "../../modules/mysql-user"
+module "db_init_kimai" {
+    source = "../../modules/mysql-init"
 
-    new_password = random_password.kimai_database_user.result
-    new_username = "kimai"
+    create_database = "kimai"
+    create_user = {
+        password = random_password.kimai_database_user.result
+        username = "kimai"
+    }
+    db_host = local.mariadb_service_hostname
+    db_password = var.db_mariadb_root
+    db_username = "root"
+    grant_users = {
+        "kimai" = "kimai"
+    }
+    name = "kimai"
 }
-# module "kimai_database" {
-#     source = "../../modules/mysql-database"
 
-#     attach_users = []
-# }
 #endregion

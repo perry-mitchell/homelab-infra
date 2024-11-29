@@ -30,9 +30,5 @@ terraform {
             source = "ryanwholey/pihole"
             version = "0.2.0"
         }
-        mysql = {
-            source = "petoju/mysql"
-            version = "3.0.67"
-        }
     }
 }
