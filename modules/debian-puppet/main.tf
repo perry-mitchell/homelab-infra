@@ -64,7 +64,9 @@ resource "null_resource" "puppet" {
             "dpkg -i ${local.puppet_deb_remote_path}",
             "rm ${local.puppet_deb_remote_path}",
             "apt-get update",
-            "apt-get install puppet-agent"
+            "apt-get install puppet-agent",
+            "${local.puppet_bin} module install puppetlabs-stdlib --version 4.9.1",
+            "${local.puppet_bin} module install puppet-archive --version 7.1.0"
         ]
     }
 
@@ -94,8 +96,6 @@ resource "terraform_data" "provision" {
     provisioner "remote-exec" {
         inline = [
             "cat ${local.puppet_variables_remote_path} ${local.puppet_file_remote_path} > ${var.work_directory}/target.pp",
-            "${local.puppet_bin} module install puppetlabs-stdlib --version 4.9.1",
-            "${local.puppet_bin} module install puppet-archive --version 7.1.0",
             "${local.puppet_bin} apply ${var.work_directory}/target.pp",
             "rm ${var.work_directory}/target.pp"
         ]
