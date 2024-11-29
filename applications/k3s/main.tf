@@ -80,6 +80,70 @@ module "nfs_storage_primary" {
     nfs_server = var.nfs_storage_primary.host
 }
 
+#region Datasources
+# module "db_mariadb" {
+#     source = "../../modules/nomad-service"
+
+#     depends_on = [ module.nomad_nfs ]
+#     datacenter = var.datacenter
+#     environment = {
+#         MARIADB_ROOT_PASSWORD = var.db_mariadb_root
+#         TZ = "Europe/Helsinki"
+#     }
+#     image = "mariadb:latest"
+#     name = "mariadb"
+#     ports = {
+#       "35002" = "3306"
+#     }
+#     resources = {
+#         cpu = 500
+#         memory = 1500
+#     }
+#     storage = local.storage_config
+#     volumes = [
+#         {
+#             container_directory = "/var/lib/mysql"
+#             mount_name = "mysql"
+#         }
+#     ]
+# }
+resource "kubernetes_namespace" "datasources" {
+    depends_on = [ module.k3s_auth ]
+
+    metadata {
+        name = "datasources"
+    }
+}
+
+module "db_mariadb" {
+    source = "../../modules/service"
+
+    container_port = 3306
+    dns_config = {
+        cluster_fqdn = var.cluster_fqdn
+        host_ip = local.primary_ingress_ip
+        subdomain_name = "mariadb"
+    }
+    environment = {
+        MARIADB_ROOT_PASSWORD = var.db_mariadb_root
+        TZ = "Europe/Helsinki"
+    }
+    image = {
+        tag = "latest"
+        uri = "mariadb"
+    }
+    mounts = {
+        mysql = {
+            container_path = "/var/lib/mysql"
+            storage_request = "50Gi"
+        }
+    }
+    name = "mariadb"
+    namespace = kubernetes_namespace.datasources.metadata[0].name
+    service_port = 3306
+}
+#endregion
+
 #region Monitoring
 resource "kubernetes_namespace" "monitoring" {
     depends_on = [ module.k3s_auth ]
@@ -90,7 +154,7 @@ resource "kubernetes_namespace" "monitoring" {
 }
 
 module "app_smokeping" {
-    source = "../../modules/service-web"
+    source = "../../modules/service"
 
     container_port = 80
     dns_config = {
@@ -113,5 +177,6 @@ module "app_smokeping" {
     }
     name = "smokeping"
     namespace = kubernetes_namespace.monitoring.metadata[0].name
+    service_port = 80
 }
 #endregion

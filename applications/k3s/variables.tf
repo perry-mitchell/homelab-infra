@@ -14,6 +14,10 @@ variable "cluster_token" {
     type = string
 }
 
+variable "db_mariadb_root" {
+    type = string
+}
+
 variable "nfs_storage_primary" {
     type = object({
         export = string

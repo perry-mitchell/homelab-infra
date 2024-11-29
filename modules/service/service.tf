@@ -18,7 +18,7 @@ resource "kubernetes_service" "service" {
         }
 
         port {
-            port        = 80
+            port        = var.service_port
             target_port = var.container_port
         }
     }
@@ -28,10 +28,6 @@ resource "kubernetes_ingress_v1" "service" {
     metadata {
         name = var.name
         namespace = var.namespace
-        # annotations = {
-        #     "nginx.ingress.kubernetes.io/backend-protocol" = "HTTPS"
-        #     "nginx.ingress.kubernetes.io/ssl-redirect" = "true"
-        # }
     }
 
     spec {
@@ -50,7 +46,6 @@ resource "kubernetes_ingress_v1" "service" {
                             name = kubernetes_service.service.metadata[0].name
 
                             port {
-                                # number = 80
                                 number = kubernetes_service.service.spec[0].port[0].port
                             }
                         }

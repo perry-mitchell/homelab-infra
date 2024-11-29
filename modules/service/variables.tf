@@ -10,6 +10,11 @@ variable "dns_config" {
     })
 }
 
+variable "environment" {
+    default = {}
+    type = map(string)
+}
+
 variable "files" {
     default = {}
     type = map(string)
@@ -37,4 +42,8 @@ variable "name" {
 
 variable "namespace" {
     type = string
+}
+
+variable "service_port" {
+    type = number
 }

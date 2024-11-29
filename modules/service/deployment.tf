@@ -25,6 +25,15 @@ resource "kubernetes_deployment" "deployment" {
                     image = "${var.image.uri}:${var.image.tag}"
                     name  = var.name
 
+                    dynamic "env" {
+                        for_each = var.environment
+
+                        content {
+                            name  = env.key
+                            value = env.value
+                        }
+                    }
+
                     dynamic "volume_mount" {
                         for_each = var.mounts
 
