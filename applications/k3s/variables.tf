@@ -14,6 +14,13 @@ variable "cluster_token" {
     type = string
 }
 
+variable "nfs_storage_primary" {
+    type = object({
+        export = string
+        host = string
+    })
+}
+
 variable "nodes" {
     type = set(object({
         is_master = bool

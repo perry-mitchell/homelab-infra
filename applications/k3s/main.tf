@@ -56,27 +56,62 @@ module "k3s_auth" {
 }
 
 module "ingress" {
-  source = "../../modules/k8s-ingress"
+    source = "../../modules/k8s-ingress"
 
-  depends_on = [ module.k3s_auth ]
+    depends_on = [ module.k3s_auth ]
 }
 
 module "dashboard" {
-  source = "../../modules/k8s-dashboard"
+    source = "../../modules/k8s-dashboard"
 
-  depends_on = [ module.k3s_auth ]
+    depends_on = [ module.k3s_auth ]
 
-  dns_config = {
-    cluster_fqdn = var.cluster_fqdn
-    host_ip = local.primary_ingress_ip
-    subdomain_name = "k8s"
-  }
+    dns_config = {
+        cluster_fqdn = var.cluster_fqdn
+        host_ip = local.primary_ingress_ip
+        subdomain_name = "k8s"
+    }
 }
 
-# resource "kubernetes_namespace" "test" {
-#     depends_on = [ module.k3s_auth ]
+module "nfs_storage_primary" {
+    source = "../../modules/k8s-nfs-provisioner"
 
-#     metadata {
-#         name = "test-namespace"
-#     }
-# }
+    nfs_export = var.nfs_storage_primary.export
+    nfs_server = var.nfs_storage_primary.host
+}
+
+#region Monitoring
+resource "kubernetes_namespace" "monitoring" {
+    depends_on = [ module.k3s_auth ]
+
+    metadata {
+        name = "monitoring"
+    }
+}
+
+module "app_smokeping" {
+    source = "../../modules/service-web"
+
+    container_port = 80
+    dns_config = {
+        cluster_fqdn = var.cluster_fqdn
+        host_ip = local.primary_ingress_ip
+        subdomain_name = "smokeping"
+    }
+    files = {
+        "/config/Targets" = file("${path.module}/config/smokeping/Targets")
+    }
+    image = {
+        tag = "latest"
+        uri = "lscr.io/linuxserver/smokeping"
+    }
+    mounts = {
+        data = {
+            container_path = "/data"
+            storage_request = "5Gi"
+        }
+    }
+    name = "smokeping"
+    namespace = kubernetes_namespace.monitoring.metadata[0].name
+}
+#endregion
