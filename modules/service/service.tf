@@ -1,11 +1,3 @@
-module "dns" {
-    source = "../dns-name"
-
-    cluster_fqdn = var.dns_config.cluster_fqdn
-    host_ip = var.dns_config.host_ip
-    subdomain_name = var.dns_config.subdomain_name
-}
-
 resource "kubernetes_service" "service" {
     metadata {
         name = var.name
@@ -24,7 +16,18 @@ resource "kubernetes_service" "service" {
     }
 }
 
+module "dns" {
+    source = "../dns-name"
+    count = var.ingress_enabled ? 1 : 0
+
+    cluster_fqdn = var.dns_config.cluster_fqdn
+    host_ip = var.dns_config.host_ip
+    subdomain_name = var.dns_config.subdomain_name
+}
+
 resource "kubernetes_ingress_v1" "service" {
+    count = var.ingress_enabled ? 1 : 0
+
     metadata {
         name = var.name
         namespace = var.namespace
@@ -34,7 +37,7 @@ resource "kubernetes_ingress_v1" "service" {
         ingress_class_name = "nginx"
 
         rule {
-            host = module.dns.dns_name
+            host = module.dns[0].dns_name
 
             http {
                 path {

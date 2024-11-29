@@ -27,6 +27,11 @@ variable "image" {
     })
 }
 
+variable "ingress_enabled" {
+    default = true
+    type = bool
+}
+
 variable "mounts" {
     default = {}
     type = map(object({

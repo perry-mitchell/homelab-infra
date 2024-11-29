@@ -81,32 +81,6 @@ module "nfs_storage_primary" {
 }
 
 #region Datasources
-# module "db_mariadb" {
-#     source = "../../modules/nomad-service"
-
-#     depends_on = [ module.nomad_nfs ]
-#     datacenter = var.datacenter
-#     environment = {
-#         MARIADB_ROOT_PASSWORD = var.db_mariadb_root
-#         TZ = "Europe/Helsinki"
-#     }
-#     image = "mariadb:latest"
-#     name = "mariadb"
-#     ports = {
-#       "35002" = "3306"
-#     }
-#     resources = {
-#         cpu = 500
-#         memory = 1500
-#     }
-#     storage = local.storage_config
-#     volumes = [
-#         {
-#             container_directory = "/var/lib/mysql"
-#             mount_name = "mysql"
-#         }
-#     ]
-# }
 resource "kubernetes_namespace" "datasources" {
     depends_on = [ module.k3s_auth ]
 
@@ -132,13 +106,14 @@ module "db_mariadb" {
         tag = "latest"
         uri = "mariadb"
     }
+    ingress_enabled = false
     mounts = {
         mysql = {
             container_path = "/var/lib/mysql"
             storage_request = "50Gi"
         }
     }
-    name = "mariadb"
+    name = local.mariadb_service_name
     namespace = kubernetes_namespace.datasources.metadata[0].name
     service_port = 3306
 }
@@ -179,4 +154,22 @@ module "app_smokeping" {
     namespace = kubernetes_namespace.monitoring.metadata[0].name
     service_port = 80
 }
+#endregion
+
+#region Business
+resource "random_password" "kimai_database_user" {
+    length = 32
+    special = false
+}
+module "kimai_database_user" {
+    source = "../../modules/mysql-user"
+
+    new_password = random_password.kimai_database_user.result
+    new_username = "kimai"
+}
+# module "kimai_database" {
+#     source = "../../modules/mysql-database"
+
+#     attach_users = []
+# }
 #endregion
