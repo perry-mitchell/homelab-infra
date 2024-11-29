@@ -10,15 +10,6 @@ locals {
   primary_ingress_ip = local.initial_node.ip
 }
 
-# module "cluster_db" {
-#     source = "../../modules/debian-mariadb"
-
-#     root_password = var.cluster_db_root_password
-#     server_ip = var.cluster_db_node.ip
-#     server_password = var.cluster_db_node.password
-#     server_user = var.cluster_db_node.user
-# }
-
 module "k3s_master_init" {
     source = "../../modules/k3s"
 
