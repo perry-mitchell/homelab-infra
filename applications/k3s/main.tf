@@ -71,6 +71,15 @@ module "nfs_storage_primary" {
     nfs_server = var.nfs_storage_primary.host
 }
 
+#region Remote Access
+module "tailscale_subnet" {
+    source = "../../modules/tailscale-subnet"
+
+    additional_cidrs = var.network_cidrs
+    auth_key = var.tailscale_container_auth
+}
+#endregion
+
 #region Datasources
 resource "kubernetes_namespace" "datasources" {
     depends_on = [ module.k3s_auth ]
@@ -168,5 +177,4 @@ module "db_init_kimai" {
     }
     name = "kimai"
 }
-
 #endregion

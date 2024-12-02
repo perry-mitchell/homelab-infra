@@ -18,6 +18,10 @@ variable "db_mariadb_root" {
     type = string
 }
 
+variable "network_cidrs" {
+    type = set(string)
+}
+
 variable "nfs_storage_primary" {
     type = object({
         export = string
@@ -44,5 +48,9 @@ variable "pihole_url" {
 }
 
 variable "state_encryption_passphrase" {
+    type = string
+}
+
+variable "tailscale_container_auth" {
     type = string
 }
