@@ -157,6 +157,14 @@ module "app_smokeping" {
 #endregion
 
 #region Business
+resource "kubernetes_namespace" "business" {
+    depends_on = [ module.k3s_auth ]
+
+    metadata {
+        name = "business"
+    }
+}
+
 resource "random_password" "kimai_database_user" {
     length = 32
     special = false
@@ -176,5 +184,36 @@ module "db_init_kimai" {
         "kimai" = "kimai"
     }
     name = "kimai"
+}
+module "app_kimai" {
+    source = "../../modules/service"
+
+    depends_on = [ module.db_init_kimai ]
+
+    container_port = 8001
+    dns_config = {
+        cluster_fqdn = var.cluster_fqdn
+        host_ip = local.primary_ingress_ip
+        subdomain_name = "kimai"
+    }
+    environment = {
+        TZ = "Europe/Helsinki"
+        ADMINMAIL = var.kimai_admin.email
+        ADMINPASS = var.kimai_admin.password
+        DATABASE_URL = "mysql://kimai:${random_password.kimai_database_user.result}@${local.mariadb_service_hostname}:3306/kimai?charset=utf8mb4"
+    }
+    image = {
+        tag = "apache"
+        uri = "kimai/kimai2"
+    }
+    mounts = {
+        data = {
+            container_path = "/opt/kimai/var/data"
+            storage_request = "20Gi"
+        }
+    }
+    name = "kimai"
+    namespace = kubernetes_namespace.business.metadata[0].name
+    service_port = 80
 }
 #endregion

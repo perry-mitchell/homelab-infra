@@ -18,6 +18,13 @@ variable "db_mariadb_root" {
     type = string
 }
 
+variable "kimai_admin" {
+    type = object({
+      email = string
+      password = string
+    })
+}
+
 variable "network_cidrs" {
     type = set(string)
 }
