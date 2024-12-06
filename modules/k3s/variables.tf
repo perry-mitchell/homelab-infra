@@ -6,6 +6,14 @@ variable "cluster_token" {
     type = string
 }
 
+variable "fqdn" {
+    type = string
+}
+
+variable "hostname" {
+    type = string
+}
+
 variable "main_server_ip" {
     type = string
 }

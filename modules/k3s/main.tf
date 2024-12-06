@@ -13,10 +13,12 @@ module "nomad_provisioning" {
     vars = {
         config_yaml = templatefile("${path.module}/${local.config_filename}", {
             cluster_token = var.cluster_token
+            fqdn = var.fqdn
             main_server_ip = var.main_server_ip
             node_name = var.node_name
             server_ip = var.server_ip
         })
+        node_hostname = var.hostname
         k3s_service = file("${path.module}/k3s.service")
     }
     work_directory = local.work_directory

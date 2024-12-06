@@ -2,6 +2,11 @@ $exec_path = ["/bin", "/usr/bin"]
 $k3s_download = "https://github.com/k3s-io/k3s/releases/download/v1.26.5+k3s1/k3s"
 $k3s_binary = "/usr/local/bin/k3s"
 
+exec { "set-hostname":
+    path => $exec_path,
+    command => "hostnamectl set-hostname ${node_hostname}"
+}
+
 exec { "initial-apt-update":
     path => $exec_path,
     command => "apt-get update"

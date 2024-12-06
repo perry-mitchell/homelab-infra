@@ -15,6 +15,8 @@ module "k3s_master_init" {
 
     cluster_init = true
     cluster_token = var.cluster_token
+    fqdn = var.cluster_fqdn
+    hostname = "${local.initial_node.name}.${var.cluster_fqdn}"
     main_server_ip = ""
     node_name = local.initial_node.name
     server_ip = local.initial_node.ip
@@ -30,6 +32,8 @@ module "k3s_master_join" {
 
     cluster_init = false
     cluster_token = var.cluster_token
+    fqdn = var.cluster_fqdn
+    hostname = "${local.initial_node.name}.${var.cluster_fqdn}"
     main_server_ip = local.initial_node.ip
     node_name = each.value.name
     server_ip = each.value.ip
