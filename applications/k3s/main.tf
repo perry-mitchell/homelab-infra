@@ -358,4 +358,83 @@ module "db_init_immich" {
     db_username = "root"
     name = "immich"
 }
+
+locals {
+    immich_tag = "v1.122.1"
+}
+
+module "app_immich_ml" {
+    source = "../../modules/service"
+
+    depends_on = [ module.db_init_immich ]
+
+    container_port = 3003
+    dns_config = {
+        cluster_fqdn = var.cluster_fqdn
+        host_ip = local.primary_ingress_ip
+        subdomain_name = "immich-ml"
+    }
+    environment = {
+        TZ = "Europe/Helsinki"
+    }
+    image = {
+        tag = local.immich_tag
+        uri = "ghcr.io/immich-app/immich-machine-learning"
+    }
+    ingress_enabled = false
+    mounts = {
+        "model-cache" = {
+            container_path = "/cache"
+            storage = "appdata"
+            storage_request = "100Gi"
+        }
+    }
+    name = "immich-ml"
+    namespace = kubernetes_namespace.family.metadata[0].name
+    service_port = 3003
+}
+
+# module "app_immich" {
+#     source = "../../modules/service"
+
+#     depends_on = [ module.db_init_kimai, module.app_immich_ml ]
+
+#     container_port = 2283
+#     dns_config = {
+#         cluster_fqdn = var.cluster_fqdn
+#         host_ip = local.primary_ingress_ip
+#         subdomain_name = "immich"
+#     }
+#     environment = {
+#         DB_DATABASE_NAME = "immich"
+#         DB_HOSTNAME = local.postgres_service_hostname
+#         DB_PASSWORD = random_password.immich_database_user.result
+#         DB_PORT = "5432"
+#         DB_USERNAME = "immich"
+#         IMMICH_PORT = "2283"
+#         REDIS_DBINDEX = local.redis_db_reservations.immich
+#         REDIS_HOSTNAME = local.redis_service_hostname
+#         REDIS_PASSWORD = var.db_redis_root
+#         REDIS_PORT = "6379"
+#         TZ = "Europe/Helsinki"
+#     }
+#     image = {
+#         tag = local.immich_tag
+#         uri = "ghcr.io/immich-app/immich-server"
+#     }
+#     mounts = {
+#         "upload" = {
+#             container_path = "/usr/src/app/upload"
+#             storage = "photos"
+#             storage_request = "1500Gi"
+#         }
+#     }
+#     name = "immich"
+#     namespace = kubernetes_namespace.family.metadata[0].name
+#     service_port = 80
+#     tailscale = {
+#         hostname = "immich"
+#         tailnet = var.tailscale_tailnet
+#     }
+# }
 #endregion
