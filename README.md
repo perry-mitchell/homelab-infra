@@ -17,12 +17,6 @@ You need to have the local software installed:
 
 ## Usage
 
-Export a postgres connection string:
-
-```shell
-export PG_CONN_STR=postgres://user:pass@server:5432/db
-```
-
 Change directory to `application/k3s` and ensure that there's a completed `terraform.tfvars` file:
 
 ```hcl
