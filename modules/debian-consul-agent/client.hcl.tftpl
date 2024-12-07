@@ -1,9 +1,0 @@
-datacenter = "nak4"
-data_dir = "/opt/consul"
-node_name = "${client_name}"
-log_level = "INFO"
-encrypt = "${gossip_key}"
-retry_join = ["${consul_server}"]
-
-bind_addr = "0.0.0.0"
-advertise_addr = "${consul_agent_ip}"
