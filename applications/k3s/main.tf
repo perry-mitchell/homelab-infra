@@ -129,6 +129,9 @@ module "db_mariadb" {
     name = local.mariadb_service_name
     namespace = kubernetes_namespace.datasources.metadata[0].name
     service_port = 3306
+    tailscale = {
+      hostname = "mariadb"
+    }
 }
 #endregion
 

@@ -4,7 +4,7 @@ resource "kubernetes_service" "service" {
         namespace = var.namespace
         annotations = merge(
             {},
-            var.tailscale != null && var.ingress_enabled ? {
+            var.tailscale != null ? {
                 "tailscale.com/expose" = "true"
                 "tailscale.com/hostname" = var.tailscale.hostname
             } : {}
