@@ -2,7 +2,7 @@ resource "kubernetes_persistent_volume_claim" "storage" {
     for_each = var.mounts
 
     metadata {
-        name = each.key
+        name = "${var.name}-${each.key}"
         namespace = var.namespace
         annotations = {
             application = var.name
@@ -11,7 +11,6 @@ resource "kubernetes_persistent_volume_claim" "storage" {
 
     spec {
         access_modes = ["ReadWriteMany"]
-        # storage_class_name = "nfs-client"
         storage_class_name = "nfs-${each.value.storage}"
         resources {
             requests = {

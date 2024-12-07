@@ -18,6 +18,14 @@ variable "db_mariadb_root" {
     type = string
 }
 
+variable "db_postgres_root" {
+    type = string
+}
+
+variable "db_redis_root" {
+    type = string
+}
+
 variable "kimai_admin" {
     type = object({
       email = string
@@ -52,10 +60,6 @@ variable "pihole_password" {
 }
 
 variable "pihole_url" {
-    type = string
-}
-
-variable "db_postgres_root" {
     type = string
 }
 
