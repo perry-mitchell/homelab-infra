@@ -36,6 +36,7 @@ variable "mounts" {
     default = {}
     type = map(object({
         container_path = string
+        storage = string
         storage_request = optional(string)
     }))
 }

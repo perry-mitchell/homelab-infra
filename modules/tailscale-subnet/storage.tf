@@ -9,7 +9,7 @@ resource "kubernetes_persistent_volume_claim" "tailscale" {
 
     spec {
         access_modes = ["ReadWriteMany"]
-        storage_class_name = "nfs-client"
+        storage_class_name = "nfs-${var.storage}"
         resources {
             requests = {
                 storage = "5Gi"

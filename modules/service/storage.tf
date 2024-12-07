@@ -11,7 +11,8 @@ resource "kubernetes_persistent_volume_claim" "storage" {
 
     spec {
         access_modes = ["ReadWriteMany"]
-        storage_class_name = "nfs-client"
+        # storage_class_name = "nfs-client"
+        storage_class_name = "nfs-${each.value.storage}"
         resources {
             requests = {
                 storage = coalesce(each.value.storage_request, "50Gi")

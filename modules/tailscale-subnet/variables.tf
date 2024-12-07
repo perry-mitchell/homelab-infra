@@ -6,3 +6,8 @@ variable "additional_cidrs" {
 variable "auth_key" {
     type = string
 }
+
+variable "storage" {
+    description = "The storage name"
+    type = string
+}

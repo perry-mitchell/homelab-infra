@@ -71,8 +71,9 @@ module "dashboard" {
 module "nfs_storage_primary" {
     source = "../../modules/k8s-nfs-provisioner"
 
-    nfs_export = var.nfs_storage_primary.export
-    nfs_server = var.nfs_storage_primary.host
+    name = "appdata"
+    nfs_export = var.nfs_storage["appdata"].export
+    nfs_server = var.nfs_storage["appdata"].host
 }
 
 #region Remote Access
@@ -81,6 +82,7 @@ module "tailscale_subnet" {
 
     additional_cidrs = var.network_cidrs
     auth_key = var.tailscale_container_auth
+    storage = "appdata"
 }
 
 module "tailscale" {
@@ -123,6 +125,7 @@ module "db_mariadb" {
     mounts = {
         mysql = {
             container_path = "/var/lib/mysql"
+            storage = "appdata"
             storage_request = "50Gi"
         }
     }
@@ -164,6 +167,7 @@ module "app_smokeping" {
     mounts = {
         data = {
             container_path = "/data"
+            storage = "appdata"
             storage_request = "5Gi"
         }
     }
@@ -230,6 +234,7 @@ module "app_kimai" {
     mounts = {
         data = {
             container_path = "/opt/kimai/var/data"
+            storage = "appdata"
             storage_request = "20Gi"
         }
     }

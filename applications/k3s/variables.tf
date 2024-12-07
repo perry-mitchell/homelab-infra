@@ -29,11 +29,11 @@ variable "network_cidrs" {
     type = set(string)
 }
 
-variable "nfs_storage_primary" {
-    type = object({
+variable "nfs_storage" {
+    type = map(object({
         export = string
         host = string
-    })
+    }))
 }
 
 variable "nodes" {
