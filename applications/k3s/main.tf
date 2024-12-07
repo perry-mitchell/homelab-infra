@@ -140,6 +140,41 @@ module "db_mariadb" {
       tailnet = var.tailscale_tailnet
     }
 }
+
+module "db_postgres" {
+    source = "../../modules/service"
+
+    container_port = 5432
+    dns_config = {
+        cluster_fqdn = var.cluster_fqdn
+        host_ip = local.primary_ingress_ip
+        subdomain_name = "postgres"
+    }
+    environment = {
+        POSTGRES_PASSWORD = var.db_postgres_root
+        POSTGRES_USER = "root"
+        TZ = "Europe/Helsinki"
+    }
+    image = {
+        tag = "13"
+        uri = "postgres"
+    }
+    ingress_enabled = false
+    mounts = {
+        data = {
+            container_path = "/var/lib/postgresql/data"
+            storage = "appdata"
+            storage_request = "50Gi"
+        }
+    }
+    name = local.postgres_service_name
+    namespace = kubernetes_namespace.datasources.metadata[0].name
+    service_port = 5432
+    tailscale = {
+      hostname = "postgres"
+      tailnet = var.tailscale_tailnet
+    }
+}
 #endregion
 
 #region Monitoring
@@ -199,6 +234,8 @@ resource "random_password" "kimai_database_user" {
 }
 module "db_init_kimai" {
     source = "../../modules/mysql-init"
+
+    depends_on = [ module.db_mariadb ]
 
     create_database = "kimai"
     create_user = {
@@ -260,4 +297,23 @@ resource "kubernetes_namespace" "family" {
     }
 }
 
+resource "random_password" "immich_database_user" {
+    length = 32
+    special = false
+}
+module "db_init_immich" {
+    source = "../../modules/postgres-init"
+
+    depends_on = [ module.db_postgres ]
+
+    create_database = "immich"
+    create_user = {
+        password = random_password.immich_database_user.result
+        username = "immich"
+    }
+    db_host = local.postgres_service_hostname
+    db_password = var.db_postgres_root
+    db_username = "root"
+    name = "immich"
+}
 #endregion

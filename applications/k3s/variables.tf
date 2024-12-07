@@ -55,6 +55,10 @@ variable "pihole_url" {
     type = string
 }
 
+variable "db_postgres_root" {
+    type = string
+}
+
 variable "state_encryption_passphrase" {
     type = string
 }
