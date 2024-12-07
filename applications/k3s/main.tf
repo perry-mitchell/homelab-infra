@@ -82,6 +82,15 @@ module "tailscale_subnet" {
     additional_cidrs = var.network_cidrs
     auth_key = var.tailscale_container_auth
 }
+
+module "tailscale" {
+    source = "../../modules/tailscale"
+
+    oauth = {
+      client_id = var.tailscale_oauth.client_id
+      client_secret = var.tailscale_oauth.client_secret
+    }
+}
 #endregion
 
 #region Datasources
@@ -157,6 +166,9 @@ module "app_smokeping" {
     name = "smokeping"
     namespace = kubernetes_namespace.monitoring.metadata[0].name
     service_port = 80
+    tailscale = {
+        hostname = "smokeping"
+    }
 }
 #endregion
 
@@ -219,5 +231,8 @@ module "app_kimai" {
     name = "kimai"
     namespace = kubernetes_namespace.business.metadata[0].name
     service_port = 80
+    tailscale = {
+        hostname = "kimai"
+    }
 }
 #endregion

@@ -61,3 +61,10 @@ variable "state_encryption_passphrase" {
 variable "tailscale_container_auth" {
     type = string
 }
+
+variable "tailscale_oauth" {
+    type = object({
+      client_id = string
+      client_secret = string
+    })
+}

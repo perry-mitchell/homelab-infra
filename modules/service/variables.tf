@@ -52,3 +52,10 @@ variable "namespace" {
 variable "service_port" {
     type = number
 }
+
+variable "tailscale" {
+    default = null
+    type = object({
+      hostname = string
+    })
+}

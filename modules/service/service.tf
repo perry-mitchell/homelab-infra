@@ -2,6 +2,13 @@ resource "kubernetes_service" "service" {
     metadata {
         name = var.name
         namespace = var.namespace
+        annotations = merge(
+            {},
+            var.tailscale != null && var.ingress_enabled ? {
+                "tailscale.com/expose" = "true"
+                "tailscale.com/hostname" = var.tailscale.hostname
+            } : {}
+        )
     }
 
     spec {
