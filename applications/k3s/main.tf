@@ -68,12 +68,15 @@ module "dashboard" {
     }
 }
 
-module "nfs_storage_primary" {
-    source = "../../modules/k8s-nfs-provisioner"
+module "nfs_storage" {
+  source = "../../modules/k8s-nfs-provisioner"
 
-    name = "appdata"
-    nfs_export = var.nfs_storage["appdata"].export
-    nfs_server = var.nfs_storage["appdata"].host
+  for_each = var.nfs_storage
+
+  name = each.key
+  nfs_export = each.value.export
+  nfs_server = each.value.host
+  path_pattern = each.value.path_pattern
 }
 
 #region Remote Access
@@ -246,4 +249,15 @@ module "app_kimai" {
         tailnet = var.tailscale_tailnet
     }
 }
+#endregion
+
+#region Family
+resource "kubernetes_namespace" "family" {
+    depends_on = [ module.k3s_auth ]
+
+    metadata {
+        name = "family"
+    }
+}
+
 #endregion

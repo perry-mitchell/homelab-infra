@@ -33,6 +33,7 @@ variable "nfs_storage" {
     type = map(object({
         export = string
         host = string
+        path_pattern = string
     }))
 }
 

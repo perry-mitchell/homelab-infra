@@ -9,3 +9,7 @@ variable "nfs_export" {
 variable "nfs_server" {
     type = string
 }
+
+variable "path_pattern" {
+    type = string
+}

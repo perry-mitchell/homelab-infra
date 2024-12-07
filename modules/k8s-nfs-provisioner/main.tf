@@ -24,6 +24,6 @@ resource "helm_release" "nfs_external_provisioner" {
 
     set {
         name = "storageClass.pathPattern"
-        value = "$${.PVC.namespace}-$${.PVC.annotations.application}-$${.PVC.name}"
+        value = var.path_pattern
     }
 }
