@@ -57,5 +57,6 @@ variable "tailscale" {
     default = null
     type = object({
       hostname = string
+      tailnet = string
     })
 }

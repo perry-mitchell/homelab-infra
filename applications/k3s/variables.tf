@@ -68,3 +68,7 @@ variable "tailscale_oauth" {
       client_secret = string
     })
 }
+
+variable "tailscale_tailnet" {
+    type = string
+}

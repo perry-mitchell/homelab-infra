@@ -32,6 +32,15 @@ module "dns" {
     subdomain_name = var.dns_config.subdomain_name
 }
 
+module "dns_tailscale" {
+    source = "../dns-name"
+    count = var.tailscale != null ? 1 : 0
+
+    cluster_fqdn = var.tailscale.tailnet
+    host_ip = var.dns_config.host_ip
+    subdomain_name = var.tailscale.hostname
+}
+
 resource "kubernetes_ingress_v1" "service" {
     count = var.ingress_enabled ? 1 : 0
 

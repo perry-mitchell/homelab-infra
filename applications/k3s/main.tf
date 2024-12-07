@@ -131,6 +131,7 @@ module "db_mariadb" {
     service_port = 3306
     tailscale = {
       hostname = "mariadb"
+      tailnet = var.tailscale_tailnet
     }
 }
 #endregion
@@ -171,6 +172,7 @@ module "app_smokeping" {
     service_port = 80
     tailscale = {
         hostname = "smokeping"
+        tailnet = var.tailscale_tailnet
     }
 }
 #endregion
@@ -236,6 +238,7 @@ module "app_kimai" {
     service_port = 80
     tailscale = {
         hostname = "kimai"
+        tailnet = var.tailscale_tailnet
     }
 }
 #endregion
