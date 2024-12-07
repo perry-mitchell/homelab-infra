@@ -88,6 +88,14 @@ module "tailscale_subnet" {
     storage = "appdata"
 }
 
+# module "tailscale_subnet-2" {
+#     source = "../../modules/tailscale-subnet-2"
+
+#     additional_cidrs = var.network_cidrs
+#     auth_key = var.tailscale_container_auth
+#     storage = "appdata"
+# }
+
 module "tailscale" {
     source = "../../modules/tailscale"
 
