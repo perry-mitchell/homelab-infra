@@ -22,6 +22,11 @@ variable "db_username" {
     type = string
 }
 
+variable "extra_sql_lines" {
+    default = []
+    type = list(string)
+}
+
 variable "name" {
     type = string
 }

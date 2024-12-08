@@ -23,6 +23,11 @@ resource "helm_release" "nfs_external_provisioner" {
     }
 
     set {
+        name = "storageClass.provisionerName"
+        value = "k8s-sigs.io/${var.name}-nfs-subdir-external-provisioner"
+    }
+
+    set {
         name = "storageClass.pathPattern"
         value = var.path_pattern
     }

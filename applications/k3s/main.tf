@@ -119,11 +119,11 @@ module "db_mariadb" {
     source = "../../modules/service"
 
     container_port = 3306
-    dns_config = {
-        cluster_fqdn = var.cluster_fqdn
-        host_ip = local.primary_ingress_ip
-        subdomain_name = "mariadb"
-    }
+    # dns_config = {
+    #     cluster_fqdn = var.cluster_fqdn
+    #     host_ip = local.primary_ingress_ip
+    #     subdomain_name = "mariadb"
+    # }
     environment = {
         MARIADB_ROOT_PASSWORD = var.db_mariadb_root
         TZ = "Europe/Helsinki"
@@ -132,7 +132,6 @@ module "db_mariadb" {
         tag = "latest"
         uri = "mariadb"
     }
-    ingress_enabled = false
     mounts = {
         mysql = {
             container_path = "/var/lib/mysql"
@@ -145,6 +144,7 @@ module "db_mariadb" {
     service_port = 3306
     tailscale = {
       hostname = "mariadb"
+      host_ip = local.primary_ingress_ip
       tailnet = var.tailscale_tailnet
     }
 }
@@ -153,11 +153,11 @@ module "db_postgres" {
     source = "../../modules/service"
 
     container_port = 5432
-    dns_config = {
-        cluster_fqdn = var.cluster_fqdn
-        host_ip = local.primary_ingress_ip
-        subdomain_name = "postgres"
-    }
+    # dns_config = {
+    #     cluster_fqdn = var.cluster_fqdn
+    #     host_ip = local.primary_ingress_ip
+    #     subdomain_name = "postgres"
+    # }
     environment = {
         POSTGRES_PASSWORD = var.db_postgres_root
         POSTGRES_USER = "root"
@@ -167,7 +167,6 @@ module "db_postgres" {
         tag = "13"
         uri = "postgres"
     }
-    ingress_enabled = false
     mounts = {
         data = {
             container_path = "/var/lib/postgresql/data"
@@ -180,6 +179,42 @@ module "db_postgres" {
     service_port = 5432
     tailscale = {
       hostname = "postgres"
+      host_ip = local.primary_ingress_ip
+      tailnet = var.tailscale_tailnet
+    }
+}
+
+module "db_postgres_pgvecto_rs" {
+    source = "../../modules/service"
+
+    container_port = 5432
+    dns_config = {
+        cluster_fqdn = var.cluster_fqdn
+        host_ip = local.primary_ingress_ip
+        subdomain_name = "postgres-pgvecto-rs"
+    }
+    environment = {
+        POSTGRES_PASSWORD = var.db_postgres_pgvecto_rs_root
+        POSTGRES_USER = "root"
+        TZ = "Europe/Helsinki"
+    }
+    image = {
+        tag = "pg14-v0.2.0"
+        uri = "tensorchord/pgvecto-rs"
+    }
+    mounts = {
+        data = {
+            container_path = "/var/lib/postgresql/data"
+            storage = "appdata"
+            storage_request = "50Gi"
+        }
+    }
+    name = local.postgres_pgvecto_rs_service_name
+    namespace = kubernetes_namespace.datasources.metadata[0].name
+    service_port = 5432
+    tailscale = {
+      hostname = "postgres-pgvecto-rs"
+      host_ip = local.primary_ingress_ip
       tailnet = var.tailscale_tailnet
     }
 }
@@ -188,11 +223,11 @@ module "db_redis" {
     source = "../../modules/service"
 
     container_port = 6379
-    dns_config = {
-        cluster_fqdn = var.cluster_fqdn
-        host_ip = local.primary_ingress_ip
-        subdomain_name = "redis"
-    }
+    # dns_config = {
+    #     cluster_fqdn = var.cluster_fqdn
+    #     host_ip = local.primary_ingress_ip
+    #     subdomain_name = "redis"
+    # }
     environment = {
         ALLOW_EMPTY_PASSWORD = "no"
         REDIS_PASSWORD = var.db_redis_root
@@ -201,7 +236,6 @@ module "db_redis" {
         tag = "latest"
         uri = "bitnami/redis"
     }
-    ingress_enabled = false
     mounts = {
         data = {
             container_path = "/bitnami/redis/data"
@@ -212,10 +246,10 @@ module "db_redis" {
     name = local.redis_service_name
     namespace = kubernetes_namespace.datasources.metadata[0].name
     service_port = 6379
-    tailscale = {
-      hostname = "redis"
-      tailnet = var.tailscale_tailnet
-    }
+    # tailscale = {
+    #   hostname = "redis"
+    #   tailnet = var.tailscale_tailnet
+    # }
 }
 #endregion
 
@@ -256,6 +290,7 @@ module "app_smokeping" {
     service_port = 80
     tailscale = {
         hostname = "smokeping"
+        host_ip = local.primary_ingress_ip
         tailnet = var.tailscale_tailnet
     }
 }
@@ -325,6 +360,7 @@ module "app_kimai" {
     service_port = 80
     tailscale = {
         hostname = "kimai"
+        host_ip = local.primary_ingress_ip
         tailnet = var.tailscale_tailnet
     }
 }
@@ -346,16 +382,19 @@ resource "random_password" "immich_database_user" {
 module "db_init_immich" {
     source = "../../modules/postgres-init"
 
-    depends_on = [ module.db_postgres ]
+    depends_on = [ module.db_postgres_pgvecto_rs ]
 
     create_database = "immich"
     create_user = {
         password = random_password.immich_database_user.result
         username = "immich"
     }
-    db_host = local.postgres_service_hostname
-    db_password = var.db_postgres_root
+    db_host = local.postgres_pgvecto_rs_service_hostname
+    db_password = var.db_postgres_pgvecto_rs_root
     db_username = "root"
+    extra_sql_lines = [
+        "ALTER USER immich WITH SUPERUSER"
+    ]
     name = "immich"
 }
 
@@ -369,11 +408,11 @@ module "app_immich_ml" {
     depends_on = [ module.db_init_immich ]
 
     container_port = 3003
-    dns_config = {
-        cluster_fqdn = var.cluster_fqdn
-        host_ip = local.primary_ingress_ip
-        subdomain_name = "immich-ml"
-    }
+    # dns_config = {
+    #     cluster_fqdn = var.cluster_fqdn
+    #     host_ip = local.primary_ingress_ip
+    #     subdomain_name = "immich-ml"
+    # }
     environment = {
         TZ = "Europe/Helsinki"
     }
@@ -381,7 +420,6 @@ module "app_immich_ml" {
         tag = local.immich_tag
         uri = "ghcr.io/immich-app/immich-machine-learning"
     }
-    ingress_enabled = false
     mounts = {
         "model-cache" = {
             container_path = "/cache"
@@ -394,47 +432,48 @@ module "app_immich_ml" {
     service_port = 3003
 }
 
-# module "app_immich" {
-#     source = "../../modules/service"
+module "app_immich" {
+    source = "../../modules/service"
 
-#     depends_on = [ module.db_init_kimai, module.app_immich_ml ]
+    depends_on = [ module.db_init_immich, module.app_immich_ml ]
 
-#     container_port = 2283
-#     dns_config = {
-#         cluster_fqdn = var.cluster_fqdn
-#         host_ip = local.primary_ingress_ip
-#         subdomain_name = "immich"
-#     }
-#     environment = {
-#         DB_DATABASE_NAME = "immich"
-#         DB_HOSTNAME = local.postgres_service_hostname
-#         DB_PASSWORD = random_password.immich_database_user.result
-#         DB_PORT = "5432"
-#         DB_USERNAME = "immich"
-#         IMMICH_PORT = "2283"
-#         REDIS_DBINDEX = local.redis_db_reservations.immich
-#         REDIS_HOSTNAME = local.redis_service_hostname
-#         REDIS_PASSWORD = var.db_redis_root
-#         REDIS_PORT = "6379"
-#         TZ = "Europe/Helsinki"
-#     }
-#     image = {
-#         tag = local.immich_tag
-#         uri = "ghcr.io/immich-app/immich-server"
-#     }
-#     mounts = {
-#         "upload" = {
-#             container_path = "/usr/src/app/upload"
-#             storage = "photos"
-#             storage_request = "1500Gi"
-#         }
-#     }
-#     name = "immich"
-#     namespace = kubernetes_namespace.family.metadata[0].name
-#     service_port = 80
-#     tailscale = {
-#         hostname = "immich"
-#         tailnet = var.tailscale_tailnet
-#     }
-# }
+    container_port = 2283
+    dns_config = {
+        cluster_fqdn = var.cluster_fqdn
+        host_ip = local.primary_ingress_ip
+        subdomain_name = "immich"
+    }
+    environment = {
+        DB_DATABASE_NAME = "immich"
+        DB_HOSTNAME = local.postgres_pgvecto_rs_service_hostname
+        DB_PASSWORD = random_password.immich_database_user.result
+        DB_PORT = "5432"
+        DB_USERNAME = "immich"
+        IMMICH_PORT = "2283"
+        REDIS_DBINDEX = local.redis_db_reservations.immich
+        REDIS_HOSTNAME = local.redis_service_hostname
+        REDIS_PASSWORD = var.db_redis_root
+        REDIS_PORT = "6379"
+        TZ = "Europe/Helsinki"
+    }
+    image = {
+        tag = local.immich_tag
+        uri = "ghcr.io/immich-app/immich-server"
+    }
+    mounts = {
+        "upload" = {
+            container_path = "/usr/src/app/upload"
+            storage = "photos"
+            storage_request = "1500Gi"
+        }
+    }
+    name = "immich"
+    namespace = kubernetes_namespace.family.metadata[0].name
+    service_port = 80
+    tailscale = {
+        hostname = "immich"
+        host_ip = local.primary_ingress_ip
+        tailnet = var.tailscale_tailnet
+    }
+}
 #endregion

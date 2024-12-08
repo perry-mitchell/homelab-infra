@@ -2,11 +2,14 @@ locals {
     job_name = "postgres-init-${var.name}"
     sql = join(
         "; ",
-        [
-            "DO \\$\\$ BEGIN IF NOT EXISTS (SELECT FROM pg_user WHERE usename = '${var.create_user.username}') THEN CREATE USER ${var.create_user.username} WITH PASSWORD '${var.create_user.password}'; ELSE ALTER USER ${var.create_user.username} WITH PASSWORD '${var.create_user.password}'; END IF; END \\$\\$",
-            "GRANT ALL ON SCHEMA public TO ${var.create_user.username}",
-            "GRANT ALL PRIVILEGES ON DATABASE ${var.create_database} TO ${var.create_user.username}"
-        ]
+        concat(
+            [
+                "DO \\$\\$ BEGIN IF NOT EXISTS (SELECT FROM pg_user WHERE usename = '${var.create_user.username}') THEN CREATE USER ${var.create_user.username} WITH PASSWORD '${var.create_user.password}'; ELSE ALTER USER ${var.create_user.username} WITH PASSWORD '${var.create_user.password}'; END IF; END \\$\\$",
+                "GRANT ALL ON SCHEMA public TO ${var.create_user.username}",
+                "GRANT ALL PRIVILEGES ON DATABASE ${var.create_database} TO ${var.create_user.username}"
+            ],
+            var.extra_sql_lines
+        )
     )
 }
 
@@ -30,17 +33,8 @@ resource "kubernetes_job" "init_db" {
                     command = ["/bin/sh", "-c"]
                     args = [<<-EOF
                         export PGPASSWORD=$DB_PASSWORD
-                        psql \
-                            -h ${var.db_host} \
-                            -U $DB_USER \
-                            -d postgres \
-                            -tc "SELECT 1 FROM pg_database WHERE datname = '${var.create_database}'" \
-                            | grep -q 1 || \
-                            psql \
-                                -h ${var.db_host} \
-                                -U $DB_USER \
-                                -d postgres \
-                                -c "CREATE DATABASE ${var.create_database}"
+                        DB_RES=$(psql -h ${var.db_host} -U $DB_USER -d postgres -tc "SELECT 1 FROM pg_database WHERE datname = '${var.create_database}'")
+                        echo $DB_RES | grep -q 1 || psql -h ${var.db_host} -U $DB_USER -d postgres -c "CREATE DATABASE ${var.create_database}"
                         psql \
                             -h ${var.db_host} \
                             -U $DB_USER \

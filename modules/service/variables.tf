@@ -3,6 +3,8 @@ variable "container_port" {
 }
 
 variable "dns_config" {
+    default = null
+    nullable = true
     type = object({
       cluster_fqdn = string
       host_ip = string
@@ -25,11 +27,6 @@ variable "image" {
         tag = string
         uri = string
     })
-}
-
-variable "ingress_enabled" {
-    default = true
-    type = bool
 }
 
 variable "mounts" {
@@ -58,6 +55,7 @@ variable "tailscale" {
     default = null
     type = object({
       hostname = string
+      host_ip = string
       tailnet = string
     })
 }

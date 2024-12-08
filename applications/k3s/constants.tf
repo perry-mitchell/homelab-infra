@@ -11,6 +11,12 @@ locals {
 }
 
 locals {
+  postgres_pgvecto_rs_service_name = "postgres-pgvecto-rs"
+  postgres_pgvecto_rs_service_namespace = "datasources"
+  postgres_pgvecto_rs_service_hostname = "${local.postgres_pgvecto_rs_service_name}.${local.postgres_pgvecto_rs_service_namespace}.svc.cluster.local"
+}
+
+locals {
   redis_service_name = "redis"
   redis_service_namespace = "datasources"
   redis_service_hostname = "${local.redis_service_name}.${local.redis_service_namespace}.svc.cluster.local"

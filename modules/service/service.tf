@@ -25,7 +25,7 @@ resource "kubernetes_service" "service" {
 
 module "dns" {
     source = "../dns-name"
-    count = var.ingress_enabled ? 1 : 0
+    count = var.dns_config != null ? 1 : 0
 
     cluster_fqdn = var.dns_config.cluster_fqdn
     host_ip = var.dns_config.host_ip
@@ -37,12 +37,12 @@ module "dns_tailscale" {
     count = var.tailscale != null ? 1 : 0
 
     cluster_fqdn = var.tailscale.tailnet
-    host_ip = var.dns_config.host_ip
+    host_ip = var.tailscale.host_ip
     subdomain_name = var.tailscale.hostname
 }
 
 resource "kubernetes_ingress_v1" "service" {
-    count = var.ingress_enabled ? 1 : 0
+    count = var.dns_config != null || var.tailscale != null ? 1 : 0
 
     metadata {
         name = var.name
@@ -52,20 +52,31 @@ resource "kubernetes_ingress_v1" "service" {
     spec {
         ingress_class_name = "nginx"
 
-        rule {
-            host = module.dns[0].dns_name
+        dynamic "rule" {
+            for_each = toset(concat(
+                var.dns_config != null ? [
+                    module.dns[0].dns_name
+                ] : [],
+                var.tailscale != null ? [
+                    module.dns_tailscale[0].dns_name
+                ] : []
+            ))
 
-            http {
-                path {
-                    path = "/"
-                    path_type = "Prefix"
+            content {
+                host = rule.value
 
-                    backend {
-                        service {
-                            name = kubernetes_service.service.metadata[0].name
+                http {
+                    path {
+                        path = "/"
+                        path_type = "Prefix"
 
-                            port {
-                                number = kubernetes_service.service.spec[0].port[0].port
+                        backend {
+                            service {
+                                name = kubernetes_service.service.metadata[0].name
+
+                                port {
+                                    number = kubernetes_service.service.spec[0].port[0].port
+                                }
                             }
                         }
                     }
