@@ -449,6 +449,7 @@ module "app_immich" {
         DB_PASSWORD = random_password.immich_database_user.result
         DB_PORT = "5432"
         DB_USERNAME = "immich"
+        IMMICH_CONFIG_FILE = "/usr/src/app/immich.json"
         IMMICH_PORT = "2283"
         REDIS_DBINDEX = local.redis_db_reservations.immich
         REDIS_HOSTNAME = local.redis_service_hostname
@@ -456,10 +457,14 @@ module "app_immich" {
         REDIS_PORT = "6379"
         TZ = "Europe/Helsinki"
     }
+    files = {
+        "/usr/src/app/immich.json" = file("${path.module}/config/immich/immich.json")
+    }
     image = {
         tag = local.immich_tag
         uri = "ghcr.io/immich-app/immich-server"
     }
+    ingress_upload_size = "2G"
     mounts = {
         "upload" = {
             container_path = "/usr/src/app/upload"

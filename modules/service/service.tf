@@ -47,6 +47,9 @@ resource "kubernetes_ingress_v1" "service" {
     metadata {
         name = var.name
         namespace = var.namespace
+        annotations = {
+            "nginx.ingress.kubernetes.io/proxy-body-size" = var.ingress_upload_size
+        }
     }
 
     spec {
