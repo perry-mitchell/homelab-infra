@@ -118,6 +118,8 @@ resource "kubernetes_namespace" "datasources" {
 module "db_mariadb" {
     source = "../../modules/service"
 
+    depends_on = [ module.nfs_storage ]
+
     container_port = 3306
     # dns_config = {
     #     cluster_fqdn = var.cluster_fqdn
@@ -151,6 +153,8 @@ module "db_mariadb" {
 
 module "db_postgres" {
     source = "../../modules/service"
+
+    depends_on = [ module.nfs_storage ]
 
     container_port = 5432
     # dns_config = {
@@ -187,6 +191,8 @@ module "db_postgres" {
 module "db_postgres_pgvecto_rs" {
     source = "../../modules/service"
 
+    depends_on = [ module.nfs_storage ]
+
     container_port = 5432
     dns_config = {
         cluster_fqdn = var.cluster_fqdn
@@ -221,6 +227,8 @@ module "db_postgres_pgvecto_rs" {
 
 module "db_redis" {
     source = "../../modules/service"
+
+    depends_on = [ module.nfs_storage ]
 
     container_port = 6379
     # dns_config = {
@@ -264,6 +272,8 @@ resource "kubernetes_namespace" "monitoring" {
 
 module "app_smokeping" {
     source = "../../modules/service"
+
+    depends_on = [ module.nfs_storage ]
 
     container_port = 80
     dns_config = {
@@ -330,7 +340,7 @@ module "db_init_kimai" {
 module "app_kimai" {
     source = "../../modules/service"
 
-    depends_on = [ module.db_init_kimai ]
+    depends_on = [ module.db_init_kimai, module.nfs_storage ]
 
     container_port = 8001
     dns_config = {
@@ -399,13 +409,13 @@ module "db_init_immich" {
 }
 
 locals {
-    immich_tag = "v1.122.1"
+    immich_tag = "v1.122.2"
 }
 
 module "app_immich_ml" {
     source = "../../modules/service"
 
-    depends_on = [ module.db_init_immich ]
+    depends_on = [ module.db_init_immich, module.nfs_storage ]
 
     container_port = 3003
     # dns_config = {
@@ -414,6 +424,8 @@ module "app_immich_ml" {
     #     subdomain_name = "immich-ml"
     # }
     environment = {
+        IMMICH_HOST = "0.0.0.0"
+        IMMICH_PORT = "3003"
         TZ = "Europe/Helsinki"
     }
     image = {
@@ -464,7 +476,7 @@ module "app_immich" {
         tag = local.immich_tag
         uri = "ghcr.io/immich-app/immich-server"
     }
-    ingress_upload_size = "2G"
+    ingress_upload_size = "5G"
     mounts = {
         "upload" = {
             container_path = "/usr/src/app/upload"
@@ -477,6 +489,76 @@ module "app_immich" {
     service_port = 80
     tailscale = {
         hostname = "immich"
+        host_ip = local.primary_ingress_ip
+        tailnet = var.tailscale_tailnet
+    }
+}
+#endregion
+
+#region Backup
+resource "kubernetes_namespace" "backup" {
+    depends_on = [ module.k3s_auth ]
+
+    metadata {
+        name = "backup"
+    }
+}
+
+module "app_kopia" {
+    source = "../../modules/service"
+
+    depends_on = [ kubernetes_namespace.backup, module.nfs_storage ]
+
+    container_port = 51515
+    dns_config = {
+        cluster_fqdn = var.cluster_fqdn
+        host_ip = local.primary_ingress_ip
+        subdomain_name = "kopia"
+    }
+    environment = {
+        TZ = "Europe/Helsinki"
+        PUID = "99"
+        PGID = "100"
+        USERNAME = var.kopia_admin.username
+        PASSWORD = var.kopia_admin.password
+        KOPIA_PERSIST_CREDENTIALS_ON_CONNECT = "true"
+    }
+    image = {
+        tag = "latest"
+        uri = "ghcr.io/imagegenius/kopia"
+    }
+    mounts = {
+        config = {
+            container_path = "/config"
+            storage = "appdata"
+            storage_request = "1Gi"
+        }
+        cache = {
+            container_path = "/cache"
+            storage = "appdata"
+            storage_request = "50Gi"
+        }
+        # logs = {
+        #     container_path = "/app/logs"
+        #     storage = "appdata"
+        #     storage_request = "10Gi"
+        # }
+        repository = {
+            container_path = "/local"
+            storage = "backup"
+            storage_request = "250Gi"
+        }
+        temp = {
+            container_path = "/tmp"
+            storage = "appdata"
+            storage_request = "10Gi"
+        }
+    }
+    name = "kopia"
+    namespace = kubernetes_namespace.backup.metadata[0].name
+    service_port = 80
+    tailscale = {
+        hostname = "kopia"
         host_ip = local.primary_ingress_ip
         tailnet = var.tailscale_tailnet
     }

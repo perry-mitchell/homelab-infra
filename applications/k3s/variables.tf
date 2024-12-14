@@ -37,6 +37,13 @@ variable "kimai_admin" {
     })
 }
 
+variable "kopia_admin" {
+    type = object({
+        password = string
+        username = string
+    })
+}
+
 variable "network_cidrs" {
     type = set(string)
 }

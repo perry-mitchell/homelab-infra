@@ -1,3 +1,9 @@
+variable "command" {
+    default = null
+    nullable = true
+    type = list(string)
+}
+
 variable "container_port" {
     type = number
 }

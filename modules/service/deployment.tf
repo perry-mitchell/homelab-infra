@@ -24,6 +24,7 @@ resource "kubernetes_deployment" "deployment" {
                 container {
                     image = "${var.image.uri}:${var.image.tag}"
                     name  = var.name
+                    command = var.command
 
                     dynamic "env" {
                         for_each = var.environment
