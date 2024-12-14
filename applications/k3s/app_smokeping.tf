@@ -16,16 +16,16 @@ module "app_smokeping" {
         tag = "latest"
         uri = "lscr.io/linuxserver/smokeping"
     }
-    mounts = {
+    name = "smokeping"
+    namespace = kubernetes_namespace.monitoring.metadata[0].name
+    service_port = 80
+    subdir_mounts = {
         data = {
             container_path = "/data"
             storage = "appdata"
             storage_request = "5Gi"
         }
     }
-    name = "smokeping"
-    namespace = kubernetes_namespace.monitoring.metadata[0].name
-    service_port = 80
     tailscale = {
         hostname = "smokeping"
         host_ip = local.primary_ingress_ip

@@ -43,16 +43,16 @@ module "app_kimai" {
         tag = "apache"
         uri = "kimai/kimai2"
     }
-    mounts = {
+    name = "kimai"
+    namespace = kubernetes_namespace.business.metadata[0].name
+    service_port = 80
+    subdir_mounts = {
         data = {
             container_path = "/opt/kimai/var/data"
             storage = "appdata"
             storage_request = "20Gi"
         }
     }
-    name = "kimai"
-    namespace = kubernetes_namespace.business.metadata[0].name
-    service_port = 80
     tailscale = {
         hostname = "kimai"
         host_ip = local.primary_ingress_ip

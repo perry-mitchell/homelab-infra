@@ -17,16 +17,16 @@ module "db_redis" {
         tag = "latest"
         uri = "bitnami/redis"
     }
-    mounts = {
+    name = local.redis_service_name
+    namespace = kubernetes_namespace.datasources.metadata[0].name
+    service_port = 6379
+    subdir_mounts = {
         data = {
             container_path = "/bitnami/redis/data"
             storage = "appdata"
             storage_request = "10Gi"
         }
     }
-    name = local.redis_service_name
-    namespace = kubernetes_namespace.datasources.metadata[0].name
-    service_port = 6379
     # tailscale = {
     #   hostname = "redis"
     #   tailnet = var.tailscale_tailnet

@@ -17,16 +17,16 @@ module "db_mariadb" {
         tag = "latest"
         uri = "mariadb"
     }
-    mounts = {
+    name = local.mariadb_service_name
+    namespace = kubernetes_namespace.datasources.metadata[0].name
+    service_port = 3306
+    subdir_mounts = {
         mysql = {
             container_path = "/var/lib/mysql"
             storage = "appdata"
             storage_request = "50Gi"
         }
     }
-    name = local.mariadb_service_name
-    namespace = kubernetes_namespace.datasources.metadata[0].name
-    service_port = 3306
     tailscale = {
       hostname = "mariadb"
       host_ip = local.primary_ingress_ip

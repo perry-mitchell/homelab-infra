@@ -46,16 +46,16 @@ module "app_immich_ml" {
         tag = local.immich_tag
         uri = "ghcr.io/immich-app/immich-machine-learning"
     }
-    mounts = {
+    name = "immich-ml"
+    namespace = kubernetes_namespace.family.metadata[0].name
+    service_port = 3003
+    subdir_mounts = {
         "model-cache" = {
             container_path = "/cache"
             storage = "appdata"
             storage_request = "100Gi"
         }
     }
-    name = "immich-ml"
-    namespace = kubernetes_namespace.family.metadata[0].name
-    service_port = 3003
 }
 
 module "app_immich" {
@@ -91,13 +91,6 @@ module "app_immich" {
         uri = "ghcr.io/immich-app/immich-server"
     }
     ingress_upload_size = "5G"
-    mounts = {
-        "upload" = {
-            container_path = "/usr/src/app/upload"
-            storage = "photos"
-            storage_request = "1500Gi"
-        }
-    }
     name = "immich"
     namespace = kubernetes_namespace.family.metadata[0].name
     service_port = 80
@@ -105,5 +98,12 @@ module "app_immich" {
         hostname = "immich"
         host_ip = local.primary_ingress_ip
         tailnet = var.tailscale_tailnet
+    }
+    subdir_mounts = {
+        "upload" = {
+            container_path = "/usr/src/app/upload"
+            storage = "photos"
+            storage_request = "1500Gi"
+        }
     }
 }

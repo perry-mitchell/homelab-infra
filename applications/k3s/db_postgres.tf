@@ -18,16 +18,16 @@ module "db_postgres" {
         tag = "13"
         uri = "postgres"
     }
-    mounts = {
+    name = local.postgres_service_name
+    namespace = kubernetes_namespace.datasources.metadata[0].name
+    service_port = 5432
+    subdir_mounts = {
         data = {
             container_path = "/var/lib/postgresql/data"
             storage = "appdata"
             storage_request = "50Gi"
         }
     }
-    name = local.postgres_service_name
-    namespace = kubernetes_namespace.datasources.metadata[0].name
-    service_port = 5432
     tailscale = {
       hostname = "postgres"
       host_ip = local.primary_ingress_ip
@@ -55,16 +55,16 @@ module "db_postgres_pgvecto_rs" {
         tag = "pg14-v0.2.0"
         uri = "tensorchord/pgvecto-rs"
     }
-    mounts = {
+    name = local.postgres_pgvecto_rs_service_name
+    namespace = kubernetes_namespace.datasources.metadata[0].name
+    service_port = 5432
+    subdir_mounts = {
         data = {
             container_path = "/var/lib/postgresql/data"
             storage = "appdata"
             storage_request = "50Gi"
         }
     }
-    name = local.postgres_pgvecto_rs_service_name
-    namespace = kubernetes_namespace.datasources.metadata[0].name
-    service_port = 5432
     tailscale = {
       hostname = "postgres-pgvecto-rs"
       host_ip = local.primary_ingress_ip

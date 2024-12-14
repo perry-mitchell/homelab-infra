@@ -45,15 +45,6 @@ variable "ingress_upload_size" {
     }
 }
 
-variable "mounts" {
-    default = {}
-    type = map(object({
-        container_path = string
-        storage = string
-        storage_request = optional(string)
-    }))
-}
-
 variable "name" {
     description = "Application name, k8s friendly"
     type = string
@@ -63,8 +54,29 @@ variable "namespace" {
     type = string
 }
 
+variable "root_mounts" {
+    default = {}
+    type = map(object({
+        container_path = string
+        nfs_export = string
+        nfs_server = string
+        read_only = bool
+        storage_name = string
+        storage_request = optional(string)
+    }))
+}
+
 variable "service_port" {
     type = number
+}
+
+variable "subdir_mounts" {
+    default = {}
+    type = map(object({
+        container_path = string
+        storage = string
+        storage_request = optional(string)
+    }))
 }
 
 variable "tailscale" {

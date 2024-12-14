@@ -21,7 +21,28 @@ module "app_kopia" {
         tag = "latest"
         uri = "ghcr.io/imagegenius/kopia"
     }
-    mounts = {
+    name = "kopia"
+    namespace = kubernetes_namespace.backup.metadata[0].name
+    root_mounts = {
+        appdata = {
+            container_path = "/source/appdata"
+            nfs_export = var.nfs_storage.appdata.export
+            nfs_server = var.nfs_storage.appdata.host
+            read_only = true
+            storage_name = "k3s-root"
+            storage_request = "10Gi"
+        }
+        # for name, mount in var.nfs_storage : name => {
+        #     container_path = "/source/${name}"
+        #     nfs_export = mount.export
+        #     nfs_server = mount.host
+        #     read_only = true
+        #     storage_name = "k3s-root"
+        #     storage_request = "10Gi"
+        # }
+    }
+    service_port = 80
+    subdir_mounts = {
         config = {
             container_path = "/config"
             storage = "appdata"
@@ -48,9 +69,6 @@ module "app_kopia" {
             storage_request = "10Gi"
         }
     }
-    name = "kopia"
-    namespace = kubernetes_namespace.backup.metadata[0].name
-    service_port = 80
     tailscale = {
         hostname = "kopia"
         host_ip = local.primary_ingress_ip
