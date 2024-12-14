@@ -1,4 +1,4 @@
-module "nfs_storage" {
+module "nfs_storage_subdir" {
   source = "../../modules/k8s-nfs-subdir"
 
   for_each = var.nfs_storage

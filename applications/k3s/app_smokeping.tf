@@ -1,7 +1,7 @@
 module "app_smokeping" {
     source = "../../modules/service"
 
-    depends_on = [ module.nfs_storage ]
+    depends_on = [ module.nfs_storage_subdir ]
 
     container_port = 80
     dns_config = {

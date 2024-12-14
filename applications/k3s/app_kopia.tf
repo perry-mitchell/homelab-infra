@@ -1,7 +1,7 @@
 module "app_kopia" {
     source = "../../modules/service"
 
-    depends_on = [ kubernetes_namespace.backup, module.nfs_storage ]
+    depends_on = [ kubernetes_namespace.backup, module.nfs_storage_subdir ]
 
     container_port = 51515
     dns_config = {

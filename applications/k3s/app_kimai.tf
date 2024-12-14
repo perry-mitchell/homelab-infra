@@ -25,7 +25,7 @@ module "db_init_kimai" {
 module "app_kimai" {
     source = "../../modules/service"
 
-    depends_on = [ module.db_init_kimai, module.nfs_storage ]
+    depends_on = [ module.db_init_kimai, module.nfs_storage_subdir ]
 
     container_port = 8001
     dns_config = {

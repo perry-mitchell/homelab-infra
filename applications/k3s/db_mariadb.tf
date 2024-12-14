@@ -1,7 +1,7 @@
 module "db_mariadb" {
     source = "../../modules/service"
 
-    depends_on = [ module.nfs_storage ]
+    depends_on = [ module.nfs_storage_subdir ]
 
     container_port = 3306
     # dns_config = {

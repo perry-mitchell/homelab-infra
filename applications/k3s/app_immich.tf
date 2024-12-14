@@ -29,7 +29,7 @@ module "db_init_immich" {
 module "app_immich_ml" {
     source = "../../modules/service"
 
-    depends_on = [ module.db_init_immich, module.nfs_storage ]
+    depends_on = [ module.db_init_immich, module.nfs_storage_subdir ]
 
     container_port = 3003
     # dns_config = {
