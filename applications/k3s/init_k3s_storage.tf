@@ -1,5 +1,5 @@
 module "nfs_storage" {
-  source = "../../modules/k8s-nfs-provisioner"
+  source = "../../modules/k8s-nfs-subdir"
 
   for_each = var.nfs_storage
 
