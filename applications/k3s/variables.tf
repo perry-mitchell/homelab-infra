@@ -1,3 +1,14 @@
+variable "backblaze_auth" {
+    type = object({
+      application_key = string
+      application_key_id = string
+    })
+}
+
+variable "backblaze_bucket_prefix" {
+    type = string
+}
+
 variable "cluster_db_root_password" {
     type = string
 }

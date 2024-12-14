@@ -18,6 +18,10 @@ terraform {
     }
 
     required_providers {
+        b2 = {
+           source = "Backblaze/b2"
+           version = "0.9.0"
+        }
         helm = {
             source = "opentofu/helm"
             version = "2.16.1"
