@@ -10,6 +10,7 @@ module "db_postgres" {
     #     subdomain_name = "postgres"
     # }
     environment = {
+        PGDATA = "/var/lib/postgresql/dbdata"
         POSTGRES_PASSWORD = var.db_postgres_root
         POSTGRES_USER = "root"
         TZ = "Europe/Helsinki"
@@ -23,16 +24,16 @@ module "db_postgres" {
     service_port = 5432
     subdir_mounts = {
         data = {
-            container_path = "/var/lib/postgresql/data"
+            container_path = "/var/lib/postgres/dbdata"
             storage = "appdata"
             storage_request = "50Gi"
         }
     }
-    tailscale = {
-      hostname = "postgres"
-      host_ip = local.primary_ingress_ip
-      tailnet = var.tailscale_tailnet
-    }
+    # tailscale = {
+    #   hostname = "postgres"
+    #   host_ip = local.primary_ingress_ip
+    #   tailnet = var.tailscale_tailnet
+    # }
 }
 
 module "db_postgres_pgvecto_rs" {
@@ -47,6 +48,7 @@ module "db_postgres_pgvecto_rs" {
         subdomain_name = "postgres-pgvecto-rs"
     }
     environment = {
+        PGDATA = "/var/lib/postgresql/dbdata"
         POSTGRES_PASSWORD = var.db_postgres_pgvecto_rs_root
         POSTGRES_USER = "root"
         TZ = "Europe/Helsinki"
@@ -60,14 +62,14 @@ module "db_postgres_pgvecto_rs" {
     service_port = 5432
     subdir_mounts = {
         data = {
-            container_path = "/var/lib/postgresql/data"
+            container_path = "/var/lib/postgresql/dbdata"
             storage = "appdata"
             storage_request = "50Gi"
         }
     }
-    tailscale = {
-      hostname = "postgres-pgvecto-rs"
-      host_ip = local.primary_ingress_ip
-      tailnet = var.tailscale_tailnet
-    }
+    # tailscale = {
+    #   hostname = "postgres-pgvecto-rs"
+    #   host_ip = local.primary_ingress_ip
+    #   tailnet = var.tailscale_tailnet
+    # }
 }

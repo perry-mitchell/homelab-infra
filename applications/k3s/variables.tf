@@ -67,6 +67,13 @@ variable "nfs_storage" {
     }))
 }
 
+variable "nfs_storage_backup" {
+    type = map(object({
+        export = string
+        host = string
+    }))
+}
+
 variable "nodes" {
     type = set(object({
         is_master = bool

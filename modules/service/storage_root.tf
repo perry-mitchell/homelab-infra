@@ -1,5 +1,19 @@
+locals {
+    root_mounts = {
+        for name, mount in var.root_mounts : name => {
+            container_path = mount.container_path
+            storage_name = mount.storage_name
+            storage_request = mount.storage_request
+            read_only = mount.read_only
+            server = mount.nfs_server
+            share = regex("^(.+)/([^/]+)/?$", mount.nfs_export)[0]
+            sub_dir = regex("^(.+)/([^/]+)/?$", mount.nfs_export)[1]
+        }
+    }
+}
+
 resource "kubernetes_storage_class" "storage_root" {
-    for_each = var.root_mounts
+    for_each = local.root_mounts
 
     metadata {
         name = "nfs-${each.value.storage_name}-${each.key}"
@@ -11,10 +25,9 @@ resource "kubernetes_storage_class" "storage_root" {
     allow_volume_expansion = true
 
     parameters = {
-        server = each.value.nfs_server
-        share = each.value.nfs_export
-        subDir = ""
-        # subPath = ""
+        server = each.value.server
+        share = each.value.share
+        subDir = each.value.sub_dir
     }
 
     mount_options = [
@@ -23,7 +36,7 @@ resource "kubernetes_storage_class" "storage_root" {
 }
 
 resource "kubernetes_persistent_volume_claim" "storage_root" {
-    for_each = var.root_mounts
+    for_each = local.root_mounts
 
     metadata {
         name = "nfs-${each.value.storage_name}-${each.key}"

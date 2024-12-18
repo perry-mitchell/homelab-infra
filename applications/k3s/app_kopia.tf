@@ -26,8 +26,8 @@ module "app_kopia" {
     root_mounts = {
         appdata = {
             container_path = "/source/appdata"
-            nfs_export = var.nfs_storage.appdata.export
-            nfs_server = var.nfs_storage.appdata.host
+            nfs_export = var.nfs_storage_backup.appdata.export
+            nfs_server = var.nfs_storage_backup.appdata.host
             read_only = true
             storage_name = "k3s-root"
             storage_request = "10Gi"

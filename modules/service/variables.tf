@@ -54,6 +54,11 @@ variable "namespace" {
     type = string
 }
 
+variable "replicas" {
+    default = 1
+    type = number
+}
+
 variable "root_mounts" {
     default = {}
     type = map(object({
@@ -64,6 +69,15 @@ variable "root_mounts" {
         storage_name = string
         storage_request = optional(string)
     }))
+}
+
+variable "run_as" {
+    default = null
+    nullable = true
+    type = object({
+        user = number
+        group = number
+    })
 }
 
 variable "service_port" {

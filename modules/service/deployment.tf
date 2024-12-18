@@ -5,7 +5,7 @@ resource "kubernetes_deployment" "deployment" {
     }
 
     spec {
-        replicas = 1
+        replicas = var.replicas
 
         selector {
             match_labels = {
@@ -21,6 +21,16 @@ resource "kubernetes_deployment" "deployment" {
             }
 
             spec {
+                dynamic "security_context" {
+                    for_each = var.run_as != null ? [1] : []
+
+                    content {
+                        run_as_user = var.run_as.user
+                        run_as_group = var.run_as.group
+                        fs_group = var.run_as.group
+                    }
+                }
+
                 container {
                     image = "${var.image.uri}:${var.image.tag}"
                     name  = var.name
@@ -45,7 +55,7 @@ resource "kubernetes_deployment" "deployment" {
                     }
 
                     dynamic "volume_mount" {
-                        for_each = var.root_mounts
+                        for_each = local.root_mounts
 
                         content {
                             name       = volume_mount.key
@@ -77,7 +87,7 @@ resource "kubernetes_deployment" "deployment" {
                 }
 
                 dynamic "volume" {
-                    for_each = var.root_mounts
+                    for_each = local.root_mounts
 
                     content {
                         name = volume.key

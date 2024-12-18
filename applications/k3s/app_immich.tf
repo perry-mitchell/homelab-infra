@@ -93,6 +93,7 @@ module "app_immich" {
     ingress_upload_size = "5G"
     name = "immich"
     namespace = kubernetes_namespace.family.metadata[0].name
+    replicas = 1
     service_port = 80
     tailscale = {
         hostname = "immich"
