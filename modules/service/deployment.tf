@@ -36,6 +36,16 @@ resource "kubernetes_deployment" "deployment" {
                     name  = var.name
                     command = var.command
 
+                    dynamic "security_context" {
+                        for_each = var.run_as != null ? [1] : []
+
+                        content {
+                            run_as_user = var.run_as.user
+                            run_as_group = var.run_as.group
+                            allow_privilege_escalation = true
+                        }
+                    }
+
                     dynamic "env" {
                         for_each = var.environment
 

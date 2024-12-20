@@ -11,8 +11,10 @@ module "app_kopia" {
     }
     environment = {
         TZ = "Europe/Helsinki"
-        PUID = "99"
-        PGID = "100"
+        # PUID = "99"
+        # PGID = "100"
+        PUID = "0"
+        PGID = "0"
         USERNAME = var.kopia_admin.username
         PASSWORD = var.kopia_admin.password
         KOPIA_PERSIST_CREDENTIALS_ON_CONNECT = "true"
@@ -24,22 +26,26 @@ module "app_kopia" {
     name = "kopia"
     namespace = kubernetes_namespace.backup.metadata[0].name
     root_mounts = {
-        appdata = {
-            container_path = "/source/appdata"
-            nfs_export = var.nfs_storage_backup.appdata.export
-            nfs_server = var.nfs_storage_backup.appdata.host
-            read_only = true
-            storage_name = "k3s-root"
-            storage_request = "10Gi"
-        }
-        # for name, mount in var.nfs_storage : name => {
-        #     container_path = "/source/${name}"
-        #     nfs_export = mount.export
-        #     nfs_server = mount.host
+        # appdata = {
+        #     container_path = "/source/appdata"
+        #     nfs_export = var.nfs_storage_backup.appdata.export
+        #     nfs_server = var.nfs_storage_backup.appdata.host
         #     read_only = true
         #     storage_name = "k3s-root"
         #     storage_request = "10Gi"
         # }
+        for name, mount in var.nfs_storage_backup : name => {
+            container_path = "/source/${name}"
+            nfs_export = mount.export
+            nfs_server = mount.host
+            read_only = true
+            storage_name = "k3s-root"
+            storage_request = "10Gi"
+        }
+    }
+    run_as = {
+      user = 0
+      group = 0
     }
     service_port = 80
     subdir_mounts = {
