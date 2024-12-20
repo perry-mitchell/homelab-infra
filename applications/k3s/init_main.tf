@@ -40,3 +40,13 @@ module "k3s_master_join" {
     server_password = each.value.password
     server_user = each.value.user
 }
+
+module "k3s_node_labels" {
+    source = "../../modules/k8s-node-meta"
+
+    depends_on = [ module.k3s_master_init, module.k3s_master_join ]
+    for_each = { for node in var.nodes : node.name => node }
+
+    labels = coalesce(each.value.labels, {})
+    node_name = each.value.name
+}

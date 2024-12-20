@@ -76,11 +76,13 @@ variable "nfs_storage_backup" {
 
 variable "nodes" {
     type = set(object({
-        is_master = bool
-        name = string
+        description = string
         ip = string
-        user = string
+        is_master = bool
+        labels = optional(map(string))
+        name = string
         password = string
+        user = string
     }))
 }
 
