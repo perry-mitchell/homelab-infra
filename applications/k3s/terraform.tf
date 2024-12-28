@@ -22,6 +22,10 @@ terraform {
            source = "Backblaze/b2"
            version = "0.9.0"
         }
+        cloudflare = {
+            source = "opentofu/cloudflare"
+            version = "4.48.0"
+        }
         helm = {
             source = "opentofu/helm"
             version = "2.16.1"
@@ -29,6 +33,10 @@ terraform {
         kubernetes = {
             source = "opentofu/kubernetes"
             version = "2.33.0"
+        }
+        namecheap = {
+            source = "namecheap/namecheap"
+            version = ">= 2.2.0"
         }
         pihole = {
             source = "ryanwholey/pihole"

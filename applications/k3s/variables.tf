@@ -9,6 +9,13 @@ variable "backblaze_bucket_prefix" {
     type = string
 }
 
+variable "cloudflare_auth" {
+    type = object({
+        account_id = string
+        api_token = string
+    })
+}
+
 variable "cluster_db_root_password" {
     type = string
 }
@@ -51,6 +58,15 @@ variable "kimai_admin" {
 variable "kopia_admin" {
     type = object({
         password = string
+        username = string
+    })
+}
+
+variable "namecheap_auth" {
+    type = object({
+        api_key = string
+        api_user = string
+        client_ip = optional(string)
         username = string
     })
 }
@@ -110,5 +126,10 @@ variable "tailscale_oauth" {
 }
 
 variable "tailscale_tailnet" {
+    type = string
+}
+
+variable "tunnel_domain" {
+    description = "Public-facing tunnelled domain"
     type = string
 }
