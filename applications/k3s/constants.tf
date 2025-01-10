@@ -22,5 +22,6 @@ locals {
   redis_service_hostname = "${local.redis_service_name}.${local.redis_service_namespace}.svc.cluster.local"
   redis_db_reservations = {
     immich = 1
+    nextcloud = 2
   }
 }
