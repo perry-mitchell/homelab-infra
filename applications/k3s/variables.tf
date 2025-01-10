@@ -1,3 +1,7 @@
+variable "admin_email" {
+  type = string
+}
+
 variable "backblaze_auth" {
     type = object({
       application_key = string
@@ -41,6 +45,10 @@ variable "db_postgres_root" {
 }
 
 variable "db_postgres_pgvecto_rs_root" {
+    type = string
+}
+
+variable "db_postgres_postgis_root" {
     type = string
 }
 

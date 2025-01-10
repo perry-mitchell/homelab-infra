@@ -1,5 +1,5 @@
 locals {
-    immich_tag = "v1.122.2"
+    immich_tag = "v1.124.2"
 }
 
 resource "random_password" "immich_database_user" {

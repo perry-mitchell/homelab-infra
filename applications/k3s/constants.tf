@@ -17,6 +17,12 @@ locals {
 }
 
 locals {
+  postgres_postgis_service_name = "postgres-postgis"
+  postgres_postgis_service_namespace = "datasources"
+  postgres_postgis_service_hostname = "${local.postgres_postgis_service_name}.${local.postgres_postgis_service_namespace}.svc.cluster.local"
+}
+
+locals {
   redis_service_name = "redis"
   redis_service_namespace = "datasources"
   redis_service_hostname = "${local.redis_service_name}.${local.redis_service_namespace}.svc.cluster.local"
