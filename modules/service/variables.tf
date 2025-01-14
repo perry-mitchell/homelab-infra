@@ -96,8 +96,9 @@ variable "subdir_mounts" {
 variable "tailscale" {
     default = null
     type = object({
-      hostname = string
-      host_ip = string
-      tailnet = string
+        funnel = optional(bool, false)
+        hostname = string
+        host_ip = string
+        tailnet = string
     })
 }

@@ -11,14 +11,12 @@ remark = Welcome to the SmokePing website of xxx Company. \
 
 menu = Local
 title = Local Network
-#parents = owner:/Test/James location:/
 
 ++ LocalMachine
 
 menu = Local Machine
 title = This host
 host = localhost
-#alerts = someloss
 
 + DNS
 

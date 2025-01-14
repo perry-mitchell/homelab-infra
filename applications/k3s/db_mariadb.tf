@@ -27,9 +27,9 @@ module "db_mariadb" {
             storage_request = "50Gi"
         }
     }
-    tailscale = {
-      hostname = "mariadb"
-      host_ip = local.primary_ingress_ip
-      tailnet = var.tailscale_tailnet
-    }
+    # tailscale = {
+    #   hostname = "mariadb"
+    #   host_ip = local.primary_ingress_ip
+    #   tailnet = var.tailscale_tailnet
+    # }
 }

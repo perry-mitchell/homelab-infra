@@ -27,8 +27,4 @@ module "db_redis" {
             storage_request = "10Gi"
         }
     }
-    # tailscale = {
-    #   hostname = "redis"
-    #   tailnet = var.tailscale_tailnet
-    # }
 }

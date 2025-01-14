@@ -27,11 +27,11 @@ module "app_nextcloud" {
 
     depends_on = [ module.db_init_nextcloud, module.nfs_storage_subdir ]
 
-    container_port = 9000
+    container_port = 80
     dns_config = {
         cluster_fqdn = var.cluster_fqdn
         host_ip = local.primary_ingress_ip
-        subdomain_name = "nc"
+        subdomain_name = "nextcloud"
     }
     environment = {
         TZ = "Europe/Helsinki"
@@ -45,7 +45,7 @@ module "app_nextcloud" {
         REDIS_DB_INDEX = "${local.redis_db_reservations.nextcloud}"
     }
     image = {
-        tag = "stable-fpm"
+        tag = "stable"
         uri = "nextcloud"
     }
     name = "nextcloud"
@@ -69,7 +69,7 @@ module "app_nextcloud" {
         }
     }
     tailscale = {
-        hostname = "nc"
+        hostname = "nextcloud"
         host_ip = local.primary_ingress_ip
         tailnet = var.tailscale_tailnet
     }

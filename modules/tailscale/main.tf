@@ -10,7 +10,7 @@ resource "helm_release" "tailscale" {
 
     repository = "https://pkgs.tailscale.com/helmcharts"
     chart      = "tailscale-operator"
-    version    = "1.76.6"
+    version    = "1.78.1"
     wait       = true
 
     set {
