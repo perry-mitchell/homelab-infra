@@ -22,6 +22,14 @@ resource "kubernetes_namespace" "datasources" {
     }
 }
 
+resource "kubernetes_namespace" "entertainment" {
+    depends_on = [ module.k3s_auth ]
+
+    metadata {
+        name = "entertainment"
+    }
+}
+
 resource "kubernetes_namespace" "family" {
     depends_on = [ module.k3s_auth ]
 
