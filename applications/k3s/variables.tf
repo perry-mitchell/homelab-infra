@@ -141,3 +141,12 @@ variable "tunnel_domain" {
     description = "Public-facing tunnelled domain"
     type = string
 }
+
+variable "webtrees_admin" {
+    type = object({
+        email = string
+        name = string
+        password = string
+        username = string
+    })
+}

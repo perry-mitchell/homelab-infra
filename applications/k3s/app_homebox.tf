@@ -1,4 +1,3 @@
-// ghcr.io/sysadminsmedia/homebox
 module "app_homebox" {
     source = "../../modules/service"
 
@@ -21,10 +20,6 @@ module "app_homebox" {
     }
     name = "homebox"
     namespace = kubernetes_namespace.business.metadata[0].name
-    # run_as = {
-    #     user = 99
-    #     group = 100
-    # }
     service_port = 80
     subdir_mounts = {
         data = {
