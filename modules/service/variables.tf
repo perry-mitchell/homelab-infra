@@ -8,6 +8,11 @@ variable "container_port" {
     type = number
 }
 
+variable "capabilities" {
+    default = null
+    type = set(string)
+}
+
 variable "dns_config" {
     default = null
     nullable = true
@@ -26,6 +31,11 @@ variable "environment" {
 variable "files" {
     default = {}
     type = map(string)
+}
+
+variable "host_network" {
+    default = false
+    type = bool
 }
 
 variable "image" {

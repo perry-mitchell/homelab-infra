@@ -31,18 +31,28 @@ resource "kubernetes_deployment" "deployment" {
                     }
                 }
 
+                host_network = var.host_network
+                dns_policy = var.host_network ? "ClusterFirstWithHostNet" : "ClusterFirst"
+
                 container {
                     image = "${var.image.uri}:${var.image.tag}"
                     name  = var.name
                     command = var.command
 
                     dynamic "security_context" {
-                        for_each = var.run_as != null ? [1] : []
+                        for_each = (var.run_as != null || var.capabilities != null) ? [1] : []
 
                         content {
-                            run_as_user = var.run_as.user
-                            run_as_group = var.run_as.group
-                            allow_privilege_escalation = true
+                            run_as_user                = var.run_as != null ? var.run_as.user : null
+                            run_as_group               = var.run_as != null ? var.run_as.group : null
+                            allow_privilege_escalation = var.run_as != null ? true : null
+
+                            dynamic "capabilities" {
+                                for_each = var.capabilities != null ? [1] : []
+                                content {
+                                    add = var.capabilities
+                                }
+                            }
                         }
                     }
 
