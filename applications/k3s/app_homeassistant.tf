@@ -4,11 +4,6 @@ module "app_whisper" {
     depends_on = [ module.nfs_storage_subdir ]
 
     container_port = 10300
-    # dns_config = {
-    #     cluster_fqdn = var.cluster_fqdn
-    #     host_ip = local.primary_ingress_ip
-    #     subdomain_name = "homebox"
-    # }
     environment = {
         PGID = "100"
         PUID = "99"
@@ -30,11 +25,6 @@ module "app_whisper" {
             storage_request = "25Gi"
         }
     }
-    # tailscale = {
-    #     hostname = "homebox"
-    #     host_ip = local.primary_ingress_ip
-    #     tailnet = var.tailscale_tailnet
-    # }
 }
 
 module "app_piper" {
@@ -43,11 +33,6 @@ module "app_piper" {
     depends_on = [ module.nfs_storage_subdir ]
 
     container_port = 10200
-    # dns_config = {
-    #     cluster_fqdn = var.cluster_fqdn
-    #     host_ip = local.primary_ingress_ip
-    #     subdomain_name = "homebox"
-    # }
     environment = {
         PGID = "100"
         PIPER_LENGTH = "1.0"
@@ -71,14 +56,7 @@ module "app_piper" {
             storage_request = "25Gi"
         }
     }
-    # tailscale = {
-    #     hostname = "homebox"
-    #     host_ip = local.primary_ingress_ip
-    #     tailnet = var.tailscale_tailnet
-    # }
 }
-
-# piper.smart-home.svc.cluster.local
 
 module "app_homeassistant" {
     source = "../../modules/service"
