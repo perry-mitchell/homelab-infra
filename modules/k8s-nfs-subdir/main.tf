@@ -31,4 +31,9 @@ resource "helm_release" "nfs_external_provisioner" {
         name = "storageClass.pathPattern"
         value = var.path_pattern
     }
+
+    set {
+        name  = "nfs.mountOptions"
+        value = "{nfsvers=4.2,hard,timeo=600,retrans=2,local_lock=none}"
+    }
 }
