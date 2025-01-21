@@ -8,8 +8,9 @@ module "app_whisper" {
         PGID = "100"
         PUID = "99"
         TZ = "Europe/Helsinki"
-        WHISPER_MODEL = "tiny-int8"
+        WHISPER_MODEL = "base-int8"
         WHISPER_LANG = "en"
+        WHISPER_BEAM = "4"
     }
     image = {
         tag = "latest"
