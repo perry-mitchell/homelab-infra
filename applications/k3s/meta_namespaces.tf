@@ -54,6 +54,15 @@ resource "kubernetes_namespace" "smart_home" {
     }
 }
 
+resource "kubernetes_namespace" "torrents" {
+    depends_on = [ module.k3s_auth ]
+
+    metadata {
+        name = "torrents"
+    }
+}
+
+
 resource "kubernetes_namespace" "travel" {
     depends_on = [ module.k3s_auth ]
 

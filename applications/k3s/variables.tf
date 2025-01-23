@@ -142,6 +142,18 @@ variable "tunnel_domain" {
     type = string
 }
 
+variable "vpn_provider" {
+    type = object({
+        endpoint_ip = string
+        endpoint_port = number
+        inbound_ports = list(number)
+        provider = string
+        server_hostnames = list(string)
+        username = string
+        password = string
+    })
+}
+
 variable "webtrees_admin" {
     type = object({
         email = string
