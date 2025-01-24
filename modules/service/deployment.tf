@@ -134,4 +134,10 @@ resource "kubernetes_deployment" "deployment" {
     }
 
     depends_on = [ kubernetes_config_map.static_files ]
+
+    lifecycle {
+        ignore_changes = [
+            spec[0].template[0].metadata[0].annotations["kubectl.kubernetes.io/restartedAt"]
+        ]
+    }
 }

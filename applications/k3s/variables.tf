@@ -56,6 +56,10 @@ variable "db_redis_root" {
     type = string
 }
 
+variable "homeassistant_api_key" {
+    type = string
+}
+
 variable "kimai_admin" {
     type = object({
       email = string
@@ -81,6 +85,13 @@ variable "namecheap_auth" {
 
 variable "network_cidrs" {
     type = set(string)
+}
+
+variable "nextcloud_auth" {
+    type = object({
+        username = string
+        password = string
+    })
 }
 
 variable "nfs_storage" {
