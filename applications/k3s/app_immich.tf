@@ -32,11 +32,6 @@ module "app_immich_ml" {
     depends_on = [ module.db_init_immich, module.nfs_storage_subdir ]
 
     container_port = 3003
-    # dns_config = {
-    #     cluster_fqdn = var.cluster_fqdn
-    #     host_ip = local.primary_ingress_ip
-    #     subdomain_name = "immich-ml"
-    # }
     environment = {
         IMMICH_HOST = "0.0.0.0"
         IMMICH_PORT = "3003"

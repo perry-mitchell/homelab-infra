@@ -5,11 +5,11 @@ module "app_gluetun" {
 
     capabilities = ["NET_ADMIN"]
     container_port = 8000
-    # dns_config = {
-    #     cluster_fqdn = var.cluster_fqdn
-    #     host_ip = local.primary_ingress_ip
-    #     subdomain_name = "gluetun"
-    # }
+    dns_config = {
+        cluster_fqdn = var.cluster_fqdn
+        host_ip = local.primary_ingress_ip
+        subdomain_name = "gluetun"
+    }
     environment = {
         DNS_UPDATE_PERIOD = "5m"
         DOT = "on"
@@ -45,9 +45,9 @@ module "app_gluetun" {
             storage_request = "5Gi"
         }
     }
-    # tailscale = {
-    #     hostname = "gluetun"
-    #     host_ip = local.primary_ingress_ip
-    #     tailnet = var.tailscale_tailnet
-    # }
+    tailscale = {
+        hostname = "gluetun"
+        host_ip = local.primary_ingress_ip
+        tailnet = var.tailscale_tailnet
+    }
 }

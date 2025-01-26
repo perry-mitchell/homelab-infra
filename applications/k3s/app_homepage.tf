@@ -23,7 +23,35 @@ locals {
             ]
         },
         {
+            Torrents = [
+                {
+                    Gluetun = {
+                        icon = "gluetun"
+                        href = "http://${module.app_gluetun.host_tailscale}"
+                        description = "Torrent VPN gateway"
+                        widget = {
+                            type = "gluetun"
+                            url = "http://${module.app_gluetun.host_k8s}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
             Media = [
+                {
+                    Immich = {
+                        icon = "immich"
+                        href = "http://${module.app_immich.host_tailscale}"
+                        description = "Photo library and backup"
+                        widget = {
+                            type = "immich"
+                            url = "http://${module.app_immich.host_k8s}"
+                            key = var.immich_api_keys.homepage
+                            version = 2
+                        }
+                    }
+                },
                 {
                     Nextcloud = {
                         icon = "nextcloud"
@@ -34,6 +62,19 @@ locals {
                             url = "http://${module.app_nextcloud.host_k8s}"
                             username = var.nextcloud_auth.username
                             password = var.nextcloud_auth.password
+                        }
+                    }
+                },
+                {
+                    Homebox = {
+                        icon = "homebox"
+                        href = "http://${module.app_homebox.host_tailscale}"
+                        description = "Asset tracking system"
+                        widget = {
+                            type = "homebox"
+                            url = "http://${module.app_homebox.host_k8s}"
+                            username = var.homebox_auth.username
+                            password = var.homebox_auth.password
                         }
                     }
                 }

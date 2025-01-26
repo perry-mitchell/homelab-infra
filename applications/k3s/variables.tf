@@ -60,10 +60,23 @@ variable "homeassistant_api_key" {
     type = string
 }
 
+variable "homebox_auth" {
+    type = object({
+        username = string
+        password = string
+    })
+}
+
+variable "immich_api_keys" {
+    type = object({
+        homepage = string
+    })
+}
+
 variable "kimai_admin" {
     type = object({
-      email = string
-      password = string
+        email = string
+        password = string
     })
 }
 
