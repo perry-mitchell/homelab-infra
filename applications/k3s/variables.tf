@@ -161,6 +161,10 @@ variable "tailscale_tailnet" {
     type = string
 }
 
+variable "tautulli_api_key" {
+    type = string
+}
+
 variable "tunnel_domain" {
     description = "Public-facing tunnelled domain"
     type = string

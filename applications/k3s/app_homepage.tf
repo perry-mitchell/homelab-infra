@@ -4,6 +4,11 @@ locals {
         description = "Homelab services and links"
         theme = "dark"
         favicon = "https://perrymitchell.net/favicon.ico"
+        background = {
+            image = "/images/australia-01.jpg"
+            opacity = 70
+            blur = "sm"
+        }
     })
     homepage_services = yamlencode([
         {
@@ -17,6 +22,23 @@ locals {
                             type = "homeassistant"
                             url = "http://${module.app_homeassistant.host_k8s}"
                             key = var.homeassistant_api_key
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            Entertainment = [
+                {
+                    Tautulli = {
+                        icon = "tautulli"
+                        href = "http://${module.app_tautulli.host_tailscale}"
+                        description = "Plex Media Server management and analytics"
+                        widget = {
+                            type = "tautulli"
+                            url = "http://${module.app_tautulli.host_k8s}"
+                            key = var.tautulli_api_key
+                            enableUser = true
                         }
                     }
                 }
@@ -125,6 +147,13 @@ module "app_homepage" {
     name = "homepage"
     namespace = kubernetes_namespace.monitoring.metadata[0].name
     service_port = 80
+    subdir_mounts = {
+        "images" = {
+            container_path = "/app/public/images"
+            storage = "appdata"
+            storage_request = "5Gi"
+        }
+    }
     tailscale = {
         hostname = "home"
         host_ip = local.primary_ingress_ip
