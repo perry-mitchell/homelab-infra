@@ -23,9 +23,9 @@ module "db_init_nextcloud" {
 }
 
 module "app_nextcloud" {
-    source = "../../modules/service"
+    source = "../../modules/service2"
 
-    depends_on = [ module.db_init_nextcloud, module.nfs_storage_subdir ]
+    depends_on = [ module.db_init_nextcloud, module.nfs_storage_export ]
 
     container_port = 80
     dns_config = {
@@ -50,24 +50,34 @@ module "app_nextcloud" {
     }
     name = "nextcloud"
     namespace = kubernetes_namespace.family.metadata[0].name
-    service_port = 80
-    subdir_mounts = {
+    nfs_mounts = {
         data = {
+            create_subdir = true
             container_path = "/var/www/html/data"
+            nfs_export = var.nfs_storage.appdata.export
+            nfs_server = var.nfs_storage.appdata.host
             storage = "appdata"
             storage_request = "1Ti"
         }
         config = {
+            create_subdir = true
             container_path = "/var/www/html/config"
+            nfs_export = var.nfs_storage.appdata.export
+            nfs_server = var.nfs_storage.appdata.host
             storage = "appdata"
             storage_request = "5Gi"
         }
         customapps = {
+            create_subdir = true
             container_path = "/var/www/html/custom_apps"
+            nfs_export = var.nfs_storage.appdata.export
+            nfs_server = var.nfs_storage.appdata.host
             storage = "appdata"
             storage_request = "10Gi"
         }
     }
+    replicas = 1
+    service_port = 80
     tailscale = {
         hostname = "nextcloud"
         host_ip = local.primary_ingress_ip
