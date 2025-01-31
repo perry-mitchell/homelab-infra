@@ -65,15 +65,6 @@ resource "kubernetes_deployment" "deployment" {
                         }
                     }
 
-                    # dynamic "volume_mount" {
-                    #     for_each = var.subdir_mounts
-
-                    #     content {
-                    #         name       = volume_mount.key
-                    #         mount_path = volume_mount.value.container_path
-                    #     }
-                    # }
-
                     dynamic "volume_mount" {
                         for_each = local.nfs_mounts
 
@@ -93,18 +84,6 @@ resource "kubernetes_deployment" "deployment" {
                         }
                     }
                 }
-
-                # dynamic "volume" {
-                #     for_each = var.subdir_mounts
-
-                #     content {
-                #         name = volume.key
-
-                #         persistent_volume_claim {
-                #             claim_name = kubernetes_persistent_volume_claim.storage[volume.key].metadata[0].name
-                #         }
-                #     }
-                # }
 
                 dynamic "volume" {
                     for_each = local.nfs_mounts
