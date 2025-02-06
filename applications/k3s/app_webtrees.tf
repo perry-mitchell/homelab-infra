@@ -27,9 +27,9 @@ module "db_init_webtrees" {
 }
 
 module "app_webtrees" {
-    source = "../../modules/service"
+    source = "../../modules/service2"
 
-    depends_on = [ module.db_init_webtrees, module.nfs_storage_subdir ]
+    depends_on = [ module.db_init_webtrees, module.nfs_storage_export ]
 
     container_port = 80
     dns_config = {
@@ -56,15 +56,17 @@ module "app_webtrees" {
     }
     name = "webtrees"
     namespace = kubernetes_namespace.family.metadata[0].name
-    replicas = 1
-    service_port = 80
-    subdir_mounts = {
+    nfs_mounts = {
         data = {
+            create_subdir = true
             container_path = "/var/www/webtrees/data"
-            storage = "appdata"
+            nfs_export = var.nfs_storage.appdata.export
+            nfs_server = var.nfs_storage.appdata.host
             storage_request = "10Gi"
         }
     }
+    replicas = 1
+    service_port = 80
     tailscale = {
         hostname = "webtrees"
         host_ip = local.primary_ingress_ip

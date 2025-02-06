@@ -1,7 +1,7 @@
 module "app_gluetun" {
-    source = "../../modules/service"
+    source = "../../modules/service2"
 
-    depends_on = [ module.nfs_storage_subdir ]
+    depends_on = [ module.nfs_storage_export ]
 
     capabilities = ["NET_ADMIN"]
     container_port = 8000
@@ -37,14 +37,17 @@ module "app_gluetun" {
     }
     name = "gluetun"
     namespace = kubernetes_namespace.torrents.metadata[0].name
-    service_port = 80
-    subdir_mounts = {
+    nfs_mounts = {
         config = {
+            create_subdir = true
             container_path = "/gluetun"
-            storage = "appdata"
+            nfs_export = var.nfs_storage.appdata.export
+            nfs_server = var.nfs_storage.appdata.host
             storage_request = "5Gi"
         }
     }
+    replicas = 1
+    service_port = 80
     tailscale = {
         hostname = "gluetun"
         host_ip = local.primary_ingress_ip

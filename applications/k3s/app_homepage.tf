@@ -44,21 +44,21 @@ locals {
                 }
             ]
         },
-        {
-            Torrents = [
-                {
-                    Gluetun = {
-                        icon = "gluetun"
-                        href = "http://${module.app_gluetun.host_tailscale}"
-                        description = "Torrent VPN gateway"
-                        widget = {
-                            type = "gluetun"
-                            url = "http://${module.app_gluetun.host_k8s}"
-                        }
-                    }
-                }
-            ]
-        },
+        # {
+        #     Torrents = [
+        #         {
+        #             Gluetun = {
+        #                 icon = "gluetun"
+        #                 href = "http://${module.app_gluetun.host_tailscale}"
+        #                 description = "Torrent VPN gateway"
+        #                 widget = {
+        #                     type = "gluetun"
+        #                     url = "http://${module.app_gluetun.host_k8s}"
+        #                 }
+        #             }
+        #         }
+        #     ]
+        # },
         {
             Media = [
                 {

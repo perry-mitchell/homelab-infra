@@ -20,7 +20,6 @@ module "db_mariadb" {
             container_path = "/var/lib/mysql"
             nfs_export = var.nfs_storage.appdata.export
             nfs_server = var.nfs_storage.appdata.host
-            storage = "appdata"
             storage_request = "50Gi"
         }
     }

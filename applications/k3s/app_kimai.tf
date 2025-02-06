@@ -23,9 +23,9 @@ module "db_init_kimai" {
 }
 
 module "app_kimai" {
-    source = "../../modules/service"
+    source = "../../modules/service2"
 
-    depends_on = [ module.db_init_kimai, module.nfs_storage_subdir ]
+    depends_on = [ module.db_init_kimai, module.nfs_storage_export ]
 
     container_port = 8001
     dns_config = {
@@ -45,15 +45,17 @@ module "app_kimai" {
     }
     name = "kimai"
     namespace = kubernetes_namespace.business.metadata[0].name
-    replicas = 1
-    service_port = 80
-    subdir_mounts = {
+    nfs_mounts = {
         data = {
+            create_subdir = true
             container_path = "/opt/kimai/var/data"
-            storage = "appdata"
+            nfs_export = var.nfs_storage.appdata.export
+            nfs_server = var.nfs_storage.appdata.host
             storage_request = "20Gi"
         }
     }
+    replicas = 1
+    service_port = 80
     tailscale = {
         hostname = "kimai"
         host_ip = local.primary_ingress_ip
