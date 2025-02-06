@@ -45,7 +45,7 @@ module "app_nextcloud" {
         REDIS_DB_INDEX = "${local.redis_db_reservations.nextcloud}"
     }
     image = {
-        tag = "stable"
+        tag = "production-apache"
         uri = "nextcloud"
     }
     name = "nextcloud"
@@ -76,7 +76,6 @@ module "app_nextcloud" {
             storage_request = "10Gi"
         }
     }
-    replicas = 1
     service_port = 80
     tailscale = {
         hostname = "nextcloud"

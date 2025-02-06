@@ -56,6 +56,7 @@ module "app_webtrees" {
     }
     name = "webtrees"
     namespace = kubernetes_namespace.family.metadata[0].name
+    replicas = 1
     service_port = 80
     subdir_mounts = {
         data = {

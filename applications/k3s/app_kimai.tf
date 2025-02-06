@@ -45,6 +45,7 @@ module "app_kimai" {
     }
     name = "kimai"
     namespace = kubernetes_namespace.business.metadata[0].name
+    replicas = 1
     service_port = 80
     subdir_mounts = {
         data = {
