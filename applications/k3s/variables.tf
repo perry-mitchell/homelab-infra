@@ -36,6 +36,12 @@ variable "cluster_token" {
     type = string
 }
 
+variable "code_auth" {
+    type = object({
+        sudo_password = string
+    })
+}
+
 variable "db_mariadb_root" {
     type = string
 }

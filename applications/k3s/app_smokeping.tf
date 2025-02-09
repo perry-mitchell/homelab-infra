@@ -1,7 +1,7 @@
 module "app_smokeping" {
     source = "../../modules/service2"
 
-    depends_on = [ module.nfs_storage_subdir ]
+    depends_on = [ module.nfs_storage_export ]
 
     container_port = 80
     dns_config = {
@@ -29,7 +29,6 @@ module "app_smokeping" {
             container_path = "/data"
             nfs_export = var.nfs_storage.appdata.export
             nfs_server = var.nfs_storage.appdata.host
-            storage = "appdata"
             storage_request = "5Gi"
         }
     }

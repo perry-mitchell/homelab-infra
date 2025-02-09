@@ -17,9 +17,9 @@ variable "dns_config" {
     default = null
     nullable = true
     type = object({
-      cluster_fqdn = string
-      host_ip = string
-      subdomain_name = string
+        cluster_fqdn = string
+        host_ip = string
+        subdomain_name = string
     })
 }
 
@@ -76,6 +76,11 @@ variable "nfs_mounts" {
     }))
 }
 
+variable "privileged" {
+    type = bool
+    default = false
+}
+
 variable "replicas" {
     default = 1
     type = number
@@ -107,4 +112,12 @@ variable "tailscale" {
         host_ip = string
         tailnet = string
     })
+}
+
+variable "tailscale_port_alternatives" {
+    default = {}
+    type = map(object({
+        hostname = string
+        port = number
+    }))
 }

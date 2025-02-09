@@ -41,12 +41,13 @@ resource "kubernetes_deployment" "deployment" {
                     command = var.command
 
                     dynamic "security_context" {
-                        for_each = (var.run_as != null || var.capabilities != null) ? [1] : []
+                        for_each = (var.run_as != null || var.capabilities != null || var.privileged != false) ? [1] : []
 
                         content {
                             run_as_user                = var.run_as != null ? var.run_as.user : null
                             run_as_group               = var.run_as != null ? var.run_as.group : null
                             allow_privilege_escalation = var.run_as != null ? true : null
+                            privileged                 = var.privileged
 
                             dynamic "capabilities" {
                                 for_each = var.capabilities != null ? [1] : []
