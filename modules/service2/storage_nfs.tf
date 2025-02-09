@@ -31,10 +31,6 @@ resource "kubernetes_storage_class" "storage_nfs" {
         share = each.value.share
         subDir = each.value.sub_dir
     }
-
-    # mount_options = [
-    #     "nfsvers=4.1"
-    # ]
 }
 
 resource "kubernetes_persistent_volume_claim" "storage_nfs" {

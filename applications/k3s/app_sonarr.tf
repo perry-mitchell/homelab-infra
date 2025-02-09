@@ -1,5 +1,5 @@
 # module "app_sonarr" {
-#     source = "../../modules/service"
+#     source = "../../modules/service2"
 
 #     depends_on = [ module.nfs_storage_subdir ]
 
@@ -20,24 +20,40 @@
 #     }
 #     name = "sonarr"
 #     namespace = kubernetes_namespace.torrents.metadata[0].name
-#     root_mounts = {
+#     nfs_mounts = {
+#         config = {
+#             container_path = "/config"
+#             create_subdir = true
+#             nfs_export = var.nfs_storage.appdata.export
+#             nfs_server = var.nfs_storage.appdata.host
+#             storage_request = "20Gi"
+#         }
 #         entertainment = {
 #             container_path = "/tv"
+#             create_subdir = false
 #             nfs_export = var.nfs_storage.entertainment.export
 #             nfs_server = var.nfs_storage.entertainment.host
-#             read_only = false
-#             storage_name = "k3s-root"
 #             storage_request = "5Ti"
 #         }
 #     }
+#     # root_mounts = {
+#     #     entertainment = {
+#     #         container_path = "/tv"
+#     #         nfs_export = var.nfs_storage.entertainment.export
+#     #         nfs_server = var.nfs_storage.entertainment.host
+#     #         read_only = false
+#     #         storage_name = "k3s-root"
+#     #         storage_request = "5Ti"
+#     #     }
+#     # }
 #     service_port = 80
-#     subdir_mounts = {
-#         config = {
-#             container_path = "/config"
-#             storage = "appdata"
-#             storage_request = "20Gi"
-#         }
-#     }
+#     # subdir_mounts = {
+#     #     config = {
+#     #         container_path = "/config"
+#     #         storage = "appdata"
+#     #         storage_request = "20Gi"
+#     #     }
+#     # }
 #     tailscale = {
 #         hostname = "sonarr"
 #         host_ip = local.primary_ingress_ip

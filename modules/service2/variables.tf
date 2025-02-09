@@ -94,6 +94,11 @@ variable "service_port" {
     type = number
 }
 
+variable "share_process_namespace" {
+    default = false
+    type = bool
+}
+
 variable "tailscale" {
     default = null
     type = object({

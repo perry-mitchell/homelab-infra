@@ -33,6 +33,7 @@ resource "kubernetes_deployment" "deployment" {
 
                 host_network = var.host_network
                 dns_policy = var.host_network ? "ClusterFirstWithHostNet" : "ClusterFirst"
+                share_process_namespace = var.share_process_namespace
 
                 container {
                     image = "${var.image.uri}:${var.image.tag}"
