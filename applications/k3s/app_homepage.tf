@@ -24,11 +24,30 @@ locals {
                             key = var.homeassistant_api_key
                         }
                     }
+                },
+                {
+                    "Zigbee2MQTT" = {
+                        icon = "zigbee2mqtt"
+                        href = "http://${module.app_z2m.host_tailscale}"
+                        description = "Zigbee 2 MQTT interface"
+                    }
                 }
             ]
         },
         {
             Entertainment = [
+                {
+                    Plex = {
+                        icon = "plex"
+                        href = "${var.plex_url_base}/web/index.html"
+                        description = "Movies, TV, Anime and kids media"
+                        widget = {
+                            type = "plex"
+                            url = var.plex_url_base
+                            key = var.plex_token
+                        }
+                    }
+                },
                 {
                     Tautulli = {
                         icon = "tautulli"
@@ -103,20 +122,61 @@ locals {
             ]
         },
         {
+            Business = [
+                {
+                    "Kimai" = {
+                        icon = "kimai"
+                        href = "http://${module.app_kimai.host_tailscale}"
+                        description = "Time tracking and invoice management"
+                    }
+                }
+            ]
+        },
+        {
             Backup = [
-                # {
-                #     Kopia = {
-                #         icon = "kopia"
-                #         href = "http://${module.app_kopia.host_tailscale}"
-                #         description = "Unraid storage backup"
-                #         widget = {
-                #             type = "kopia"
-                #             url = "http://${module.app_kopia.host_k8s}"
-                #             username = var.kopia_admin.username
-                #             password = var.kopia_admin.password
-                #         }
-                #     }
-                # }
+                {
+                    Kopia = {
+                        icon = "kopia"
+                        href = "http://${module.app_kopia.host_tailscale}"
+                        description = "Unraid storage backup"
+                        widget = {
+                            type = "kopia"
+                            url = "http://${module.app_kopia.host_k8s}"
+                            username = var.kopia_admin.username
+                            password = var.kopia_admin.password
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            Network = [
+                {
+                    PiHole = {
+                        icon = "pi-hole"
+                        href = var.pihole_admin_url
+                        description = "DNS management and ad blocking"
+                        widget = {
+                            type = "pihole"
+                            url = var.pihole_url
+                            version = 5
+                            key = var.pihole_api_key
+                        }
+                    }
+                },
+                {
+                    Unifi = {
+                        icon = "ubiquiti"
+                        href = var.unifi_url
+                        description = "Unifi network management"
+                        widget = {
+                            type = "unifi"
+                            url = var.unifi_url
+                            username = var.unifi_auth.username
+                            password = var.unifi_auth.password
+                        }
+                    }
+                }
             ]
         }
     ])

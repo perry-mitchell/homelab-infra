@@ -140,11 +140,27 @@ variable "nodes" {
     }))
 }
 
+variable "pihole_admin_url" {
+    type = string
+}
+
+variable "pihole_api_key" {
+    type = string
+}
+
 variable "pihole_password" {
     type = string
 }
 
 variable "pihole_url" {
+    type = string
+}
+
+variable "plex_token" {
+    type = string
+}
+
+variable "plex_url_base" {
     type = string
 }
 
@@ -173,6 +189,17 @@ variable "tautulli_api_key" {
 
 variable "tunnel_domain" {
     description = "Public-facing tunnelled domain"
+    type = string
+}
+
+variable "unifi_auth" {
+    type = object({
+        password = string
+        username = string
+    })
+}
+
+variable "unifi_url" {
     type = string
 }
 
