@@ -104,19 +104,19 @@ locals {
         },
         {
             Backup = [
-                {
-                    Kopia = {
-                        icon = "kopia"
-                        href = "http://${module.app_kopia.host_tailscale}"
-                        description = "Unraid storage backup"
-                        widget = {
-                            type = "kopia"
-                            url = "http://${module.app_kopia.host_k8s}"
-                            username = var.kopia_admin.username
-                            password = var.kopia_admin.password
-                        }
-                    }
-                }
+                # {
+                #     Kopia = {
+                #         icon = "kopia"
+                #         href = "http://${module.app_kopia.host_tailscale}"
+                #         description = "Unraid storage backup"
+                #         widget = {
+                #             type = "kopia"
+                #             url = "http://${module.app_kopia.host_k8s}"
+                #             username = var.kopia_admin.username
+                #             password = var.kopia_admin.password
+                #         }
+                #     }
+                # }
             ]
         }
     ])
