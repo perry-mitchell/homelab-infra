@@ -90,16 +90,16 @@ module "app_immich" {
     namespace = kubernetes_namespace.family.metadata[0].name
     replicas = 1
     service_port = 80
-    tailscale = {
-        hostname = "immich"
-        host_ip = local.primary_ingress_ip
-        tailnet = var.tailscale_tailnet
-    }
     subdir_mounts = {
         "upload" = {
             container_path = "/usr/src/app/upload"
             storage = "photos"
             storage_request = "1500Gi"
         }
+    }
+    tailscale = {
+        hostname = "immich"
+        host_ip = local.primary_ingress_ip
+        tailnet = var.tailscale_tailnet
     }
 }
