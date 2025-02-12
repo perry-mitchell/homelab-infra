@@ -41,8 +41,38 @@ module "app_arr_stack" {
             }
             service_port = 80
         }
+        sonarr = {
+            container_port = 8989
+            environment = {
+                PGID = "100"
+                PUID = "99"
+                TZ = "Europe/Helsinki"
+            }
+            image = {
+                tag = "latest"
+                uri = "lscr.io/linuxserver/sonarr"
+            }
+            nfs_mounts = {
+                config = {
+                    create_subdir = true
+                    container_path = "/config"
+                    nfs_export = var.nfs_storage.appdata.export
+                    nfs_server = var.nfs_storage.appdata.host
+                    storage_request = "10Gi"
+                }
+            }
+            service_port = 80
+        }
     }
 
+    dns_config = {
+        cluster_fqdn = var.cluster_fqdn
+        host_ip = local.primary_ingress_ip
+    }
     name = "arr"
     namespace = kubernetes_namespace.torrents.metadata[0].name
+    tailscale = {
+        host_ip = local.primary_ingress_ip
+        tailnet = var.tailscale_tailnet
+    }
 }
