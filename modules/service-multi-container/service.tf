@@ -1,6 +1,9 @@
 module "dns" {
     source = "../dns-name"
-    for_each = var.containers
+    for_each = {
+        for name, container in var.containers : name => container
+        if container.service_port != null
+    }
 
     cluster_fqdn = var.dns_config.cluster_fqdn
     host_ip = var.dns_config.host_ip
@@ -9,7 +12,10 @@ module "dns" {
 
 module "dns_tailscale" {
     source = "../dns-name"
-    for_each = var.containers
+    for_each = {
+        for name, container in var.containers : name => container
+        if container.service_port != null
+    }
 
     cluster_fqdn = var.tailscale.tailnet
     host_ip = var.tailscale.host_ip
@@ -17,7 +23,10 @@ module "dns_tailscale" {
 }
 
 resource "kubernetes_service" "local" {
-    for_each = var.containers
+    for_each = {
+        for name, container in var.containers : name => container
+        if container.container_port != null && container.service_port != null
+    }
 
     metadata {
         name = each.key
@@ -37,7 +46,10 @@ resource "kubernetes_service" "local" {
 }
 
 resource "kubernetes_service" "tailscale" {
-    for_each = var.containers
+    for_each = {
+        for name, container in var.containers : name => container
+        if container.container_port != null && container.service_port != null
+    }
 
     metadata {
         name = "${var.name}-tailscale-${each.key}"
@@ -63,7 +75,10 @@ resource "kubernetes_service" "tailscale" {
 }
 
 resource "kubernetes_ingress_v1" "local" {
-    for_each = var.containers
+    for_each = {
+        for name, container in var.containers : name => container
+        if container.container_port != null && container.service_port != null
+    }
 
     metadata {
         name = "${var.name}-local-${each.key}"
@@ -107,7 +122,10 @@ resource "kubernetes_ingress_v1" "local" {
 }
 
 resource "kubernetes_ingress_v1" "tailscale" {
-    for_each = var.containers
+    for_each = {
+        for name, container in var.containers : name => container
+        if container.container_port != null && container.service_port != null
+    }
 
     metadata {
         name = "${var.name}-tailscale-${each.key}"

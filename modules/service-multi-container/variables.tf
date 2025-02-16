@@ -1,12 +1,15 @@
 variable "containers" {
     type = map(object({
+        args = optional(list(string), null)
         capabilities = optional(set(string), null)
-        container_port = number
+        command = optional(list(string), null)
+        container_port = optional(number, null)
         environment = optional(map(string), {})
         image = object({
             tag = string
             uri = string
         })
+        init = optional(bool, false)
         nfs_mounts = optional(map(object({
             create_subdir = bool
             container_path = string
@@ -15,11 +18,12 @@ variable "containers" {
             read_only = optional(bool, false)
             storage_request = optional(string, "50Gi")
         })), {})
+        restart_policy = optional(string, null)
         run_as = optional(object({
             user = number
             group = number
         }), null)
-        service_port = number
+        service_port = optional(number, null)
     }))
 }
 

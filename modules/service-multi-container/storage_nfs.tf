@@ -1,19 +1,5 @@
 locals {
     nfs_mount_subdir_prefix = "nfsdynamic"
-    # nfs_mounts = {
-    #     for name, container in var.containers : name => {
-    #         for mount, config in container.nfs_mounts : mount => {
-    #             container_path = config.container_path
-    #             storage_name = mount
-    #             storage_request = config.storage_request
-    #             read_only = config.read_only
-    #             reclaim = "Retain"
-    #             server = config.nfs_server
-    #             share = config.create_subdir ? config.nfs_export : regex("^(.+)/([^/]+)/?$", config.nfs_export)[0]
-    #             sub_dir = config.create_subdir ? "${local.nfs_mount_subdir_prefix}-${var.namespace}-${name}-${mount}" : regex("^(.+)/([^/]+)/?$", config.nfs_export)[1]
-    #         }
-    #     }
-    # }
     nfs_mounts_raw = toset(flatten([
         for container_name, container in var.containers : [
             for storage_name, config in container.nfs_mounts : {

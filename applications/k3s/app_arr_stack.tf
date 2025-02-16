@@ -1,21 +1,31 @@
+// Reference:
+//  - https://nerdiverset.no/k8s-native-sidecar-with-vpn/
+//  - https://github.com/qdm12/gluetun-wiki/pull/7
 module "app_arr_stack" {
     source = "../../modules/service-multi-container"
 
     containers = {
         gluetun = {
             capabilities = ["NET_ADMIN"]
-            container_port = 8000
+            # container_port = 8000
             environment = {
+                BLOCK_ADS = "off"
+                BLOCK_MALICIOUS = "off"
+                BLOCK_SURVEILLANCE = "off"
                 DNS_UPDATE_PERIOD = "5m"
+                DNS_KEEP_NAMESERVER = "on"
                 DOT = "on"
                 DOT_CACHING = "on"
                 DOT_PROVIDERS = "cloudflare"
+                DOT_IPV6 = "off"
                 FIREWALL = "on"
+                FIREWALL_INPUT_PORTS = join(",", [var.vpn_provider.endpoint_port, 8000, 8080, 8888, 8388])
+                FIREWALL_OUTBOUND_SUBNETS = "10.42.0.0/15,192.168.201.0/24,192.168.0.0/24"
                 FIREWALL_VPN_INPUT_PORTS = join(",", var.vpn_provider.inbound_ports)
-                OPENVPN_VERBOSITY = "1"
-                OPENVPN_VERSION = "2.5"
+                HEALTH_TARGET_ADDRESS = "github.com:443"
+                OPENVPN_AUTH = "sha256"
+                OPENVPN_CIPHERS = "AES-128-GCM"
                 OPENVPN_PASSWORD = var.vpn_provider.password
-                OPENVPN_PROCESS_USER = "yes"
                 OPENVPN_USER = var.vpn_provider.username
                 OPENVPN_PROTOCOL = "tcp"
                 SERVER_HOSTNAMES = join(",", var.vpn_provider.server_hostnames)
@@ -30,6 +40,7 @@ module "app_arr_stack" {
                 tag = "latest"
                 uri = "qmcgaw/gluetun"
             }
+            init = false
             nfs_mounts = {
                 config = {
                     create_subdir = true
@@ -39,7 +50,7 @@ module "app_arr_stack" {
                     storage_request = "5Gi"
                 }
             }
-            service_port = 80
+            # service_port = 80
         }
         sonarr = {
             container_port = 8989
@@ -59,6 +70,14 @@ module "app_arr_stack" {
                     nfs_export = var.nfs_storage.appdata.export
                     nfs_server = var.nfs_storage.appdata.host
                     storage_request = "10Gi"
+                }
+                entertainment = {
+                    create_subdir = false
+                    container_path = "/entertainment"
+                    nfs_export = var.nfs_storage.entertainment.export
+                    nfs_server = var.nfs_storage.entertainment.host
+                    read_only = false
+                    storage_request = "5Ti"
                 }
             }
             service_port = 80
