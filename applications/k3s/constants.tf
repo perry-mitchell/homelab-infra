@@ -11,12 +11,6 @@ locals {
 }
 
 locals {
-  postgres_pgvecto_rs_service_name = "postgres-pgvecto-rs"
-  postgres_pgvecto_rs_service_namespace = "datasources"
-  postgres_pgvecto_rs_service_hostname = "${local.postgres_pgvecto_rs_service_name}.${local.postgres_pgvecto_rs_service_namespace}.svc.cluster.local"
-}
-
-locals {
   postgres_postgis_service_name = "postgres-postgis"
   postgres_postgis_service_namespace = "datasources"
   postgres_postgis_service_hostname = "${local.postgres_postgis_service_name}.${local.postgres_postgis_service_namespace}.svc.cluster.local"
