@@ -52,6 +52,28 @@ module "app_arr_stack" {
             }
             # service_port = 80
         }
+        prowlarr = {
+            container_port = 9696
+            environment = {
+                PGID = "100"
+                PUID = "99"
+                TZ = "Europe/Helsinki"
+            }
+            image = {
+                tag = "latest"
+                uri = "lscr.io/linuxserver/prowlarr"
+            }
+            nfs_mounts = {
+                config = {
+                    create_subdir = true
+                    container_path = "/config"
+                    nfs_export = var.nfs_storage.appdata.export
+                    nfs_server = var.nfs_storage.appdata.host
+                    storage_request = "10Gi"
+                }
+            }
+            service_port = 80
+        }
         sonarr = {
             container_port = 8989
             environment = {
@@ -78,6 +100,38 @@ module "app_arr_stack" {
                     nfs_server = var.nfs_storage.entertainment.host
                     read_only = false
                     storage_request = "5Ti"
+                }
+            }
+            service_port = 80
+        }
+        "torrent-entertainment" = {
+            container_port = 8080
+            environment = {
+                PGID = "100"
+                PUID = "99"
+                TORRENTING_PORT = "6881"
+                TZ = "Europe/Helsinki"
+                WEBUI_PORT = "8080"
+            }
+            image = {
+                tag = "latest"
+                uri = "lscr.io/linuxserver/qbittorrent"
+            }
+            nfs_mounts = {
+                config = {
+                    create_subdir = true
+                    container_path = "/config"
+                    nfs_export = var.nfs_storage.appdata.export
+                    nfs_server = var.nfs_storage.appdata.host
+                    storage_request = "10Gi"
+                }
+                entertainment = {
+                    create_subdir = false
+                    container_path = "/entertainment"
+                    nfs_export = var.nfs_storage.entertainment.export
+                    nfs_server = var.nfs_storage.entertainment.host
+                    read_only = false
+                    storage_request = "500Gi"
                 }
             }
             service_port = 80

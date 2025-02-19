@@ -39,6 +39,7 @@ resource "kubernetes_deployment" "deployment" {
                     image = "${var.image.uri}:${var.image.tag}"
                     name  = var.name
                     command = var.command
+                    args = var.args
 
                     dynamic "security_context" {
                         for_each = (var.run_as != null || var.capabilities != null || var.privileged != false) ? [1] : []
