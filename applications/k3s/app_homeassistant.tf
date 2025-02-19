@@ -60,7 +60,7 @@ module "app_piper" {
 }
 
 module "app_homeassistant" {
-    source = "../../modules/service"
+    source = "../../modules/service3"
 
     depends_on = [ module.app_piper, module.app_whisper, module.nfs_storage_subdir ]
 
@@ -72,25 +72,32 @@ module "app_homeassistant" {
         subdomain_name = "homeassistant"
     }
     environment = {
-        PGID = "100"
-        PUID = "99"
+        # PGID = "100"
+        # PUID = "99"
         TZ = "Europe/Helsinki"
     }
-    host_network = true
+    # host_network = true
+    # image = {
+    #     tag = "stable"
+    #     uri = "ghcr.io/home-assistant/home-assistant"
+    # }
     image = {
-        tag = "latest"
+        tag = "2025.2.4"
         uri = "lscr.io/linuxserver/homeassistant"
     }
     name = "homeassistant"
     namespace = kubernetes_namespace.smart_home.metadata[0].name
-    service_port = 80
-    subdir_mounts = {
+    nfs_mounts = {
         config = {
+            access_modes = ["ReadWriteOnce"]
+            create_subdir = true
             container_path = "/config"
-            storage = "appdata"
+            nfs_export = var.nfs_storage.appdata.export
+            nfs_server = var.nfs_storage.appdata.host
             storage_request = "25Gi"
         }
     }
+    service_port = 80
     tailscale = {
         hostname = "homeassistant"
         host_ip = local.primary_ingress_ip
