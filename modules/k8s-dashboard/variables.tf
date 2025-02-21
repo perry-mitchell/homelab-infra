@@ -5,3 +5,12 @@ variable "dns_config" {
       subdomain_name = string
     })
 }
+
+variable "tailscale" {
+    default = null
+    type = object({
+        hostname = string
+        host_ip = string
+        tailnet = string
+    })
+}

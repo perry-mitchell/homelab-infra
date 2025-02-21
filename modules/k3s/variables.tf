@@ -1,4 +1,5 @@
 variable "cluster_init" {
+    default = false
     type = bool
 }
 
@@ -7,11 +8,17 @@ variable "cluster_token" {
 }
 
 variable "fqdn" {
+    default = null
+    nullable = true
     type = string
 }
 
 variable "hostname" {
     type = string
+}
+
+variable "is_master" {
+    type = bool
 }
 
 variable "main_server_ip" {

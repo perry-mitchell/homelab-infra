@@ -1,5 +1,5 @@
 module "app_homebox" {
-    source = "../../modules/service"
+    source = "../../modules/service2"
 
     depends_on = [ module.nfs_storage_subdir ]
 
@@ -20,14 +20,17 @@ module "app_homebox" {
     }
     name = "homebox"
     namespace = kubernetes_namespace.business.metadata[0].name
-    service_port = 80
-    subdir_mounts = {
+    nfs_mounts = {
         data = {
+            create_subdir = true
             container_path = "/data"
-            storage = "appdata"
+            nfs_export = var.nfs_storage.appdata.export
+            nfs_server = var.nfs_storage.appdata.host
             storage_request = "25Gi"
         }
     }
+    # replicas = 0
+    service_port = 80
     tailscale = {
         hostname = "homebox"
         host_ip = local.primary_ingress_ip

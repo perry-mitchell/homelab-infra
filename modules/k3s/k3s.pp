@@ -17,6 +17,13 @@ package { "nfs-common":
     require => Exec["initial-apt-update"]
 }
 
+package { "wget":
+    ensure => installed,
+    require => Exec["initial-apt-update"]
+}
+
+
+
 file { ["/etc/rancher", "/etc/rancher/k3s"]:
     ensure => directory,
     owner => "root",
@@ -31,19 +38,19 @@ file { "/etc/rancher/k3s/config.yaml":
     notify => Service["k3s"]
 }
 
-archive { $k3s_binary:
-    ensure => present,
-    source => $k3s_download,
-    user => "root",
-    group => "root",
+exec { "k3s-download":
+    path => $exec_path,
+    command => "wget -q -O /tmp/k3s ${k3s_download}",
+    require => Package["wget"]
 }
 
 exec { "k3s-executable":
     path => $exec_path,
-    command => "chmod a+x ${$k3s_binary}",
-    require => Archive[$k3s_binary],
-    subscribe => Archive[$k3s_binary],
-    notify => Service["k3s"],
+    command => "mv /tmp/k3s ${k3s_binary} && chown root:root ${k3s_binary} && chmod a+x ${$k3s_binary}",
+    unless => "test -f ${k3s_binary}",
+    require => Exec["k3s-download"],
+    subscribe => Exec["k3s-download"],
+    notify => Service["k3s"]
 }
 
 file { "/etc/systemd/system/k3s.service":
@@ -55,7 +62,6 @@ service { "k3s":
     ensure  => running,
     enable  => true,
     require => [
-        Archive[$k3s_binary],
         Exec["k3s-executable"],
         File["/etc/systemd/system/k3s.service"],
         File["/etc/rancher/k3s/config.yaml"]
