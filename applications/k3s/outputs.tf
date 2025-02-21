@@ -6,8 +6,3 @@ output "backup_b2_details_appdata" {
         key = var.backblaze_auth.application_key
     }
 }
-
-output "dashboard_auth_token" {
-    sensitive = true
-    value = module.dashboard.dashboard_auth_token
-}

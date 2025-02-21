@@ -1,5 +1,5 @@
 module "app_tautulli" {
-    source = "../../modules/service"
+    source = "../../modules/service2"
 
     depends_on = [ module.nfs_storage_subdir ]
 
@@ -20,14 +20,17 @@ module "app_tautulli" {
     }
     name = "tautulli"
     namespace = kubernetes_namespace.entertainment.metadata[0].name
-    service_port = 80
-    subdir_mounts = {
+    nfs_mounts = {
         data = {
+            create_subdir = true
             container_path = "/config"
-            storage = "appdata"
+            nfs_export = var.nfs_storage.appdata.export
+            nfs_server = var.nfs_storage.appdata.host
             storage_request = "10Gi"
         }
     }
+    replicas = 1
+    service_port = 80
     tailscale = {
         hostname = "tautulli"
         host_ip = local.primary_ingress_ip
