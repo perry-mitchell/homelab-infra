@@ -13,18 +13,18 @@ locals {
     homepage_services = yamlencode([
         {
             "Smart Home" = [
-                # {
-                #     "Home Assistant" = {
-                #         icon = "home-assistant"
-                #         href = "http://${module.app_homeassistant.host_tailscale}"
-                #         description = "Smart home management"
-                #         widget = {
-                #             type = "homeassistant"
-                #             url = "http://${module.app_homeassistant.host_k8s}"
-                #             key = var.homeassistant_api_key
-                #         }
-                #     }
-                # },
+                {
+                    "Home Assistant" = {
+                        icon = "home-assistant"
+                        href = "http://${module.app_homeassistant.host_tailscale}"
+                        description = "Smart home management"
+                        widget = {
+                            type = "homeassistant"
+                            url = "http://${module.app_homeassistant.host_k8s}"
+                            key = var.homeassistant_api_key
+                        }
+                    }
+                },
                 {
                     "Zigbee2MQTT" = {
                         icon = "zigbee2mqtt"
@@ -63,21 +63,34 @@ locals {
                 }
             ]
         },
-        # {
-        #     Torrents = [
-        #         {
-        #             Gluetun = {
-        #                 icon = "gluetun"
-        #                 href = "http://${module.app_gluetun.host_tailscale}"
-        #                 description = "Torrent VPN gateway"
-        #                 widget = {
-        #                     type = "gluetun"
-        #                     url = "http://${module.app_gluetun.host_k8s}"
-        #                 }
-        #             }
-        #         }
-        #     ]
-        # },
+        {
+            Torrents = [
+                {
+                    Gluetun = {
+                        icon = "gluetun"
+                        href = "http://${module.app_arr_stack.host_tailscale["gluetun"]}"
+                        description = "Torrent VPN gateway"
+                        widget = {
+                            type = "gluetun"
+                            url = "http://${module.app_arr_stack.host_k8s["gluetun"]}"
+                        }
+                    }
+                },
+                # {
+                #     Sonarr = {
+                #         icon = "sonarr"
+                #         href = "http://${module.app_arr_stack.host_tailscale["sonarr"]}"
+                #         description = "TV show indexing and download manager"
+                #         widget = {
+                #             type = "sonarr"
+                #             url = "http://${module.app_arr_stack.host_k8s["sonarr"]}"
+                #             key = ""
+                #             enableQueue = true
+                #         }
+                #     }
+                # }
+            ]
+        },
         {
             Media = [
                 {

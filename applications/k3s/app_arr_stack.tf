@@ -7,7 +7,7 @@ module "app_arr_stack" {
     containers = {
         gluetun = {
             capabilities = ["NET_ADMIN"]
-            # container_port = 8000
+            container_port = 8000
             environment = {
                 BLOCK_ADS = "off"
                 BLOCK_MALICIOUS = "off"
@@ -50,7 +50,7 @@ module "app_arr_stack" {
                     storage_request = "5Gi"
                 }
             }
-            # service_port = 80
+            service_port = 80
         }
         prowlarr = {
             container_port = 9696
