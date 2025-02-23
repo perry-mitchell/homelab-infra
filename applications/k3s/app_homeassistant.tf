@@ -82,13 +82,27 @@ module "app_homeassistant" {
     }
     name = "homeassistant"
     namespace = kubernetes_namespace.smart_home.metadata[0].name
-    nfs_mounts = {
+    # nfs_mounts = {
+    #     config = {
+    #         create_subdir = true
+    #         container_path = "/config"
+    #         nfs_export = var.nfs_storage.appdata.export
+    #         nfs_server = var.nfs_storage.appdata.host
+    #         storage_request = "25Gi"
+    #     }
+    # }
+    replicas = 1
+    samba_mounts = {
         config = {
             create_subdir = true
             container_path = "/config"
-            nfs_export = var.nfs_storage.appdata.export
-            nfs_server = var.nfs_storage.appdata.host
+            gid = 100
+            password = var.samba_storage.appdata.password
+            share = var.samba_storage.appdata.share
+            server = var.samba_storage.appdata.server
             storage_request = "25Gi"
+            uid = 99
+            username = var.samba_storage.appdata.username
         }
     }
     service_port = 80

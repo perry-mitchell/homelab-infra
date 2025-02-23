@@ -101,6 +101,22 @@ variable "run_as" {
     })
 }
 
+variable "samba_mounts" {
+    default = {}
+    type = map(object({
+        container_path = string
+        create_subdir = bool
+        gid = optional(number, null)
+        password = string
+        read_only = optional(bool, false)
+        server = string
+        share = string
+        storage_request = optional(string, "50Gi")
+        uid = optional(number, null)
+        username = string
+    }))
+}
+
 variable "service_port" {
     type = number
 }

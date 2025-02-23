@@ -164,6 +164,15 @@ variable "plex_url_base" {
     type = string
 }
 
+variable "samba_storage" {
+    type = map(object({
+        password = string
+        server = string
+        share = string
+        username = string
+    }))
+}
+
 variable "state_encryption_passphrase" {
     type = string
 }
