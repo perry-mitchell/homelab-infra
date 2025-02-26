@@ -73,6 +73,7 @@ module "app_nextcloud" {
             storage_request = "10Gi"
         }
     }
+    replicas = 1
     service_port = 80
     tailscale = {
         hostname = "nextcloud"

@@ -12,16 +12,23 @@ module "db_mariadb" {
         tag = "latest"
         uri = "mariadb"
     }
-    name = local.mariadb_service_name
-    namespace = kubernetes_namespace.datasources.metadata[0].name
-    nfs_mounts = {
+    longhorn_mounts = {
         mysql = {
-            create_subdir = true
             container_path = "/var/lib/mysql"
-            nfs_export = var.nfs_storage.appdata.export
-            nfs_server = var.nfs_storage.appdata.host
             storage_request = "50Gi"
         }
     }
+    name = local.mariadb_service_name
+    namespace = kubernetes_namespace.datasources.metadata[0].name
+    replicas = 1
+    # nfs_mounts = {
+    #     mysql = {
+    #         create_subdir = true
+    #         container_path = "/var/lib/mysql"
+    #         nfs_export = var.nfs_storage.appdata.export
+    #         nfs_server = var.nfs_storage.appdata.host
+    #         storage_request = "50Gi"
+    #     }
+    # }
     service_port = 3306
 }
