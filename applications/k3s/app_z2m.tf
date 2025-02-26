@@ -1,5 +1,5 @@
 module "app_z2m" {
-    source = "../../modules/service"
+    source = "../../modules/service2"
 
     depends_on = [ module.nfs_storage_subdir ]
 
@@ -16,16 +16,15 @@ module "app_z2m" {
         tag = "latest"
         uri = "koenkk/zigbee2mqtt"
     }
-    name = "z2m"
-    namespace = kubernetes_namespace.smart_home.metadata[0].name
-    service_port = 80
-    subdir_mounts = {
+    longhorn_mounts = {
         data = {
             container_path = "/app/data"
-            storage = "appdata"
             storage_request = "15Gi"
         }
     }
+    name = "z2m"
+    namespace = kubernetes_namespace.smart_home.metadata[0].name
+    service_port = 80
     tailscale = {
         hostname = "z2m"
         host_ip = local.primary_ingress_ip
