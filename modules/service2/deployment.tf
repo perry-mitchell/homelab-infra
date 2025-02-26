@@ -87,6 +87,15 @@ resource "kubernetes_deployment" "deployment" {
                     }
 
                     dynamic "volume_mount" {
+                        for_each = local.longhorn_mounts
+
+                        content {
+                            name       = "longhorn-${volume_mount.key}"
+                            mount_path = volume_mount.value.container_path
+                        }
+                    }
+
+                    dynamic "volume_mount" {
                         for_each = var.files
 
                         content {
@@ -117,6 +126,18 @@ resource "kubernetes_deployment" "deployment" {
 
                         persistent_volume_claim {
                             claim_name = kubernetes_persistent_volume_claim.storage_samba[volume.key].metadata[0].name
+                        }
+                    }
+                }
+
+                dynamic "volume" {
+                    for_each = local.longhorn_mounts
+
+                    content {
+                        name = "longhorn-${volume.key}"
+
+                        persistent_volume_claim {
+                            claim_name = kubernetes_persistent_volume_claim.storage_longhorn[volume.key].metadata[0].name
                         }
                     }
                 }

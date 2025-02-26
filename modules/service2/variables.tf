@@ -61,6 +61,14 @@ variable "ingress_upload_size" {
     }
 }
 
+variable "longhorn_mounts" {
+    default = {}
+    type = map(object({
+        container_path = string
+        storage_request = string
+    }))
+}
+
 variable "name" {
     description = "Application name, k8s friendly"
     type = string

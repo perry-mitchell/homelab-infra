@@ -16,13 +16,23 @@ package { "nfs-common":
     ensure => installed,
     require => Exec["initial-apt-update"]
 }
-
 package { "wget":
     ensure => installed,
     require => Exec["initial-apt-update"]
 }
-
-
+# For Longhorn:
+package { "curl":
+    ensure => installed,
+    require => Exec["initial-apt-update"]
+}
+package { "open-iscsi":
+    ensure => installed,
+    require => Exec["initial-apt-update"]
+}
+package { "util-linux":
+    ensure => installed,
+    require => Exec["initial-apt-update"]
+}
 
 file { ["/etc/rancher", "/etc/rancher/k3s"]:
     ensure => directory,
@@ -62,6 +72,10 @@ service { "k3s":
     ensure  => running,
     enable  => true,
     require => [
+        Package["nfs-common"],
+        Package["open-iscsi"], # Longhorn
+        Package["curl"], # Longhorn
+        Package["util-linux"], # Longhorn
         Exec["k3s-executable"],
         File["/etc/systemd/system/k3s.service"],
         File["/etc/rancher/k3s/config.yaml"]

@@ -24,3 +24,13 @@ resource "helm_release" "csi_smb" {
     version    = "v1.17.0"
     wait       = true
 }
+
+module "longhorn" {
+    source = "../../modules/k8s-longhorn"
+
+    tailscale = {
+        hostname = "longhorn"
+        host_ip = local.primary_ingress_ip
+        tailnet = var.tailscale_tailnet
+    }
+}

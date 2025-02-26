@@ -80,31 +80,14 @@ module "app_homeassistant" {
         tag = "2025.2.5"
         uri = "lscr.io/linuxserver/homeassistant"
     }
-    name = "homeassistant"
-    namespace = kubernetes_namespace.smart_home.metadata[0].name
-    # nfs_mounts = {
-    #     config = {
-    #         create_subdir = true
-    #         container_path = "/config"
-    #         nfs_export = var.nfs_storage.appdata.export
-    #         nfs_server = var.nfs_storage.appdata.host
-    #         storage_request = "25Gi"
-    #     }
-    # }
-    replicas = 1
-    samba_mounts = {
+    longhorn_mounts = {
         config = {
-            create_subdir = true
             container_path = "/config"
-            gid = 100
-            password = var.samba_storage.appdata.password
-            share = var.samba_storage.appdata.share
-            server = var.samba_storage.appdata.server
             storage_request = "25Gi"
-            uid = 99
-            username = var.samba_storage.appdata.username
         }
     }
+    name = "homeassistant"
+    namespace = kubernetes_namespace.smart_home.metadata[0].name
     service_port = 80
     tailscale = {
         hostname = "homeassistant"
