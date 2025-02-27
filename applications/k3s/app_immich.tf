@@ -4,7 +4,7 @@ locals {
 }
 
 locals {
-    immich_tag = "v1.126.1"
+    immich_tag = "v1.126.1" # v1.127.0
 }
 
 module "db_immich_pgvecto_rs" {
@@ -20,20 +20,17 @@ module "db_immich_pgvecto_rs" {
         TZ = "Europe/Helsinki"
     }
     image = {
-        tag = "pg14-v0.2.1"
+        tag = "pg14-v0.3.0"
         uri = "tensorchord/pgvecto-rs"
     }
-    name = local.immich_postgres_service_name
-    namespace = kubernetes_namespace.family.metadata[0].name
-    nfs_mounts = {
+    longhorn_mounts = {
         data = {
-            create_subdir = true
             container_path = "/var/lib/postgresql/dbdata"
-            nfs_export = var.nfs_storage.appdata.export
-            nfs_server = var.nfs_storage.appdata.host
             storage_request = "50Gi"
         }
     }
+    name = local.immich_postgres_service_name
+    namespace = kubernetes_namespace.family.metadata[0].name
     replicas = 1
     service_port = 5432
 }
@@ -77,17 +74,15 @@ module "app_immich_ml" {
         tag = local.immich_tag
         uri = "ghcr.io/immich-app/immich-machine-learning"
     }
-    name = "immich-ml"
-    namespace = kubernetes_namespace.family.metadata[0].name
-    nfs_mounts = {
+    longhorn_mounts = {
         "model-cache" = {
-            create_subdir = true
             container_path = "/cache"
-            nfs_export = var.nfs_storage.appdata.export
-            nfs_server = var.nfs_storage.appdata.host
-            storage_request = "100Gi"
+            storage_request = "50Gi"
         }
     }
+    name = "immich-ml"
+    namespace = kubernetes_namespace.family.metadata[0].name
+    replicas = 1
     service_port = 3003
 }
 
@@ -135,6 +130,7 @@ module "app_immich" {
             storage_request = "1500Gi"
         }
     }
+    replicas = 1
     service_port = 80
     tailscale = {
         hostname = "immich"
