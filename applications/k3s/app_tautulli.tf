@@ -18,17 +18,23 @@ module "app_tautulli" {
         tag = "latest"
         uri = "lscr.io/linuxserver/tautulli"
     }
-    name = "tautulli"
-    namespace = kubernetes_namespace.entertainment.metadata[0].name
-    nfs_mounts = {
+    longhorn_mounts = {
         data = {
-            create_subdir = true
             container_path = "/config"
-            nfs_export = var.nfs_storage.appdata.export
-            nfs_server = var.nfs_storage.appdata.host
             storage_request = "10Gi"
         }
     }
+    name = "tautulli"
+    namespace = kubernetes_namespace.entertainment.metadata[0].name
+    # nfs_mounts = {
+    #     data = {
+    #         create_subdir = true
+    #         container_path = "/config"
+    #         nfs_export = var.nfs_storage.appdata.export
+    #         nfs_server = var.nfs_storage.appdata.host
+    #         storage_request = "10Gi"
+    #     }
+    # }
     replicas = 1
     service_port = 80
     tailscale = {

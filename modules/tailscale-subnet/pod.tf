@@ -1,6 +1,7 @@
 resource "kubernetes_pod" "tailscale_subnet" {
     metadata {
         name = "tailscale-subnet"
+        namespace = var.namespace
     }
 
     spec {
@@ -56,9 +57,13 @@ resource "kubernetes_pod" "tailscale_subnet" {
                 value = "true"
             }
 
-            volume_mount {
-                name       = kubernetes_persistent_volume_claim.tailscale.metadata[0].name
-                mount_path = "/var/lib/tailscale"
+            dynamic "volume_mount" {
+                for_each = local.longhorn_mounts
+
+                content {
+                    name       = "longhorn-${volume_mount.key}"
+                    mount_path = volume_mount.value.container_path
+                }
             }
 
             security_context {
@@ -67,11 +72,23 @@ resource "kubernetes_pod" "tailscale_subnet" {
             }
         }
 
-        volume {
-            name = kubernetes_persistent_volume_claim.tailscale.metadata[0].name
+        # volume {
+        #     name = kubernetes_persistent_volume_claim.tailscale.metadata[0].name
 
-            persistent_volume_claim {
-                claim_name = kubernetes_persistent_volume_claim.tailscale.metadata[0].name
+        #     persistent_volume_claim {
+        #         claim_name = kubernetes_persistent_volume_claim.tailscale.metadata[0].name
+        #     }
+        # }
+
+        dynamic "volume" {
+            for_each = local.longhorn_mounts
+
+            content {
+                name = "longhorn-${volume.key}"
+
+                persistent_volume_claim {
+                    claim_name = kubernetes_persistent_volume_claim.storage_longhorn[volume.key].metadata[0].name
+                }
             }
         }
     }

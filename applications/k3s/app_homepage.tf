@@ -13,18 +13,18 @@ locals {
     homepage_services = yamlencode([
         {
             "Smart Home" = [
-                # {
-                #     "Home Assistant" = {
-                #         icon = "home-assistant"
-                #         href = "http://${module.app_homeassistant.host_tailscale}"
-                #         description = "Smart home management"
-                #         widget = {
-                #             type = "homeassistant"
-                #             url = "http://${module.app_homeassistant.host_k8s}"
-                #             key = var.homeassistant_api_key
-                #         }
-                #     }
-                # },
+                {
+                    "Home Assistant" = {
+                        icon = "home-assistant"
+                        href = "http://${module.app_homeassistant.host_tailscale}"
+                        description = "Smart home management"
+                        widget = {
+                            type = "homeassistant"
+                            url = "http://${module.app_homeassistant.host_k8s}"
+                            key = var.homeassistant_api_key
+                        }
+                    }
+                },
                 {
                     "Zigbee2MQTT" = {
                         icon = "zigbee2mqtt"

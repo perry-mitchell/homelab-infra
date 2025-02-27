@@ -7,7 +7,14 @@ variable "auth_key" {
     type = string
 }
 
-variable "storage" {
-    description = "The storage name"
+variable "longhorn_mounts" {
+    default = {}
+    type = map(object({
+        container_path = string
+        storage_request = string
+    }))
+}
+
+variable "namespace" {
     type = string
 }

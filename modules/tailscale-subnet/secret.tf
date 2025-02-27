@@ -1,6 +1,7 @@
 resource "kubernetes_secret" "tailscale_auth" {
     metadata {
         name = "tailscale-auth"
+        namespace = var.namespace
     }
 
     data = {

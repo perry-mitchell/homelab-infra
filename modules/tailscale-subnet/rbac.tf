@@ -1,14 +1,14 @@
 resource "kubernetes_service_account" "tailscale" {
     metadata {
         name = "tailscale"
-        namespace = "default"
+        namespace = var.namespace
     }
 }
 
 resource "kubernetes_role" "tailscale" {
     metadata {
         name = "tailscale"
-        namespace = "default"
+        namespace = var.namespace
     }
 
     rule {
@@ -22,7 +22,7 @@ resource "kubernetes_role" "tailscale" {
 resource "kubernetes_role_binding" "tailscale" {
     metadata {
         name = "tailscale"
-        namespace = "default"
+        namespace = var.namespace
     }
 
     subject {
