@@ -10,7 +10,7 @@ module "app_code_server" {
         subdomain_name = "code"
     }
     environment = {
-        DEFAULT_WORKSPACE = "/data/workspace"
+        DEFAULT_WORKSPACE = "/config/workspace"
         DOCKER_MODS = join(
             "|",
             [
@@ -27,27 +27,17 @@ module "app_code_server" {
         TZ = "Europe/Helsinki"
     }
     image = {
-        tag = "latest"
+        tag = "4.96.4-ls254"
         uri = "lscr.io/linuxserver/code-server"
     }
-    name = "code"
-    namespace = kubernetes_namespace.dev.metadata[0].name
-    nfs_mounts = {
+    longhorn_mounts = {
         config = {
-            create_subdir = true
             container_path = "/config"
-            nfs_export = var.nfs_storage.appdata.export
-            nfs_server = var.nfs_storage.appdata.host
-            storage_request = "5Gi"
-        }
-        data = {
-            create_subdir = true
-            container_path = "/data"
-            nfs_export = var.nfs_storage.appdata.export
-            nfs_server = var.nfs_storage.appdata.host
             storage_request = "50Gi"
         }
     }
+    name = "code"
+    namespace = kubernetes_namespace.dev.metadata[0].name
     privileged = true
     replicas = 1
     service_port = 80
