@@ -72,14 +72,6 @@ resource "kubernetes_pod" "tailscale_subnet" {
             }
         }
 
-        # volume {
-        #     name = kubernetes_persistent_volume_claim.tailscale.metadata[0].name
-
-        #     persistent_volume_claim {
-        #         claim_name = kubernetes_persistent_volume_claim.tailscale.metadata[0].name
-        #     }
-        # }
-
         dynamic "volume" {
             for_each = local.longhorn_mounts
 

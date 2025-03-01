@@ -9,4 +9,10 @@ resource "kubernetes_secret" "tailscale_auth" {
     }
 
     type = "Opaque"
+
+    lifecycle {
+        ignore_changes = [
+            data
+        ]
+    }
 }

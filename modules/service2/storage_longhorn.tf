@@ -25,4 +25,10 @@ resource "kubernetes_persistent_volume_claim" "storage_longhorn" {
             }
         }
     }
+
+    lifecycle {
+        ignore_changes = [
+            metadata.0.labels
+        ]
+    }
 }

@@ -41,12 +41,9 @@ module "app_arr_stack" {
                 uri = "qmcgaw/gluetun"
             }
             init = false
-            nfs_mounts = {
+            longhorn_mounts = {
                 config = {
-                    create_subdir = true
                     container_path = "/gluetun"
-                    nfs_export = var.nfs_storage.appdata.export
-                    nfs_server = var.nfs_storage.appdata.host
                     storage_request = "5Gi"
                 }
             }
@@ -63,12 +60,9 @@ module "app_arr_stack" {
                 tag = "latest"
                 uri = "lscr.io/linuxserver/prowlarr"
             }
-            nfs_mounts = {
+            longhorn_mounts = {
                 config = {
-                    create_subdir = true
                     container_path = "/config"
-                    nfs_export = var.nfs_storage.appdata.export
-                    nfs_server = var.nfs_storage.appdata.host
                     storage_request = "10Gi"
                 }
             }
@@ -85,14 +79,13 @@ module "app_arr_stack" {
                 tag = "latest"
                 uri = "lscr.io/linuxserver/sonarr"
             }
-            nfs_mounts = {
+            longhorn_mounts = {
                 config = {
-                    create_subdir = true
                     container_path = "/config"
-                    nfs_export = var.nfs_storage.appdata.export
-                    nfs_server = var.nfs_storage.appdata.host
                     storage_request = "10Gi"
                 }
+            }
+            nfs_mounts = {
                 entertainment = {
                     create_subdir = false
                     container_path = "/entertainment"
@@ -117,14 +110,13 @@ module "app_arr_stack" {
                 tag = "latest"
                 uri = "lscr.io/linuxserver/qbittorrent"
             }
-            nfs_mounts = {
+            longhorn_mounts = {
                 config = {
-                    create_subdir = true
                     container_path = "/config"
-                    nfs_export = var.nfs_storage.appdata.export
-                    nfs_server = var.nfs_storage.appdata.host
                     storage_request = "10Gi"
                 }
+            }
+            nfs_mounts = {
                 entertainment = {
                     create_subdir = false
                     container_path = "/entertainment"

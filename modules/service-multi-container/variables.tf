@@ -10,6 +10,10 @@ variable "containers" {
             uri = string
         })
         init = optional(bool, false)
+        longhorn_mounts = optional(map(object({
+            container_path = string
+            storage_request = string
+        })), {})
         nfs_mounts = optional(map(object({
             create_subdir = bool
             container_path = string
