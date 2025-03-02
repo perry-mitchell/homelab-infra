@@ -164,6 +164,14 @@ variable "plex_url_base" {
     type = string
 }
 
+variable "prowlarr_token" {
+    type = string
+}
+
+variable "radarr_token" {
+    type = string
+}
+
 variable "samba_storage" {
     type = map(object({
         password = string
@@ -171,6 +179,10 @@ variable "samba_storage" {
         share = string
         username = string
     }))
+}
+
+variable "sonarr_token" {
+    type = string
 }
 
 variable "state_encryption_passphrase" {

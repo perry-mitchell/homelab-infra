@@ -76,19 +76,44 @@ locals {
                         }
                     }
                 },
-                # {
-                #     Sonarr = {
-                #         icon = "sonarr"
-                #         href = "http://${module.app_arr_stack.host_tailscale["sonarr"]}"
-                #         description = "TV show indexing and download manager"
-                #         widget = {
-                #             type = "sonarr"
-                #             url = "http://${module.app_arr_stack.host_k8s["sonarr"]}"
-                #             key = ""
-                #             enableQueue = true
-                #         }
-                #     }
-                # }
+                {
+                    Sonarr = {
+                        icon = "sonarr"
+                        href = "http://${module.app_arr_stack.host_tailscale["sonarr"]}"
+                        description = "TV show indexing and download manager"
+                        widget = {
+                            type = "sonarr"
+                            url = "http://${module.app_arr_stack.host_k8s["sonarr"]}"
+                            key = var.sonarr_token
+                            enableQueue = false
+                        }
+                    }
+                },
+                {
+                    Radarr = {
+                        icon = "radarr"
+                        href = "http://${module.app_arr_stack.host_tailscale["radarr"]}"
+                        description = "Movie indexing and download manager"
+                        widget = {
+                            type = "radarr"
+                            url = "http://${module.app_arr_stack.host_k8s["radarr"]}"
+                            key = var.radarr_token
+                            enableQueue = false
+                        }
+                    }
+                },
+                {
+                    Prowlarr = {
+                        icon = "prowlarr"
+                        href = "http://${module.app_arr_stack.host_tailscale["prowlarr"]}"
+                        description = "Media index manager"
+                        widget = {
+                            type = "prowlarr"
+                            url = "http://${module.app_arr_stack.host_k8s["prowlarr"]}"
+                            key = var.prowlarr_token
+                        }
+                    }
+                }
             ]
         },
         {
