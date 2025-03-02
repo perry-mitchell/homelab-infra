@@ -9,6 +9,11 @@ locals {
             opacity = 70
             blur = "sm"
         }
+        providers = {
+            longhorn = {
+                url = module.longhorn.frontend_internal_url
+            }
+        }
     })
     homepage_services = yamlencode([
         {
@@ -171,7 +176,7 @@ locals {
             ]
         },
         {
-            Backup = [
+            Cluster = [
                 {
                     Kopia = {
                         icon = "kopia"
@@ -225,6 +230,16 @@ locals {
             ]
         }
     ])
+    homepage_widgets = yamlencode([
+        {
+            longhorn = {
+                expanded = true
+                total = true
+                labels = true
+                nodes = true
+            }
+        }
+    ])
 }
 
 module "app_homepage" {
@@ -243,7 +258,7 @@ module "app_homepage" {
         "/app/config/docker.yaml" = ""
         "/app/config/services.yaml" = local.homepage_services
         "/app/config/settings.yaml" = local.homepage_settings
-        "/app/config/widgets.yaml" = ""
+        "/app/config/widgets.yaml" = local.homepage_widgets
     }
     image = {
         tag = "latest"
