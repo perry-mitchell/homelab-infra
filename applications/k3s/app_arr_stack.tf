@@ -97,6 +97,35 @@ module "app_arr_stack" {
             }
             service_port = 80
         }
+        radarr = {
+            container_port = 7878
+            environment = {
+                PGID = "100"
+                PUID = "99"
+                TZ = "Europe/Helsinki"
+            }
+            image = {
+                tag = "latest"
+                uri = "lscr.io/linuxserver/radarr"
+            }
+            longhorn_mounts = {
+                config = {
+                    container_path = "/config"
+                    storage_request = "10Gi"
+                }
+            }
+            nfs_mounts = {
+                entertainment = {
+                    create_subdir = false
+                    container_path = "/entertainment"
+                    nfs_export = var.nfs_storage.entertainment.export
+                    nfs_server = var.nfs_storage.entertainment.host
+                    read_only = false
+                    storage_request = "5Ti"
+                }
+            }
+            service_port = 80
+        }
         "torrent-entertainment" = {
             container_port = 8080
             environment = {
