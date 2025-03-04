@@ -62,7 +62,7 @@ module "app_piper" {
 module "app_homeassistant" {
     source = "../../modules/service2"
 
-    depends_on = [ module.app_piper, module.app_whisper, module.nfs_storage_export ]
+    depends_on = [ module.app_piper, module.app_whisper, module.longhorn ]
 
     capabilities = ["NET_RAW"]
     container_port = 8123

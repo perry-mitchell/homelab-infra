@@ -118,6 +118,18 @@ locals {
                             key = var.prowlarr_token
                         }
                     }
+                },
+                {
+                    Overseerr = {
+                        icon = "overseerr"
+                        href = "http://${module.app_overseerr.host_tailscale}"
+                        description = "Media request manager"
+                        widget = {
+                            type = "overseerr"
+                            url = "http://${module.app_overseerr.host_k8s}"
+                            key = var.overseerr_token
+                        }
+                    }
                 }
             ]
         },
@@ -148,6 +160,17 @@ locals {
                             password = var.nextcloud_auth.password
                         }
                     }
+                }
+            ]
+        },
+        {
+            Business = [
+                {
+                    "Kimai" = {
+                        icon = "kimai"
+                        href = "http://${module.app_kimai.host_tailscale}"
+                        description = "Time tracking and invoice management"
+                    }
                 },
                 {
                     Homebox = {
@@ -160,17 +183,6 @@ locals {
                             username = var.homebox_auth.username
                             password = var.homebox_auth.password
                         }
-                    }
-                }
-            ]
-        },
-        {
-            Business = [
-                {
-                    "Kimai" = {
-                        icon = "kimai"
-                        href = "http://${module.app_kimai.host_tailscale}"
-                        description = "Time tracking and invoice management"
                     }
                 }
             ]
@@ -239,6 +251,23 @@ locals {
                 nodes = true
             }
         }
+        # {
+        #     kubernetes: {
+        #         cluster: {
+        #             show: true,
+        #             cpu: true,
+        #             memory: true,
+        #             showLabel: true,
+        #             label: "k3s"
+        #         },
+        #         nodes: {
+        #             show: true,
+        #             cpu: true,
+        #             memory: true,
+        #             showLabel: true
+        #         }
+        #     }
+        # }
     ])
 }
 

@@ -10,7 +10,7 @@ locals {
 module "db_immich_pgvecto_rs" {
     source = "../../modules/service2"
 
-    depends_on = [ module.nfs_storage_subdir ]
+    depends_on = [ module.longhorn ]
 
     container_port = 5432
     environment = {
@@ -62,7 +62,7 @@ module "db_init_immich" {
 module "app_immich_ml" {
     source = "../../modules/service2"
 
-    depends_on = [ module.nfs_storage_subdir ]
+    depends_on = [ module.longhorn ]
 
     container_port = 3003
     environment = {

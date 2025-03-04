@@ -1,7 +1,7 @@
 module "app_code_server" {
     source = "../../modules/service2"
 
-    depends_on = [ module.nfs_storage_export ]
+    depends_on = [ module.longhorn ]
 
     container_port = 8443
     dns_config = {

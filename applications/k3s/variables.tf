@@ -140,6 +140,10 @@ variable "nodes" {
     }))
 }
 
+variable "overseerr_token" {
+    type = string
+}
+
 variable "pihole_admin_url" {
     type = string
 }

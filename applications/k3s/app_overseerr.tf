@@ -1,13 +1,13 @@
-module "app_tautulli" {
+module "app_overseerr" {
     source = "../../modules/service2"
 
-    depends_on = [ module.nfs_storage_subdir ]
+    depends_on = [ module.longhorn ]
 
-    container_port = 8181
+    container_port = 5055
     dns_config = {
         cluster_fqdn = var.cluster_fqdn
         host_ip = local.primary_ingress_ip
-        subdomain_name = "tautulli"
+        subdomain_name = "overseerr"
     }
     environment = {
         PGID = "100"
@@ -16,7 +16,7 @@ module "app_tautulli" {
     }
     image = {
         tag = "latest"
-        uri = "lscr.io/linuxserver/tautulli"
+        uri = "lscr.io/linuxserver/overseerr"
     }
     longhorn_mounts = {
         data = {
@@ -24,12 +24,12 @@ module "app_tautulli" {
             storage_request = "10Gi"
         }
     }
-    name = "tautulli"
-    namespace = kubernetes_namespace.entertainment.metadata[0].name
+    name = "overseerr"
+    namespace = kubernetes_namespace.torrents.metadata[0].name
     replicas = 1
     service_port = 80
     tailscale = {
-        hostname = "tautulli"
+        hostname = "overseerr"
         host_ip = local.primary_ingress_ip
         tailnet = var.tailscale_tailnet
     }

@@ -4,6 +4,8 @@
 module "app_arr_stack" {
     source = "../../modules/service-multi-container"
 
+    depends_on = [ module.longhorn ]
+
     containers = {
         gluetun = {
             capabilities = ["NET_ADMIN"]
