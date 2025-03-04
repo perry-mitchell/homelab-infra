@@ -1,6 +1,12 @@
+locals {
+  setup_local_service = var.container_port != null && var.service_port != null
+  setup_local_ingress = local.setup_local_service && var.dns_config != null
+  setup_tailscale = var.container_port != null && var.service_port != null && var.tailscale != null
+}
+
 module "dns" {
     source = "../dns-name"
-    count = var.dns_config != null ? 1 : 0
+    count = local.setup_local_ingress ? 1 : 0
 
     cluster_fqdn = var.dns_config.cluster_fqdn
     host_ip = var.dns_config.host_ip
@@ -9,7 +15,7 @@ module "dns" {
 
 module "dns_tailscale" {
     source = "../dns-name"
-    count = var.tailscale != null ? 1 : 0
+    count = local.setup_tailscale ? 1 : 0
 
     cluster_fqdn = var.tailscale.tailnet
     host_ip = var.tailscale.host_ip
@@ -17,6 +23,8 @@ module "dns_tailscale" {
 }
 
 resource "kubernetes_service" "local" {
+    count = local.setup_local_service ? 1 : 0
+
     metadata {
         name = var.name
         namespace = var.namespace
@@ -35,7 +43,7 @@ resource "kubernetes_service" "local" {
 }
 
 resource "kubernetes_service" "tailscale" {
-    count = var.tailscale != null ? 1 : 0
+    count = local.setup_tailscale ? 1 : 0
 
     metadata {
         name = "${var.name}-tailscale"
@@ -66,7 +74,7 @@ resource "kubernetes_service" "tailscale" {
 }
 
 resource "kubernetes_ingress_v1" "local" {
-    count = var.dns_config != null || var.tailscale != null ? 1 : 0
+    count = local.setup_local_ingress ? 1 : 0
 
     metadata {
         name = "${var.name}-local"
@@ -99,10 +107,10 @@ resource "kubernetes_ingress_v1" "local" {
 
                         backend {
                             service {
-                                name = kubernetes_service.local.metadata[0].name
+                                name = kubernetes_service.local[0].metadata[0].name
 
                                 port {
-                                    number = kubernetes_service.local.spec[0].port[0].port
+                                    number = kubernetes_service.local[0].spec[0].port[0].port
                                 }
                             }
                         }
@@ -114,7 +122,7 @@ resource "kubernetes_ingress_v1" "local" {
 }
 
 resource "kubernetes_ingress_v1" "tailscale" {
-    count = var.tailscale != null ? 1 : 0
+    count = local.setup_tailscale ? 1 : 0
 
     metadata {
         name = "${var.name}-tailscale"

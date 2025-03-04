@@ -11,6 +11,8 @@ variable "command" {
 }
 
 variable "container_port" {
+    default = null
+    nullable = true
     type = number
 }
 
@@ -95,6 +97,11 @@ variable "privileged" {
     default = false
 }
 
+variable "read_only_root_filesystem" {
+    type = bool
+    default = false
+}
+
 variable "replicas" {
     default = 1
     type = number
@@ -126,6 +133,8 @@ variable "samba_mounts" {
 }
 
 variable "service_port" {
+    default = null
+    nullable = true
     type = number
 }
 

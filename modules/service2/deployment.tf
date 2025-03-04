@@ -42,13 +42,14 @@ resource "kubernetes_deployment" "deployment" {
                     args = var.args
 
                     dynamic "security_context" {
-                        for_each = (var.run_as != null || var.capabilities != null || var.privileged != false) ? [1] : []
+                        for_each = (var.run_as != null || var.capabilities != null || var.privileged != false || var.read_only_root_filesystem != false) ? [1] : []
 
                         content {
                             run_as_user                = var.run_as != null ? var.run_as.user : null
                             run_as_group               = var.run_as != null ? var.run_as.group : null
-                            allow_privilege_escalation = var.run_as != null ? true : null
+                            allow_privilege_escalation = var.run_as != null || var.privileged ? true : false
                             privileged                 = var.privileged
+                            read_only_root_filesystem  = var.read_only_root_filesystem
 
                             dynamic "capabilities" {
                                 for_each = var.capabilities != null ? [1] : []

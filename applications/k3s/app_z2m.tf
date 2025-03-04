@@ -1,7 +1,7 @@
 module "app_z2m" {
     source = "../../modules/service2"
 
-    depends_on = [ module.nfs_storage_subdir ]
+    depends_on = [ module.longhorn ]
 
     container_port = 8080
     dns_config = {
