@@ -160,3 +160,11 @@ variable "tailscale_port_alternatives" {
         port = number
     }))
 }
+
+variable "temp_mounts" {
+    default = {}
+    type = map(object({
+        container_path = string
+        size_limit = string
+    }))
+}

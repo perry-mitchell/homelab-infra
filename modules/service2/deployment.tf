@@ -105,6 +105,15 @@ resource "kubernetes_deployment" "deployment" {
                             sub_path   = replace(volume_mount.key, "/", "_")
                         }
                     }
+
+                    dynamic "volume_mount" {
+                        for_each = var.temp_mounts
+
+                        content {
+                            name       = "tmp-${volume_mount.key}"
+                            mount_path = volume_mount.value.container_path
+                        }
+                    }
                 }
 
                 dynamic "volume" {
@@ -151,6 +160,19 @@ resource "kubernetes_deployment" "deployment" {
 
                         config_map {
                             name = "${var.name}-static-files"
+                        }
+                    }
+                }
+
+                dynamic "volume" {
+                    for_each = var.temp_mounts
+
+                    content {
+                        name = "tmp-${volume.key}"
+
+                        empty_dir {
+                            medium = "Memory"
+                            size_limit = volume.value.size_limit
                         }
                     }
                 }
