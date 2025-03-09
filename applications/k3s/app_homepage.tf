@@ -147,20 +147,20 @@ locals {
                             version = 2
                         }
                     }
-                },
-                {
-                    Nextcloud = {
-                        icon = "nextcloud"
-                        href = "http://${module.app_nextcloud.host_tailscale}"
-                        description = "Synchronised storage"
-                        widget = {
-                            type = "nextcloud"
-                            url = "http://${module.app_nextcloud.host_k8s}"
-                            username = var.nextcloud_auth.username
-                            password = var.nextcloud_auth.password
-                        }
-                    }
                 }
+                # {
+                #     Nextcloud = {
+                #         icon = "nextcloud"
+                #         href = "http://${module.app_nextcloud.host_tailscale}"
+                #         description = "Synchronised storage"
+                #         widget = {
+                #             type = "nextcloud"
+                #             url = "http://${module.app_nextcloud.host_k8s}"
+                #             username = var.nextcloud_auth.username
+                #             password = var.nextcloud_auth.password
+                #         }
+                #     }
+                # }
             ]
         },
         {
