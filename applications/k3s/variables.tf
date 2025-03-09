@@ -62,6 +62,10 @@ variable "db_redis_root" {
     type = string
 }
 
+variable "gitsave_jwt" {
+    type = string
+}
+
 variable "homeassistant_api_key" {
     type = string
 }
