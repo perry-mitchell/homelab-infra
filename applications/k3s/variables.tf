@@ -148,6 +148,14 @@ variable "overseerr_token" {
     type = string
 }
 
+variable "paperless_auth" {
+    type = object({
+        admin_mail = string
+        admin_password = string
+        admin_user = string
+    })
+}
+
 variable "pihole_admin_url" {
     type = string
 }

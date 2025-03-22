@@ -4,11 +4,6 @@ module "db_redis" {
     depends_on = [ module.nfs_storage_subdir ]
 
     container_port = 6379
-    # dns_config = {
-    #     cluster_fqdn = var.cluster_fqdn
-    #     host_ip = local.primary_ingress_ip
-    #     subdomain_name = "redis"
-    # }
     environment = {
         ALLOW_EMPTY_PASSWORD = "no"
         REDIS_PASSWORD = var.db_redis_root

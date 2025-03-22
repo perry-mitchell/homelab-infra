@@ -23,5 +23,6 @@ locals {
   redis_db_reservations = {
     immich = 1
     nextcloud = 2
+    paperless = 3
   }
 }

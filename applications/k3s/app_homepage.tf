@@ -147,6 +147,19 @@ locals {
                             version = 2
                         }
                     }
+                },
+                {
+                    PaperlessNGX = {
+                        icon = "paperless-ngx"
+                        href = "http://${module.app_paperless.host_tailscale}"
+                        description = "Document processing and storage"
+                        widget = {
+                            type = "paperlessngx"
+                            url = "http://${module.app_paperless.host_k8s}:80"
+                            username = var.paperless_auth.admin_user
+                            password = var.paperless_auth.admin_password
+                        }
+                    }
                 }
                 # {
                 #     Nextcloud = {
@@ -288,6 +301,12 @@ module "app_homepage" {
         cluster_fqdn = var.cluster_fqdn
         host_ip = local.primary_ingress_ip
         subdomain_name = "home"
+    }
+    environment = {
+        HOMEPAGE_ALLOWED_HOSTS = join(",", [
+            join(".", ["home", var.tailscale_tailnet]),
+            join(".", ["home", var.cluster_fqdn])
+        ])
     }
     files = {
         "/app/config/bookmarks.yaml" = ""
