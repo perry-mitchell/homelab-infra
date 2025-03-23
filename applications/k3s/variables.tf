@@ -252,6 +252,14 @@ variable "vpn_provider" {
     })
 }
 
+variable "wdosg_auth" {
+    type = object({
+        encryption_key = string
+        twitch_app_access_token = string
+        twitch_client_id = string
+    })
+}
+
 variable "webtrees_admin" {
     type = object({
         email = string
