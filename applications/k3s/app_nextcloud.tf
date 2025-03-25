@@ -1,3 +1,11 @@
+locals {
+    nextcloud_k8s_host = join(".", [
+        "nextcloud-local",
+        kubernetes_namespace.family.metadata[0].name,
+        "svc.cluster.local"
+    ])
+}
+
 resource "random_password" "nextcloud_database_user" {
     length = 32
     special = false
@@ -86,7 +94,8 @@ resource "helm_release" "nextcloud" {
         value = join(" ", [
             "nextcloud",
             module.nextcloud_dns_tailscale.dns_name,
-            module.nextcloud_dns.dns_name
+            module.nextcloud_dns.dns_name,
+            local.nextcloud_k8s_host
         ])
     }
 

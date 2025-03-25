@@ -160,20 +160,20 @@ locals {
                             password = var.paperless_auth.admin_password
                         }
                     }
+                },
+                {
+                    Nextcloud = {
+                        icon = "nextcloud"
+                        href = "http://${module.nextcloud_dns_tailscale.dns_name}"
+                        description = "Synchronised storage"
+                        widget = {
+                            type = "nextcloud"
+                            url = "http://${local.nextcloud_k8s_host}"
+                            username = var.nextcloud_auth.username
+                            password = var.nextcloud_auth.password
+                        }
+                    }
                 }
-                # {
-                #     Nextcloud = {
-                #         icon = "nextcloud"
-                #         href = "http://${module.app_nextcloud.host_tailscale}"
-                #         description = "Synchronised storage"
-                #         widget = {
-                #             type = "nextcloud"
-                #             url = "http://${module.app_nextcloud.host_k8s}"
-                #             username = var.nextcloud_auth.username
-                #             password = var.nextcloud_auth.password
-                #         }
-                #     }
-                # }
             ]
         },
         {
