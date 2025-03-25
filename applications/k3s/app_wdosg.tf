@@ -1,3 +1,6 @@
+// To renew access token:
+// curl -X POST https://id.twitch.tv/oauth2/token -H 'Content-Type: application/x-www-form-urlencoded' -d 'grant_type=client_credentials&client_id=<client_id>&client_secret=<client_secret>'
+
 module "app_wdosg" {
     source = "../../modules/service2"
 

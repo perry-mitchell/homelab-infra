@@ -39,13 +39,13 @@ resource "kubernetes_storage_class" "nextcloud_storage_nfs" {
     }
 }
 
-# module "nextcloud_dns" {
-#     source = "../dns-name"
+module "nextcloud_dns" {
+    source = "../../modules/dns-name"
 
-#     cluster_fqdn = var.cluster_fqdn
-#     host_ip = local.primary_ingress_ip
-#     subdomain_name = "nextcloud"
-# }
+    cluster_fqdn = var.cluster_fqdn
+    host_ip = local.primary_ingress_ip
+    subdomain_name = "nextcloud"
+}
 
 module "nextcloud_dns_tailscale" {
     source = "../../modules/dns-name"
@@ -84,8 +84,9 @@ resource "helm_release" "nextcloud" {
     set {
         name  = "nextcloud.trustedDomains"
         value = join(" ", [
-            module.nextcloud_dns_tailscale.dns_name
-            # module.nextcloud_dns.dns_name
+            "nextcloud",
+            module.nextcloud_dns_tailscale.dns_name,
+            module.nextcloud_dns.dns_name
         ])
     }
 
@@ -94,41 +95,9 @@ resource "helm_release" "nextcloud" {
         value = "/var/www/html/data"
     }
 
-    # set {
-    #     name  = "nginx.containerPort"
-    #     value = "80"
-    # }
-
     set {
         name  = "ingress.enabled"
         value = "false"
-    }
-
-    # set {
-    #     name  = "ingress.className"
-    #     value = "tailscale"
-    # }
-
-    # set {
-    #     name  = "ingress.hosts[0]"
-    #     value = module.nextcloud_dns_tailscale.dns_name
-    # }
-
-    # set {
-    #     name  = "ingress.servicePort"
-    #     value = "80"
-    # }
-
-    set {
-        name  = "service.annotations.tailscale\\.com/expose"
-        value = "true"
-        type  = "string"
-    }
-
-    set {
-        name  = "service.annotations.tailscale\\.com/hostname"
-        value = "nextcloud"
-        type  = "string"
     }
 
     # Database
@@ -216,12 +185,59 @@ resource "helm_release" "nextcloud" {
     }
 }
 
+resource "kubernetes_service" "nextcloud_local" {
+    metadata {
+        name = "nextcloud-local"
+        namespace = kubernetes_namespace.family.metadata[0].name
+    }
+
+    spec {
+        selector = {
+            "app.kubernetes.io/component" = "app"
+            "app.kubernetes.io/instance" = "nextcloud"
+            "app.kubernetes.io/name" = "nextcloud"
+        }
+
+        port {
+            name        = "http"
+            port        = 80
+            target_port = 80
+        }
+    }
+}
+
+resource "kubernetes_service" "nextcloud_tailscale" {
+    metadata {
+        name = "nextcloud-tailscale"
+        namespace = kubernetes_namespace.family.metadata[0].name
+        annotations = {
+            "tailscale.com/expose" = "true"
+            "tailscale.com/hostname" = "nextcloud"
+            # "tailscale.com/https" = "true"
+        }
+    }
+
+    spec {
+        selector = {
+            "app.kubernetes.io/component" = "app"
+            "app.kubernetes.io/instance" = "nextcloud"
+            "app.kubernetes.io/name" = "nextcloud"
+        }
+
+        port {
+            name        = "http"
+            port        = 80
+            target_port = 80
+        }
+    }
+}
+
 resource "kubernetes_ingress_v1" "nextcloud_local" {
     metadata {
         name = "nextcloud-local"
         namespace = kubernetes_namespace.family.metadata[0].name
         annotations = {
-            "nginx.ingress.kubernetes.io/proxy-body-size" = "250m"
+            "nginx.ingress.kubernetes.io/proxy-body-size" = "500m"
         }
     }
 
@@ -230,6 +246,7 @@ resource "kubernetes_ingress_v1" "nextcloud_local" {
 
         dynamic "rule" {
             for_each = toset([
+                module.nextcloud_dns.dns_name,
                 module.nextcloud_dns_tailscale.dns_name
             ])
 
@@ -243,10 +260,10 @@ resource "kubernetes_ingress_v1" "nextcloud_local" {
 
                         backend {
                             service {
-                                name = "nextcloud"
+                                name = kubernetes_service.nextcloud_local.metadata[0].name
 
                                 port {
-                                    number = 80
+                                    number = kubernetes_service.nextcloud_local.spec[0].port[0].port
                                 }
                             }
                         }
@@ -267,150 +284,31 @@ resource "kubernetes_ingress_v1" "nextcloud_tailscale" {
     spec {
         ingress_class_name = "tailscale"
 
-        tls {
-            hosts = [
-                "nextcloud"
-            ]
-        }
+        dynamic "rule" {
+            for_each = toset([
+                module.nextcloud_dns_tailscale.dns_name
+            ])
 
-        # rule {
-        #     http {
-        #         path {
-        #             path = "/"
-        #             path_type = "Prefix"
+            content {
+                host = rule.value
 
-                    default_backend {
-                        service {
-                            name = "nextcloud"
-                            port {
-                                number = 80
+                http {
+                    path {
+                        path = "/"
+                        path_type = "Prefix"
+
+                        backend {
+                            service {
+                                name = kubernetes_service.nextcloud_tailscale.metadata[0].name
+
+                                port {
+                                    number = kubernetes_service.nextcloud_tailscale.spec[0].port[0].port
+                                }
                             }
                         }
                     }
-        #         }
-        #     }
-        # }
-
-        # dynamic "rule" {
-        #     for_each = toset(
-        #         [
-        #             module.nextcloud_dns_tailscale.dns_name
-        #         ]
-        #     )
-
-        #     content {
-        #         host = rule.value
-
-        #         http {
-        #             path {
-        #                 path = "/"
-        #                 path_type = "Prefix"
-
-        #                 backend {
-        #                     service {
-        #                         name = "nextcloud"
-
-        #                         port {
-        #                             name = "http"
-        #                         }
-        #                     }
-        #                 }
-        #             }
-        #         }
-        #     }
-        # }
+                }
+            }
+        }
     }
 }
-
-# resource "kubernetes_ingress_v1" "tailscale" {
-#     metadata {
-#         name = "nextcloud-tailscale"
-#         namespace = kubernetes_namespace.family.metadata[0].name
-#         annotations = {}
-#     }
-
-#     spec {
-#         ingress_class_name = "tailscale"
-
-#         rule {
-#             host = module.nextcloud_dns_tailscale.dns_name
-
-#             http {
-#                 path {
-#                     path = "/"
-#                     path_type = "Prefix"
-
-#                     backend {
-#                         service {
-#                             name = "nextcloud"
-
-#                             port {
-#                                 number = 80
-#                             }
-#                         }
-#                     }
-#                 }
-#             }
-#         }
-#     }
-# }
-
-# module "app_nextcloud" {
-#     source = "../../modules/service2"
-
-#     depends_on = [ module.db_init_nextcloud, module.nfs_storage_export ]
-
-#     container_port = 80
-#     dns_config = {
-#         cluster_fqdn = var.cluster_fqdn
-#         host_ip = local.primary_ingress_ip
-#         subdomain_name = "nextcloud"
-#     }
-#     environment = {
-#         TZ = "Europe/Helsinki"
-#         MYSQL_DATABASE = "nextcloud"
-#         MYSQL_USER = "nextcloud"
-#         MYSQL_PASSWORD = random_password.nextcloud_database_user.result
-#         MYSQL_HOST = local.mariadb_service_hostname
-#         REDIS_HOST = local.redis_service_hostname
-#         REDIS_HOST_PORT = "6379"
-#         REDIS_HOST_PASSWORD = var.db_redis_root
-#         REDIS_DB_INDEX = "${local.redis_db_reservations.nextcloud}"
-#     }
-#     image = {
-#         tag = "production-apache"
-#         uri = "nextcloud"
-#     }
-#     name = "nextcloud"
-#     namespace = kubernetes_namespace.family.metadata[0].name
-#     nfs_mounts = {
-#         data = {
-#             create_subdir = true
-#             container_path = "/var/www/html/data"
-#             nfs_export = var.nfs_storage.appdata.export
-#             nfs_server = var.nfs_storage.appdata.host
-#             storage_request = "1Ti"
-#         }
-#         config = {
-#             create_subdir = true
-#             container_path = "/var/www/html/config"
-#             nfs_export = var.nfs_storage.appdata.export
-#             nfs_server = var.nfs_storage.appdata.host
-#             storage_request = "5Gi"
-#         }
-#         customapps = {
-#             create_subdir = true
-#             container_path = "/var/www/html/custom_apps"
-#             nfs_export = var.nfs_storage.appdata.export
-#             nfs_server = var.nfs_storage.appdata.host
-#             storage_request = "10Gi"
-#         }
-#     }
-#     replicas = 1
-#     service_port = 80
-#     tailscale = {
-#         hostname = "nextcloud"
-#         host_ip = local.primary_ingress_ip
-#         tailnet = var.tailscale_tailnet
-#     }
-# }
