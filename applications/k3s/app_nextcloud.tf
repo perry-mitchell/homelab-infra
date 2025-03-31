@@ -246,7 +246,7 @@ resource "kubernetes_ingress_v1" "nextcloud_local" {
         name = "nextcloud-local"
         namespace = kubernetes_namespace.family.metadata[0].name
         annotations = {
-            "nginx.ingress.kubernetes.io/proxy-body-size" = "500m"
+            "nginx.ingress.kubernetes.io/proxy-body-size" = "1000m"
         }
     }
 
