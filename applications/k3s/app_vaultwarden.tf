@@ -1,5 +1,5 @@
 module "app_vaultwarden" {
-    source = "../../modules/service2"
+    source = "../../modules/service3"
 
     depends_on = [ module.longhorn ]
 
@@ -9,11 +9,6 @@ module "app_vaultwarden" {
         host_ip = local.primary_ingress_ip
         subdomain_name = "vaultwarden"
     }
-    # environment = {
-    #     PGID = "100"
-    #     PUID = "99"
-    #     TZ = "Europe/Helsinki"
-    # }
     image = {
         tag = "latest"
         uri = "vaultwarden/server"
