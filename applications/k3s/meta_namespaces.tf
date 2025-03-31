@@ -62,6 +62,14 @@ resource "kubernetes_namespace" "remote_access" {
     }
 }
 
+resource "kubernetes_namespace" "security" {
+    depends_on = [ module.k3s_auth ]
+
+    metadata {
+        name = "security"
+    }
+}
+
 resource "kubernetes_namespace" "smart_home" {
     depends_on = [ module.k3s_auth ]
 
