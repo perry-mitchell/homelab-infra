@@ -28,10 +28,6 @@ nodes_data=$(hcl2json "$SCRIPT_DIR/../terraform.tfvars" | jq -r '
 
 echo "$nodes_data" | while IFS='|' read -r ip user password; do
     echo "Shutting down node: $ip (user: $user)"
-    # if ! sshpass -p "$password" ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 "$user@$ip" "systemctl stop k3s"; then
-    #     echo "Failed to shutdown k3s on $ip"
-    #     continue
-    # fi
 
     SSHPASS="$password" sshpass -v -e ssh -v -o StrictHostKeyChecking=no -o ConnectTimeout=5 "$user@$ip" << EOL
         shutdown -hP now
