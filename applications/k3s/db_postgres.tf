@@ -4,11 +4,6 @@ module "db_postgres" {
     depends_on = [ module.nfs_storage_subdir ]
 
     container_port = 5432
-    # dns_config = {
-    #     cluster_fqdn = var.cluster_fqdn
-    #     host_ip = local.primary_ingress_ip
-    #     subdomain_name = "postgres"
-    # }
     environment = {
         PGDATA = "/var/lib/postgresql/dbdata"
         POSTGRES_PASSWORD = var.db_postgres_root
@@ -37,11 +32,6 @@ module "db_postgres_postgis" {
     depends_on = [ module.nfs_storage_subdir ]
 
     container_port = 5432
-    # dns_config = {
-    #     cluster_fqdn = var.cluster_fqdn
-    #     host_ip = local.primary_ingress_ip
-    #     subdomain_name = "postgres"
-    # }
     environment = {
         PGDATA = "/var/lib/postgresql/dbdata"
         POSTGRES_PASSWORD = var.db_postgres_postgis_root

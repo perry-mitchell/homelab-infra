@@ -1,3 +1,11 @@
+resource "kubernetes_namespace" "ai" {
+    depends_on = [ module.k3s_auth ]
+
+    metadata {
+        name = "ai"
+    }
+}
+
 resource "kubernetes_namespace" "backup" {
     depends_on = [ module.k3s_auth ]
 
