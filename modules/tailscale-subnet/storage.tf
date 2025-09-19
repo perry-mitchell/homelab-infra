@@ -18,7 +18,7 @@ resource "kubernetes_persistent_volume_claim" "storage_longhorn" {
 
     spec {
         access_modes = ["ReadWriteOnce"]
-        storage_class_name = "longhorn"
+        storage_class_name = var.longhorn_storage_class
         resources {
             requests = {
                 storage = each.value.storage_request

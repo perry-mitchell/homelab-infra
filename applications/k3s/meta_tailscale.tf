@@ -3,6 +3,7 @@ module "tailscale_subnet" {
 
     additional_cidrs = var.network_cidrs
     auth_key = var.tailscale_container_auth
+    hostname = "tailscale-acheron"
     namespace = "default"
     longhorn_mounts = {
         tailscale = {
@@ -10,6 +11,7 @@ module "tailscale_subnet" {
             storage_request = "5Gi"
         }
     }
+    longhorn_storage_class = "longhorn"
 }
 
 # module "tailscale_subnet-2" {

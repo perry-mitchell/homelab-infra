@@ -33,7 +33,7 @@ resource "kubernetes_pod" "tailscale_subnet" {
 
             env {
                 name = "TS_HOSTNAME"
-                value = "tailscale-acheron"
+                value = var.hostname
             }
 
             env {
