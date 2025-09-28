@@ -91,4 +91,10 @@ resource "kubernetes_pod" "tailscale_subnet" {
         kubernetes_role_binding.tailscale,
         kubernetes_secret.tailscale_auth
     ]
+
+    lifecycle {
+        ignore_changes = [
+            metadata.0.annotations
+        ]
+    }
 }
