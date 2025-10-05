@@ -4,7 +4,7 @@ locals {
 }
 
 locals {
-    immich_tag = "v1.139.3"
+    immich_tag = "v1.144.1"
 }
 
 module "db_immich_pgvecto_rs" {

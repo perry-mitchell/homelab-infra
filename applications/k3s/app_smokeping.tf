@@ -21,6 +21,12 @@ module "app_smokeping" {
         tag = "latest"
         uri = "lscr.io/linuxserver/smokeping"
     }
+    longhorn_mounts = {
+        harvester-migration = {
+            container_path = "/data2"
+            storage_request = "5Gi"
+        }
+    }
     name = "smokeping"
     namespace = kubernetes_namespace.monitoring.metadata[0].name
     nfs_mounts = {
@@ -32,7 +38,7 @@ module "app_smokeping" {
             storage_request = "5Gi"
         }
     }
-    replicas = 1
+    replicas = 0
     service_port = 80
     tailscale = {
         hostname = "smokeping"
