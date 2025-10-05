@@ -39,7 +39,7 @@ module "app_code_server" {
     name = "code"
     namespace = kubernetes_namespace.dev.metadata[0].name
     privileged = true
-    replicas = 1
+    replicas = 0
     service_port = 80
     tailscale = {
         hostname = "code"

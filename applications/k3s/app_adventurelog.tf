@@ -1,33 +1,33 @@
-locals {
-  adventurelog_frontend_url = "http://adventurelog.${var.tailscale_tailnet}"
-  adventurelog_backend_url = "http://adventurelog-svr.${var.tailscale_tailnet}"
-}
+# locals {
+#   adventurelog_frontend_url = "http://adventurelog.${var.tailscale_tailnet}"
+#   adventurelog_backend_url = "http://adventurelog-svr.${var.tailscale_tailnet}"
+# }
 
-resource "random_password" "adventurelog_database_user" {
-    length = 32
-    special = false
-}
+# resource "random_password" "adventurelog_database_user" {
+#     length = 32
+#     special = false
+# }
 
-module "db_init_adventurelog" {
-    source = "../../modules/postgres-init"
+# module "db_init_adventurelog" {
+#     source = "../../modules/postgres-init"
 
-    depends_on = [ module.db_postgres_postgis ]
+#     depends_on = [ module.db_postgres_postgis ]
 
-    create_database = "adventurelog"
-    create_user = {
-        password = random_password.adventurelog_database_user.result
-        username = "adventurelog"
-    }
-    db_host = local.postgres_postgis_service_hostname
-    db_password = var.db_postgres_postgis_root
-    db_username = "root"
-    name = "adventurelog"
-}
+#     create_database = "adventurelog"
+#     create_user = {
+#         password = random_password.adventurelog_database_user.result
+#         username = "adventurelog"
+#     }
+#     db_host = local.postgres_postgis_service_hostname
+#     db_password = var.db_postgres_postgis_root
+#     db_username = "root"
+#     name = "adventurelog"
+# }
 
-resource "random_password" "adventurelog_secret_key" {
-    length = 32
-    special = false
-}
+# resource "random_password" "adventurelog_secret_key" {
+#     length = 32
+#     special = false
+# }
 
 # module "app_adventurelog_backend" {
 #     source = "../../modules/service"

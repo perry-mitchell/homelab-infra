@@ -7,13 +7,13 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SOURCE_KUBECONFIG="$SCRIPT_DIR/../../k3s/kube.config"
 TARGET_KUBECONFIG="$SCRIPT_DIR/../kube.config"
 
-SOURCE_NAMESPACE="monitoring"
-SOURCE_DEPLOYMENT="smokeping"
-SOURCE_PVC="longhorn-smokeping-harvester-migration"
+SOURCE_NAMESPACE="remote-access"
+SOURCE_DEPLOYMENT="ddclient"
+SOURCE_PVC="longhorn-ddclient-data"
 
-TARGET_NAMESPACE="monitoring"
-TARGET_DEPLOYMENT="smokeping"
-TARGET_PVC="torrens-smokeping-data"
+TARGET_NAMESPACE="dns"
+TARGET_DEPLOYMENT="ddclient"
+TARGET_PVC="torrens-ddclient-data"
 
 # Port for data transfer
 TRANSFER_PORT=8080

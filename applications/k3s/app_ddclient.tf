@@ -19,5 +19,5 @@ module "app_ddclient" {
     }
     name = "ddclient"
     namespace = kubernetes_namespace.remote_access.metadata[0].name
-    replicas = 1
+    replicas = 0
 }
