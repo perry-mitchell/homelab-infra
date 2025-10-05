@@ -17,7 +17,7 @@ module "app_smokeping" {
             ports = [
                 {
                     container = 80
-                    hostname = "sp"
+                    hostname = "smokeping"
                     service = 80
                 }
             ]

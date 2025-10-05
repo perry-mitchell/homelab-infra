@@ -239,13 +239,13 @@ locals {
                         }
                     }
                 },
-                {
-                    Smokeping = {
-                        icon = "smokeping"
-                        href = "http://${module.app_smokeping.host_tailscale}"
-                        description = "DNS/HTTP connectivity monitoring"
-                    }
-                },
+                # {
+                #     Smokeping = {
+                #         icon = "smokeping"
+                #         href = "http://${module.app_smokeping.host_tailscale}"
+                #         description = "DNS/HTTP connectivity monitoring"
+                #     }
+                # },
                 {
                     Unifi = {
                         icon = "ubiquiti"
