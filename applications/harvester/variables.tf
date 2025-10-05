@@ -1,3 +1,8 @@
+variable "cluster_name" {
+    default = "torrens"
+    type = string
+}
+
 variable "longhorn_storage_class" {
     type = string
     default = "harvester-longhorn"
@@ -21,4 +26,11 @@ variable "state_encryption_passphrase" {
 
 variable "tailscale_container_auth" {
     type = string
+}
+
+variable "tailscale_oauth" {
+    type = object({
+      client_id = string
+      client_secret = string
+    })
 }
