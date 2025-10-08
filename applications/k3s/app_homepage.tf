@@ -118,19 +118,19 @@ locals {
                             key = var.prowlarr_token
                         }
                     }
-                },
-                {
-                    Overseerr = {
-                        icon = "overseerr"
-                        href = "http://${module.app_overseerr.host_tailscale}"
-                        description = "Media request manager"
-                        widget = {
-                            type = "overseerr"
-                            url = "http://${module.app_overseerr.host_k8s}"
-                            key = var.overseerr_token
-                        }
-                    }
                 }
+                # {
+                #     Overseerr = {
+                #         icon = "overseerr"
+                #         href = "http://${module.app_overseerr.host_tailscale}"
+                #         description = "Media request manager"
+                #         widget = {
+                #             type = "overseerr"
+                #             url = "http://${module.app_overseerr.host_k8s}"
+                #             key = var.overseerr_token
+                #         }
+                #     }
+                # }
             ]
         },
         {
