@@ -22,7 +22,7 @@ module "app_tautulli" {
             ports = [
                 {
                     container = 8181
-                    hostname = "tautulli2"
+                    hostname = "tautulli"
                     service = 80
                 }
             ]
