@@ -7,13 +7,13 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SOURCE_KUBECONFIG="$SCRIPT_DIR/../../k3s/kube.config"
 TARGET_KUBECONFIG="$SCRIPT_DIR/../kube.config"
 
-SOURCE_NAMESPACE="remote-access"
-SOURCE_DEPLOYMENT="ddclient"
-SOURCE_PVC="longhorn-ddclient-data"
+SOURCE_NAMESPACE="entertainment"
+SOURCE_DEPLOYMENT="tautulli"
+SOURCE_PVC="longhorn-tautulli-data"
 
-TARGET_NAMESPACE="dns"
-TARGET_DEPLOYMENT="ddclient"
-TARGET_PVC="torrens-ddclient-data"
+TARGET_NAMESPACE="entertainment"
+TARGET_DEPLOYMENT="tautulli"
+TARGET_PVC="torrens-tautulli-config"
 
 # Port for data transfer
 TRANSFER_PORT=8080

@@ -52,20 +52,20 @@ locals {
                             key = var.plex_token
                         }
                     }
-                },
-                {
-                    Tautulli = {
-                        icon = "tautulli"
-                        href = "http://${module.app_tautulli.host_tailscale}"
-                        description = "Plex Media Server management and analytics"
-                        widget = {
-                            type = "tautulli"
-                            url = "http://${module.app_tautulli.host_k8s}"
-                            key = var.tautulli_api_key
-                            enableUser = true
-                        }
-                    }
                 }
+                # {
+                #     Tautulli = {
+                #         icon = "tautulli"
+                #         href = "http://${module.app_tautulli.host_tailscale}"
+                #         description = "Plex Media Server management and analytics"
+                #         widget = {
+                #             type = "tautulli"
+                #             url = "http://${module.app_tautulli.host_k8s}"
+                #             key = var.tautulli_api_key
+                #             enableUser = true
+                #         }
+                #     }
+                # }
             ]
         },
         {

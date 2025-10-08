@@ -4,6 +4,12 @@ resource "kubernetes_namespace" "dns" {
     }
 }
 
+resource "kubernetes_namespace" "entertainment" {
+    metadata {
+        name = "entertainment"
+    }
+}
+
 resource "kubernetes_namespace" "monitoring" {
     metadata {
         name = "monitoring"
