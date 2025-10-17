@@ -1,3 +1,3 @@
 variable "storage_name" {
-    type = string
+  type = string
 }

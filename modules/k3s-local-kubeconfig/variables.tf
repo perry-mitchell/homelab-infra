@@ -1,15 +1,15 @@
 variable "server_ip" {
-    type = string
+  type = string
 }
 
 variable "server_password" {
-    type = string
+  type = string
 }
 
 variable "server_user" {
-    type = string
+  type = string
 }
 
 variable "timestamp" {
-    type = string
+  type = string
 }

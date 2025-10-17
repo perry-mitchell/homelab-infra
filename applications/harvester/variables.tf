@@ -1,36 +1,36 @@
 variable "cluster_name" {
-    default = "torrens"
-    type = string
+  default = "torrens"
+  type    = string
 }
 
 variable "longhorn_storage_class" {
-    type = string
-    default = "harvester-longhorn"
+  type    = string
+  default = "harvester-longhorn"
 }
 
 variable "network_cidrs" {
-    type = set(string)
+  type = set(string)
 }
 
 variable "nfs_storage" {
-    type = map(object({
-        export = string
-        host = string
-        path_pattern = string
-    }))
+  type = map(object({
+    export       = string
+    host         = string
+    path_pattern = string
+  }))
 }
 
 variable "state_encryption_passphrase" {
-    type = string
+  type = string
 }
 
 variable "tailscale_container_auth" {
-    type = string
+  type = string
 }
 
 variable "tailscale_oauth" {
-    type = object({
-      client_id = string
-      client_secret = string
-    })
+  type = object({
+    client_id     = string
+    client_secret = string
+  })
 }

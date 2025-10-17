@@ -1,8 +1,8 @@
 variable "labels" {
-    type = map(string)
+  type = map(string)
 }
 
 
 variable "node_name" {
-    type = string
+  type = string
 }

@@ -1,7 +1,7 @@
 terraform {
-    required_providers {
-        kubernetes = {
-            source = "opentofu/kubernetes"
-        }
+  required_providers {
+    kubernetes = {
+      source = "opentofu/kubernetes"
     }
+  }
 }

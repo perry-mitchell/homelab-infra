@@ -1,24 +1,24 @@
 variable "puppet_file" {
-    type = string
+  type = string
 }
 
 variable "server_ip" {
-    type = string
+  type = string
 }
 
 variable "server_password" {
-    type = string
+  type = string
 }
 
 variable "server_user" {
-    type = string
+  type = string
 }
 
 variable "vars" {
-    default = {}
-    type = map(string)
+  default = {}
+  type    = map(string)
 }
 
 variable "work_directory" {
-    type = string
+  type = string
 }

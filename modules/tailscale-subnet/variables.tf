@@ -1,28 +1,28 @@
 variable "additional_cidrs" {
-    default = []
-    type = set(string)
+  default = []
+  type    = set(string)
 }
 
 variable "auth_key" {
-    type = string
+  type = string
 }
 
 variable "hostname" {
-    type = string
+  type = string
 }
 
 variable "longhorn_mounts" {
-    default = {}
-    type = map(object({
-        container_path = string
-        storage_request = string
-    }))
+  default = {}
+  type = map(object({
+    container_path  = string
+    storage_request = string
+  }))
 }
 
 variable "longhorn_storage_class" {
-    type = string
+  type = string
 }
 
 variable "namespace" {
-    type = string
+  type = string
 }

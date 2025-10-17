@@ -1,10 +1,10 @@
 terraform {
-    required_providers {
-        helm = {
-            source = "opentofu/helm"
-        }
-        kubernetes = {
-            source = "opentofu/kubernetes"
-        }
+  required_providers {
+    helm = {
+      source = "opentofu/helm"
     }
+    kubernetes = {
+      source = "opentofu/kubernetes"
+    }
+  }
 }

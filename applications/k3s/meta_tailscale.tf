@@ -1,17 +1,17 @@
 module "tailscale_subnet" {
-    source = "../../modules/tailscale-subnet"
+  source = "../../modules/tailscale-subnet"
 
-    additional_cidrs = var.network_cidrs
-    auth_key = var.tailscale_container_auth
-    hostname = "tailscale-acheron"
-    namespace = "default"
-    longhorn_mounts = {
-        tailscale = {
-            container_path = "/var/lib/tailscale"
-            storage_request = "5Gi"
-        }
+  additional_cidrs = var.network_cidrs
+  auth_key         = var.tailscale_container_auth
+  hostname         = "tailscale-acheron"
+  namespace        = "default"
+  longhorn_mounts = {
+    tailscale = {
+      container_path  = "/var/lib/tailscale"
+      storage_request = "5Gi"
     }
-    longhorn_storage_class = "longhorn"
+  }
+  longhorn_storage_class = "longhorn"
 }
 
 # module "tailscale_subnet-2" {
@@ -23,10 +23,10 @@ module "tailscale_subnet" {
 # }
 
 module "tailscale" {
-    source = "../../modules/tailscale"
+  source = "../../modules/tailscale"
 
-    oauth = {
-        client_id = var.tailscale_oauth.client_id
-        client_secret = var.tailscale_oauth.client_secret
-    }
+  oauth = {
+    client_id     = var.tailscale_oauth.client_id
+    client_secret = var.tailscale_oauth.client_secret
+  }
 }

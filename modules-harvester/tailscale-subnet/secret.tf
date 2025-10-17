@@ -1,18 +1,18 @@
 resource "kubernetes_secret" "tailscale_auth" {
-    metadata {
-        name = "tailscale-auth"
-        namespace = var.namespace
-    }
+  metadata {
+    name      = "tailscale-auth"
+    namespace = var.namespace
+  }
 
-    data = {
-        TS_AUTHKEY = var.auth_key
-    }
+  data = {
+    TS_AUTHKEY = var.auth_key
+  }
 
-    type = "Opaque"
+  type = "Opaque"
 
-    lifecycle {
-        ignore_changes = [
-            data
-        ]
-    }
+  lifecycle {
+    ignore_changes = [
+      data
+    ]
+  }
 }

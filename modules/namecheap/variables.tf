@@ -1,11 +1,11 @@
 variable "cloudflare_account_id" {
-    type = string
+  type = string
 }
 
 variable "tunnel_domain" {
-    type = string
+  type = string
 }
 
 variable "tunnel_name" {
-    type = string
+  type = string
 }

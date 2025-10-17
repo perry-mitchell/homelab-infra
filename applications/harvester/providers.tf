@@ -3,15 +3,15 @@ provider "harvester" {
 }
 
 provider "helm" {
-    kubernetes {
-        config_path = "./kube.config"
-        # config_context = "local"
-        # insecure       = true
-    }
+  kubernetes {
+    config_path = "./kube.config"
+    # config_context = "local"
+    # insecure       = true
+  }
 }
 
 provider "kubernetes" {
-    config_path    = "./kube.config"
-    # config_context = "local"
-    # insecure       = true
+  config_path = "./kube.config"
+  # config_context = "local"
+  # insecure       = true
 }

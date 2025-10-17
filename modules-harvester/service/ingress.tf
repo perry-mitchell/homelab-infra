@@ -16,8 +16,8 @@ resource "kubernetes_service" "tailscale" {
   for_each = local.all_ports
 
   metadata {
-    name      = "${var.name}-${each.key}"
-    namespace = var.namespace
+    name        = "${var.name}-${each.key}"
+    namespace   = var.namespace
     annotations = {}
   }
 

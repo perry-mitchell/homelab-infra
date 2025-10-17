@@ -1,64 +1,64 @@
 variable "containers" {
-    type = map(object({
-        args = optional(list(string), null)
-        capabilities = optional(set(string), null)
-        command = optional(list(string), null)
-        container_port = optional(number, null)
-        environment = optional(map(string), {})
-        image = object({
-            tag = string
-            uri = string
-        })
-        init = optional(bool, false)
-        longhorn_mounts = optional(map(object({
-            container_path = string
-            storage_request = string
-        })), {})
-        nfs_mounts = optional(map(object({
-            create_subdir = bool
-            container_path = string
-            nfs_export = string
-            nfs_server = string
-            read_only = optional(bool, false)
-            storage_request = optional(string, "50Gi")
-        })), {})
-        restart_policy = optional(string, null)
-        run_as = optional(object({
-            user = number
-            group = number
-        }), null)
-        service_port = optional(number, null)
-    }))
+  type = map(object({
+    args           = optional(list(string), null)
+    capabilities   = optional(set(string), null)
+    command        = optional(list(string), null)
+    container_port = optional(number, null)
+    environment    = optional(map(string), {})
+    image = object({
+      tag = string
+      uri = string
+    })
+    init = optional(bool, false)
+    longhorn_mounts = optional(map(object({
+      container_path  = string
+      storage_request = string
+    })), {})
+    nfs_mounts = optional(map(object({
+      create_subdir   = bool
+      container_path  = string
+      nfs_export      = string
+      nfs_server      = string
+      read_only       = optional(bool, false)
+      storage_request = optional(string, "50Gi")
+    })), {})
+    restart_policy = optional(string, null)
+    run_as = optional(object({
+      user  = number
+      group = number
+    }), null)
+    service_port = optional(number, null)
+  }))
 }
 
 variable "dns_config" {
-    type = object({
-        cluster_fqdn = string
-        host_ip = string
-    })
+  type = object({
+    cluster_fqdn = string
+    host_ip      = string
+  })
 }
 
 variable "ingress_upload_size" {
-    default = "50m"
-    type = string
+  default = "50m"
+  type    = string
 
-    validation {
-        condition = can(regex("^[0-9]+(k|m|g|K|M|G)?$", var.ingress_upload_size))
-        error_message = "The ingress_upload_size value must be a valid size expression (e.g., 50m, 1G, 500k)."
-    }
+  validation {
+    condition     = can(regex("^[0-9]+(k|m|g|K|M|G)?$", var.ingress_upload_size))
+    error_message = "The ingress_upload_size value must be a valid size expression (e.g., 50m, 1G, 500k)."
+  }
 }
 
 variable "name" {
-    type = string
+  type = string
 }
 
 variable "namespace" {
-    type = string
+  type = string
 }
 
 variable "tailscale" {
-    type = object({
-        host_ip = string
-        tailnet = string
-    })
+  type = object({
+    host_ip = string
+    tailnet = string
+  })
 }

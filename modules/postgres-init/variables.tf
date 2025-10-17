@@ -1,37 +1,37 @@
 variable "create_database" {
-    type = string
+  type = string
 }
 
 variable "create_user" {
-    type = object({
-        password = string
-        username = string
-    })
+  type = object({
+    password = string
+    username = string
+  })
 }
 
 variable "db_host" {
-    type = string
+  type = string
 }
 
 variable "db_password" {
-    sensitive = true
-    type = string
+  sensitive = true
+  type      = string
 }
 
 variable "db_username" {
-    type = string
+  type = string
 }
 
 variable "extra_sql_lines" {
-    default = []
-    type = list(string)
+  default = []
+  type    = list(string)
 }
 
 variable "name" {
-    type = string
+  type = string
 }
 
 variable "namespace" {
-    default = "default"
-    type = string
+  default = "default"
+  type    = string
 }

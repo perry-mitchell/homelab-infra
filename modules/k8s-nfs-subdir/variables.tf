@@ -1,15 +1,15 @@
 variable "name" {
-    type = string
+  type = string
 }
 
 variable "nfs_export" {
-    type = string
+  type = string
 }
 
 variable "nfs_server" {
-    type = string
+  type = string
 }
 
 variable "path_pattern" {
-    type = string
+  type = string
 }
