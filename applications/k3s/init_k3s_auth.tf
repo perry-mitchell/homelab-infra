@@ -4,7 +4,7 @@ module "k3s_auth" {
     server_ip = local.initial_node.ip
     server_password = local.initial_node.password
     server_user = local.initial_node.user
-    timestamp = "2024-11-24"
+    timestamp = "2025-10-17"
 }
 
 module "ingress" {

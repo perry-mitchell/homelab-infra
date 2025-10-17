@@ -7,13 +7,13 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SOURCE_KUBECONFIG="$SCRIPT_DIR/../../k3s/kube.config"
 TARGET_KUBECONFIG="$SCRIPT_DIR/../kube.config"
 
-SOURCE_NAMESPACE="torrents"
-SOURCE_DEPLOYMENT="overseerr"
-SOURCE_PVC="longhorn-overseerr-data"
+SOURCE_NAMESPACE="security"
+SOURCE_DEPLOYMENT="vaultwarden"
+SOURCE_PVC="longhorn-vaultwarden-data"
 
-TARGET_NAMESPACE="entertainment"
-TARGET_DEPLOYMENT="overseerr"
-TARGET_PVC="torrens-overseerr-config"
+TARGET_NAMESPACE="authentication"
+TARGET_DEPLOYMENT="vaultwarden"
+TARGET_PVC="torrens-vaultwarden-data"
 
 # Port for data transfer
 TRANSFER_PORT=8080

@@ -1,3 +1,9 @@
+resource "kubernetes_namespace" "authentication" {
+    metadata {
+        name = "authentication"
+    }
+}
+
 resource "kubernetes_namespace" "dns" {
     metadata {
         name = "dns"
