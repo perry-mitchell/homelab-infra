@@ -24,7 +24,7 @@ resource "kubernetes_storage_class" "storage_nfs" {
   for_each = local.nfs_mounts
 
   metadata {
-    name = "${var.cluster_name}-${each.key}"
+    name = "nfs-${each.key}"
   }
 
   storage_provisioner    = "nfs.csi.k8s.io"
@@ -43,7 +43,7 @@ resource "kubernetes_persistent_volume_claim" "storage_nfs" {
   for_each = local.nfs_mounts
 
   metadata {
-    name      = "${var.cluster_name}-${each.key}"
+    name = "nfs-${each.key}"
     namespace = var.namespace
     annotations = {
       application = each.value.container_name

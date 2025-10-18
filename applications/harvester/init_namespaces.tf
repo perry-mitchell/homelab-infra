@@ -4,6 +4,12 @@ resource "kubernetes_namespace" "authentication" {
   }
 }
 
+resource "kubernetes_namespace" "backup" {
+  metadata {
+    name = "backup"
+  }
+}
+
 resource "kubernetes_namespace" "dns" {
   metadata {
     name = "dns"

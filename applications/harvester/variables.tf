@@ -3,6 +3,13 @@ variable "cluster_name" {
   type    = string
 }
 
+variable "gitsave" {
+  type = object({
+    encryption_secret = string
+    jwt = string
+  })
+}
+
 variable "longhorn_storage_class" {
   type    = string
   default = "harvester-longhorn"

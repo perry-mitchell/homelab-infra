@@ -214,14 +214,14 @@ locals {
               password = var.kopia_admin.password
             }
           }
-        },
-        {
-          GitSave = {
-            icon        = "github-light"
-            href        = "http://${module.app_gitsave.host_tailscale}"
-            description = "Github repository backups"
-          }
         }
+        # {
+        #   GitSave = {
+        #     icon        = "github-light"
+        #     href        = "http://${module.app_gitsave.host_tailscale}"
+        #     description = "Github repository backups"
+        #   }
+        # }
       ]
     },
     {
