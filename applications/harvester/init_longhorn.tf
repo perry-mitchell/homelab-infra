@@ -1,16 +1,14 @@
-resource "kubernetes_manifest" "longhorn_backup_target" {
+resource "kubernetes_manifest" "harvester_backup_target" {
   manifest = {
-    apiVersion = "longhorn.io/v1beta2"
-    kind       = "BackupTarget"
+    apiVersion = "harvesterhci.io/v1beta1"
+    kind       = "Setting"
     metadata = {
-      name      = "default"
-      namespace = "longhorn-system"
+      name = "backup-target"
     }
-    spec = {
-      backupTargetURL  = "nfs://192.168.0.101:/mnt/user/longhorn-harvester"
-      credentialSecret = ""
-      pollInterval     = "5m0s"
-    }
+    value = jsonencode({
+      type     = "nfs"
+      endpoint = "nfs://192.168.0.101:/mnt/user/longhorn-harvester"
+    })
   }
 
   field_manager {
