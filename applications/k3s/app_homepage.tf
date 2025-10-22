@@ -178,13 +178,13 @@ locals {
     },
     {
       Business = [
-        {
-          "Kimai" = {
-            icon        = "kimai"
-            href        = "http://${module.app_kimai.host_tailscale}"
-            description = "Time tracking and invoice management"
-          }
-        },
+        # {
+        #   "Kimai" = {
+        #     icon        = "kimai"
+        #     href        = "http://${module.app_kimai.host_tailscale}"
+        #     description = "Time tracking and invoice management"
+        #   }
+        # },
         {
           Homebox = {
             icon        = "homebox"

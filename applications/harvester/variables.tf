@@ -18,6 +18,13 @@ variable "gitsave" {
   })
 }
 
+variable "kimai_admin" {
+  type = object({
+    email    = string
+    password = string
+  })
+}
+
 variable "longhorn_storage_class" {
   type    = string
   default = "harvester-longhorn"

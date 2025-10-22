@@ -28,6 +28,12 @@ resource "kubernetes_namespace" "entertainment" {
   }
 }
 
+resource "kubernetes_namespace" "freelancing" {
+  metadata {
+    name = "freelancing"
+  }
+}
+
 resource "kubernetes_namespace" "monitoring" {
   metadata {
     name = "monitoring"

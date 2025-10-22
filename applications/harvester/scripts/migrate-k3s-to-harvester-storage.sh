@@ -7,13 +7,13 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SOURCE_KUBECONFIG="$SCRIPT_DIR/../../k3s/kube.config"
 TARGET_KUBECONFIG="$SCRIPT_DIR/../kube.config"
 
-SOURCE_NAMESPACE="backup"
-SOURCE_DEPLOYMENT="gitsave"
-SOURCE_PVC="longhorn-gitsave-data"
+SOURCE_NAMESPACE="business"
+SOURCE_DEPLOYMENT="kimai"
+SOURCE_PVC="nfs-kimai-data"
 
-TARGET_NAMESPACE="backup"
-TARGET_DEPLOYMENT="gitsave"
-TARGET_PVC="torrens-gitsave-data"
+TARGET_NAMESPACE="freelancing"
+TARGET_DEPLOYMENT="kimai"
+TARGET_PVC="torrens-kimai-data"
 
 # Port for data transfer
 TRANSFER_PORT=8080
