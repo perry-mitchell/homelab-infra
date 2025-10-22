@@ -2,12 +2,13 @@ locals {
   # Flatten all ports from all containers into a single map
   all_ports = merge([
     for container_name, container in var.containers : {
-      for idx, port in container.ports : "${container_name}-${port.hostname}" => {
+      for idx, port in container.ports : "${container_name}-${port.tailscale_hostname}" => {
         container_name = container_name
         container_port = port.container
         service_port   = port.service
-        hostname       = port.hostname
+        hostname       = port.tailscale_hostname
       }
+      if port.tailscale_hostname != null
     }
   ]...)
 }

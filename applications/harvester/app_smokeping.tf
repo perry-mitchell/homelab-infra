@@ -17,8 +17,8 @@ module "app_smokeping" {
       ports = [
         {
           container = 80
-          hostname  = "smokeping"
           service   = 80
+          tailscale_hostname  = "smokeping"
         }
       ]
       static_mounts = {

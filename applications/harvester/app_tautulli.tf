@@ -22,8 +22,8 @@ module "app_tautulli" {
       ports = [
         {
           container = 8181
-          hostname  = "tautulli"
           service   = 80
+          tailscale_hostname  = "tautulli"
         }
       ]
     }

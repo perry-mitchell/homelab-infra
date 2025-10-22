@@ -22,8 +22,8 @@ module "app_overseerr" {
       ports = [
         {
           container = 5055
-          hostname  = "overseerr"
           service   = 80
+          tailscale_hostname  = "overseerr"
         }
       ]
     }

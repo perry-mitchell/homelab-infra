@@ -10,6 +10,12 @@ resource "kubernetes_namespace" "backup" {
   }
 }
 
+resource "kubernetes_namespace" "collecting" {
+  metadata {
+    name = "collecting"
+  }
+}
+
 resource "kubernetes_namespace" "dns" {
   metadata {
     name = "dns"

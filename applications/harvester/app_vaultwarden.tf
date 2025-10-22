@@ -17,8 +17,8 @@ module "app_vaultwarden" {
       ports = [
         {
           container = 80
-          hostname  = "vaultwarden"
           service   = 80
+          tailscale_hostname  = "vaultwarden"
         }
       ]
     }

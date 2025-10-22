@@ -3,6 +3,14 @@ variable "cluster_name" {
   type    = string
 }
 
+variable "db_mariadb_root" {
+  type = string
+}
+
+variable "db_postgres_root" {
+  type = string
+}
+
 variable "gitsave" {
   type = object({
     encryption_secret = string

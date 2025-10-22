@@ -26,8 +26,9 @@ variable "containers" {
     })), {})
     ports = optional(list(object({
       container = number
-      hostname  = string
+      internal_hostname = optional(string, null)
       service   = number
+      tailscale_hostname = optional(string, null)
     })), [])
     restart_policy = optional(string, null)
     run_as = optional(object({

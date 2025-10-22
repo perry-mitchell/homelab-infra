@@ -31,8 +31,8 @@ module "app_gitsave" {
       ports = [
         {
           container = 3000
-          hostname  = "gitsave"
           service   = 80
+          tailscale_hostname  = "gitsave"
         }
       ]
     }
