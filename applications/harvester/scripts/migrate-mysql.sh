@@ -12,12 +12,12 @@ SOURCE_NAMESPACE="datasources"
 SOURCE_SERVICE="mariadb"
 SOURCE_PORT="3306"
 
-TARGET_NAMESPACE="freelancing"
-TARGET_SERVICE="kimai-mariadb"
+TARGET_NAMESPACE="family"
+TARGET_SERVICE="webtrees-mariadb"
 TARGET_PORT="3306"
 
-SOURCE_DATABASE="kimai"
-TARGET_DATABASE="kimai"
+SOURCE_DATABASE="webtrees"
+TARGET_DATABASE="webtrees"
 
 # MySQL credentials (can be overridden via environment variables)
 MYSQL_ROOT_PASSWORD="${MYSQL_ROOT_PASSWORD:-}"

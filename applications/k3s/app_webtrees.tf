@@ -65,10 +65,10 @@ module "app_webtrees" {
       storage_request = "10Gi"
     }
   }
-  replicas     = 1
+  replicas     = 0
   service_port = 80
   tailscale = {
-    hostname = "webtrees"
+    hostname = "webtrees-old"
     host_ip  = local.primary_ingress_ip
     tailnet  = var.tailscale_tailnet
   }

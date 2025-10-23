@@ -7,13 +7,13 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SOURCE_KUBECONFIG="$SCRIPT_DIR/../../k3s/kube.config"
 TARGET_KUBECONFIG="$SCRIPT_DIR/../kube.config"
 
-SOURCE_NAMESPACE="business"
-SOURCE_DEPLOYMENT="kimai"
-SOURCE_PVC="nfs-kimai-data"
+SOURCE_NAMESPACE="family"
+SOURCE_DEPLOYMENT="webtrees"
+SOURCE_PVC="nfs-webtrees-data"
 
-TARGET_NAMESPACE="freelancing"
-TARGET_DEPLOYMENT="kimai"
-TARGET_PVC="torrens-kimai-data"
+TARGET_NAMESPACE="family"
+TARGET_DEPLOYMENT="webtrees"
+TARGET_PVC="torrens-webtrees-data"
 
 # Port for data transfer
 TRANSFER_PORT=8080

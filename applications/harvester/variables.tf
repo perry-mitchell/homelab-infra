@@ -56,3 +56,16 @@ variable "tailscale_oauth" {
     client_secret = string
   })
 }
+
+variable "tailscale_tailnet" {
+  type = string
+}
+
+variable "webtrees_admin" {
+  type = object({
+    email    = string
+    name     = string
+    password = string
+    username = string
+  })
+}
