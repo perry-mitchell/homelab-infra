@@ -18,6 +18,17 @@ variable "gitsave" {
   })
 }
 
+variable "healthchecks_email" {
+  type = object({
+    from = string
+    host = string
+    password = string
+    port = number
+    tls = bool
+    user = string
+  })
+}
+
 variable "kimai_admin" {
   type = object({
     email    = string
