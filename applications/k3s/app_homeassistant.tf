@@ -18,6 +18,7 @@ module "app_whisper" {
   }
   name         = "whisper"
   namespace    = kubernetes_namespace.smart_home.metadata[0].name
+  replicas = 0
   service_port = 10300
   subdir_mounts = {
     config = {
@@ -49,6 +50,7 @@ module "app_piper" {
   }
   name         = "piper"
   namespace    = kubernetes_namespace.smart_home.metadata[0].name
+  replicas = 0
   service_port = 10200
   subdir_mounts = {
     config = {
@@ -88,9 +90,10 @@ module "app_homeassistant" {
   }
   name         = "homeassistant"
   namespace    = kubernetes_namespace.smart_home.metadata[0].name
+  replicas = 0
   service_port = 80
   tailscale = {
-    hostname = "homeassistant"
+    hostname = "homeassistant2"
     host_ip  = local.primary_ingress_ip
     tailnet  = var.tailscale_tailnet
   }

@@ -24,9 +24,10 @@ module "app_z2m" {
   }
   name         = "z2m"
   namespace    = kubernetes_namespace.smart_home.metadata[0].name
+  replicas = 0
   service_port = 80
   tailscale = {
-    hostname = "z2m"
+    hostname = "z2m2"
     host_ip  = local.primary_ingress_ip
     tailnet  = var.tailscale_tailnet
   }

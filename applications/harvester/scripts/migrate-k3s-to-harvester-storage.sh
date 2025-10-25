@@ -7,13 +7,13 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SOURCE_KUBECONFIG="$SCRIPT_DIR/../../k3s/kube.config"
 TARGET_KUBECONFIG="$SCRIPT_DIR/../kube.config"
 
-SOURCE_NAMESPACE="family"
-SOURCE_DEPLOYMENT="webtrees"
-SOURCE_PVC="nfs-webtrees-data"
+SOURCE_NAMESPACE="smart-home"
+SOURCE_DEPLOYMENT="homeassistant"
+SOURCE_PVC="longhorn-homeassistant-config"
 
-TARGET_NAMESPACE="family"
-TARGET_DEPLOYMENT="webtrees"
-TARGET_PVC="torrens-webtrees-data"
+TARGET_NAMESPACE="smart-home"
+TARGET_DEPLOYMENT="homeassistant"
+TARGET_PVC="torrens-homeassistant-config"
 
 # Port for data transfer
 TRANSFER_PORT=8080

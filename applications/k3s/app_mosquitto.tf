@@ -21,6 +21,7 @@ module "app_mosquitto" {
   }
   name         = "mosquitto"
   namespace    = kubernetes_namespace.smart_home.metadata[0].name
+  replicas = 0
   service_port = 1883
   subdir_mounts = {
     data = {
