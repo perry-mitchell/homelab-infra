@@ -46,6 +46,12 @@ resource "kubernetes_namespace" "monitoring" {
   }
 }
 
+resource "kubernetes_namespace" "organisation" {
+  metadata {
+    name = "organisation"
+  }
+}
+
 resource "kubernetes_namespace" "smart_home" {
   metadata {
     name = "smart-home"

@@ -53,6 +53,10 @@ variable "nfs_storage" {
   }))
 }
 
+variable "radicale_users" {
+  type = map(string)
+}
+
 variable "state_encryption_passphrase" {
   type = string
 }

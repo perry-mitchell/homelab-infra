@@ -34,6 +34,10 @@ terraform {
       source  = "opentofu/helm"
       version = "2.16.1"
     }
+    htpasswd = {
+      source  = "loafoe/htpasswd"
+      version = "~> 1.0"
+    }
     kubernetes = {
       source  = "opentofu/kubernetes"
       version = "2.33.0"
