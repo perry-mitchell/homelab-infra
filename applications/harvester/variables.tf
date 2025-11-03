@@ -76,6 +76,14 @@ variable "tailscale_tailnet" {
   type = string
 }
 
+# variable "unifi" {
+#   type = object({
+#     api_key = string
+#     api_url = string
+#     insecure = bool
+#   })
+# }
+
 variable "webtrees_admin" {
   type = object({
     email    = string

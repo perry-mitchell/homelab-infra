@@ -22,10 +22,6 @@ terraform {
       source  = "Backblaze/b2"
       version = "0.9.0"
     }
-    cloudflare = {
-      source  = "opentofu/cloudflare"
-      version = "4.48.0"
-    }
     harvester = {
       source  = "harvester/harvester"
       version = "0.6.4"
@@ -45,10 +41,6 @@ terraform {
     namecheap = {
       source  = "namecheap/namecheap"
       version = ">= 2.2.0"
-    }
-    pihole = {
-      source  = "ryanwholey/pihole"
-      version = "2.0.0-beta.1"
     }
   }
 }

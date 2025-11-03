@@ -27,6 +27,10 @@ variable "containers" {
     ports = optional(list(object({
       container = number
       internal_hostname = optional(string, null)
+      public_access = optional(object({
+        cluster_ip = string
+        hostname = string
+      }), null)
       service   = number
       tailscale_hostname = optional(string, null)
     })), [])
