@@ -11,6 +11,10 @@ variable "db_postgres_root" {
   type = string
 }
 
+variable "db_redis_root" {
+  type = string
+}
+
 variable "gitsave" {
   type = object({
     encryption_secret = string

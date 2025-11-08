@@ -8,6 +8,7 @@ variable "containers" {
     capabilities = optional(set(string), null)
     command      = optional(list(string), null)
     environment  = optional(map(string), {})
+    fs_group     = optional(number, null)
     image = object({
       tag = string
       uri = string

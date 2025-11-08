@@ -21,6 +21,17 @@ resource "kubernetes_deployment" "deployment" {
       }
 
       spec {
+        dynamic "security_context" {
+          for_each = length([for c in var.containers : c if c.fs_group != null]) > 0 ? [1] : []
+
+          content {
+            fs_group = try(
+              [for c in var.containers : c.fs_group if c.fs_group != null][0],
+              null
+            )
+          }
+        }
+
         dynamic "container" {
           for_each = {
             for name, container in var.containers : name => container
