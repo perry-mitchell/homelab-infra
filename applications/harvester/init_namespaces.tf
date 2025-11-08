@@ -52,6 +52,12 @@ resource "kubernetes_namespace" "organisation" {
   }
 }
 
+resource "kubernetes_namespace" "shared_data" {
+  metadata {
+    name = "shared-data"
+  }
+}
+
 resource "kubernetes_namespace" "smart_home" {
   metadata {
     name = "smart-home"
