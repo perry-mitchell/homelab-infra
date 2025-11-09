@@ -1,3 +1,12 @@
+locals {
+  shared_redis_cluster_hostname = "redis.${kubernetes_namespace.shared_data.metadata.0.name}"
+  redis_db_reservations = {
+    immich    = 1
+    # nextcloud = 2
+    # paperless = 3
+  }
+}
+
 module "db_redis_shared" {
   source = "../../modules-harvester/service"
 

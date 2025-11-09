@@ -135,19 +135,19 @@ locals {
     },
     {
       Media = [
-        {
-          Immich = {
-            icon        = "immich"
-            href        = "http://${module.app_immich.host_tailscale}"
-            description = "Photo library and backup"
-            widget = {
-              type    = "immich"
-              url     = "http://${module.app_immich.host_k8s}"
-              key     = var.immich_api_keys.homepage
-              version = 2
-            }
-          }
-        },
+        # {
+        #   Immich = {
+        #     icon        = "immich"
+        #     href        = "http://${module.app_immich.host_tailscale}"
+        #     description = "Photo library and backup"
+        #     widget = {
+        #       type    = "immich"
+        #       url     = "http://${module.app_immich.host_k8s}"
+        #       key     = var.immich_api_keys.homepage
+        #       version = 2
+        #     }
+        #   }
+        # },
         {
           PaperlessNGX = {
             icon        = "paperless-ngx"

@@ -7,13 +7,13 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SOURCE_KUBECONFIG="$SCRIPT_DIR/../../k3s/kube.config"
 TARGET_KUBECONFIG="$SCRIPT_DIR/../kube.config"
 
-SOURCE_NAMESPACE="smart-home"
-SOURCE_DEPLOYMENT="homeassistant"
-SOURCE_PVC="longhorn-homeassistant-config"
+SOURCE_NAMESPACE="family"
+SOURCE_DEPLOYMENT="immich-postgres"
+SOURCE_PVC="longhorn-immich-postgres-data"
 
-TARGET_NAMESPACE="smart-home"
-TARGET_DEPLOYMENT="homeassistant"
-TARGET_PVC="torrens-homeassistant-config"
+TARGET_NAMESPACE="home-media"
+TARGET_DEPLOYMENT="immich-postgres"
+TARGET_PVC="torrens-immich-postgres-data"
 
 # Port for data transfer
 TRANSFER_PORT=8080

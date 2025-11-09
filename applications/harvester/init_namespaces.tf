@@ -40,6 +40,12 @@ resource "kubernetes_namespace" "freelancing" {
   }
 }
 
+resource "kubernetes_namespace" "home_media" {
+  metadata {
+    name = "home-media"
+  }
+}
+
 resource "kubernetes_namespace" "monitoring" {
   metadata {
     name = "monitoring"

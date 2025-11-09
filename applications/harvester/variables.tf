@@ -11,6 +11,10 @@ variable "db_postgres_root" {
   type = string
 }
 
+variable "db_postgres_pgvecto_rs_root" {
+  type = string
+}
+
 variable "db_redis_root" {
   type = string
 }
