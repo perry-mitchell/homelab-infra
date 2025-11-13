@@ -59,32 +59,32 @@ module "db_init_immich" {
   name = "immich"
 }
 
-module "app_immich_ml" {
-  source = "../../modules/service2"
+# module "app_immich_ml" {
+#   source = "../../modules/service2"
 
-  depends_on = [module.longhorn]
+#   depends_on = [module.longhorn]
 
-  container_port = 3003
-  environment = {
-    IMMICH_HOST = "0.0.0.0"
-    IMMICH_PORT = "3003"
-    TZ          = "Europe/Helsinki"
-  }
-  image = {
-    tag = local.immich_tag
-    uri = "ghcr.io/immich-app/immich-machine-learning"
-  }
-  longhorn_mounts = {
-    "model-cache" = {
-      container_path  = "/cache"
-      storage_request = "50Gi"
-    }
-  }
-  name         = "immich-ml"
-  namespace    = kubernetes_namespace.family.metadata[0].name
-  replicas     = 0
-  service_port = 3003
-}
+#   container_port = 3003
+#   environment = {
+#     IMMICH_HOST = "0.0.0.0"
+#     IMMICH_PORT = "3003"
+#     TZ          = "Europe/Helsinki"
+#   }
+#   image = {
+#     tag = local.immich_tag
+#     uri = "ghcr.io/immich-app/immich-machine-learning"
+#   }
+#   longhorn_mounts = {
+#     "model-cache" = {
+#       container_path  = "/cache"
+#       storage_request = "50Gi"
+#     }
+#   }
+#   name         = "immich-ml"
+#   namespace    = kubernetes_namespace.family.metadata[0].name
+#   replicas     = 0
+#   service_port = 3003
+# }
 
 # module "app_immich" {
 #   source = "../../modules/service2"
