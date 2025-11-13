@@ -56,6 +56,11 @@ variable "namespace" {
   type = string
 }
 
+variable "replicas" {
+  default = 1
+  type    = number
+}
+
 variable "tailscale" {
   type = object({
     host_ip = string

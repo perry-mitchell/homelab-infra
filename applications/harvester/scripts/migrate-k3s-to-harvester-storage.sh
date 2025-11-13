@@ -7,13 +7,13 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SOURCE_KUBECONFIG="$SCRIPT_DIR/../../k3s/kube.config"
 TARGET_KUBECONFIG="$SCRIPT_DIR/../kube.config"
 
-SOURCE_NAMESPACE="family"
-SOURCE_DEPLOYMENT="immich-postgres"
-SOURCE_PVC="longhorn-immich-postgres-data"
+SOURCE_NAMESPACE="torrents"
+SOURCE_DEPLOYMENT="arr"
+SOURCE_PVC="longhorn-torrent-entertainment-config"
 
-TARGET_NAMESPACE="home-media"
-TARGET_DEPLOYMENT="immich-postgres"
-TARGET_PVC="torrens-immich-postgres-data"
+TARGET_NAMESPACE="torrenting"
+TARGET_DEPLOYMENT="arr"
+TARGET_PVC="torrens-torrent-entertainment-config"
 
 # Port for data transfer
 TRANSFER_PORT=8080

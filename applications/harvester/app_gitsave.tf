@@ -32,7 +32,7 @@ module "app_gitsave" {
         {
           container = 3000
           service   = 80
-          tailscale_hostname  = "gitsave"
+          tailscale_hostname = "gitsave"
         }
       ]
     }

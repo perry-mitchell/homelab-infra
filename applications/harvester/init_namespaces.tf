@@ -69,3 +69,9 @@ resource "kubernetes_namespace" "smart_home" {
     name = "smart-home"
   }
 }
+
+resource "kubernetes_namespace" "torrenting" {
+  metadata {
+    name = "torrenting"
+  }
+}

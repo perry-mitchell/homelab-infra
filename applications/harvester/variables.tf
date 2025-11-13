@@ -84,13 +84,17 @@ variable "tailscale_tailnet" {
   type = string
 }
 
-# variable "unifi" {
-#   type = object({
-#     api_key = string
-#     api_url = string
-#     insecure = bool
-#   })
-# }
+variable "vpn_provider" {
+  type = object({
+    endpoint_ip      = string
+    endpoint_port    = number
+    inbound_ports    = list(number)
+    provider         = string
+    server_hostnames = list(string)
+    username         = string
+    password         = string
+  })
+}
 
 variable "webtrees_admin" {
   type = object({
