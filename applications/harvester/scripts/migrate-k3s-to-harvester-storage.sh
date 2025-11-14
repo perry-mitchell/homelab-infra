@@ -7,13 +7,13 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SOURCE_KUBECONFIG="$SCRIPT_DIR/../../k3s/kube.config"
 TARGET_KUBECONFIG="$SCRIPT_DIR/../kube.config"
 
-SOURCE_NAMESPACE="torrents"
-SOURCE_DEPLOYMENT="arr"
-SOURCE_PVC="longhorn-torrent-entertainment-config"
+SOURCE_NAMESPACE="family"
+SOURCE_DEPLOYMENT="paperless"
+SOURCE_PVC="nfs-paperless-data"
 
-TARGET_NAMESPACE="torrenting"
-TARGET_DEPLOYMENT="arr"
-TARGET_PVC="torrens-torrent-entertainment-config"
+TARGET_NAMESPACE="organisation"
+TARGET_DEPLOYMENT="paperless"
+TARGET_PVC="torrens-paperless-data"
 
 # Port for data transfer
 TRANSFER_PORT=8080

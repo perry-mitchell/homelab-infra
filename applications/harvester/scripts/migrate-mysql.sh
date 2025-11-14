@@ -12,12 +12,12 @@ SOURCE_NAMESPACE="datasources"
 SOURCE_SERVICE="mariadb"
 SOURCE_PORT="3306"
 
-TARGET_NAMESPACE="family"
-TARGET_SERVICE="webtrees-mariadb"
+TARGET_NAMESPACE="organisation"
+TARGET_SERVICE="paperless-mariadb"
 TARGET_PORT="3306"
 
-SOURCE_DATABASE="webtrees"
-TARGET_DATABASE="webtrees"
+SOURCE_DATABASE="paperless"
+TARGET_DATABASE="paperless"
 
 # MySQL credentials (can be overridden via environment variables)
 MYSQL_ROOT_PASSWORD="${MYSQL_ROOT_PASSWORD:-}"

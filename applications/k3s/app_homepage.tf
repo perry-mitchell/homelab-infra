@@ -148,19 +148,19 @@ locals {
         #     }
         #   }
         # },
-        {
-          PaperlessNGX = {
-            icon        = "paperless-ngx"
-            href        = "http://${module.app_paperless.host_tailscale}"
-            description = "Document processing and storage"
-            widget = {
-              type     = "paperlessngx"
-              url      = "http://${module.app_paperless.host_k8s}:80"
-              username = var.paperless_auth.admin_user
-              password = var.paperless_auth.admin_password
-            }
-          }
-        },
+        # {
+        #   PaperlessNGX = {
+        #     icon        = "paperless-ngx"
+        #     href        = "http://${module.app_paperless.host_tailscale}"
+        #     description = "Document processing and storage"
+        #     widget = {
+        #       type     = "paperlessngx"
+        #       url      = "http://${module.app_paperless.host_k8s}:80"
+        #       username = var.paperless_auth.admin_user
+        #       password = var.paperless_auth.admin_password
+        #     }
+        #   }
+        # },
         {
           Nextcloud = {
             icon        = "nextcloud"
@@ -185,36 +185,36 @@ locals {
         #     description = "Time tracking and invoice management"
         #   }
         # },
-        {
-          Homebox = {
-            icon        = "homebox"
-            href        = "http://${module.app_homebox.host_tailscale}"
-            description = "Asset tracking system"
-            widget = {
-              type     = "homebox"
-              url      = "http://${module.app_homebox.host_k8s}"
-              username = var.homebox_auth.username
-              password = var.homebox_auth.password
-            }
-          }
-        }
+        # {
+        #   Homebox = {
+        #     icon        = "homebox"
+        #     href        = "http://${module.app_homebox.host_tailscale}"
+        #     description = "Asset tracking system"
+        #     widget = {
+        #       type     = "homebox"
+        #       url      = "http://${module.app_homebox.host_k8s}"
+        #       username = var.homebox_auth.username
+        #       password = var.homebox_auth.password
+        #     }
+        #   }
+        # }
       ]
     },
     {
       Backup = [
-        {
-          Kopia = {
-            icon        = "kopia"
-            href        = "http://${module.app_kopia.host_tailscale}"
-            description = "Unraid storage backup"
-            widget = {
-              type     = "kopia"
-              url      = "http://${module.app_kopia.host_k8s}"
-              username = var.kopia_admin.username
-              password = var.kopia_admin.password
-            }
-          }
-        }
+        # {
+        #   Kopia = {
+        #     icon        = "kopia"
+        #     href        = "http://${module.app_kopia.host_tailscale}"
+        #     description = "Unraid storage backup"
+        #     widget = {
+        #       type     = "kopia"
+        #       url      = "http://${module.app_kopia.host_k8s}"
+        #       username = var.kopia_admin.username
+        #       password = var.kopia_admin.password
+        #     }
+        #   }
+        # }
         # {
         #   GitSave = {
         #     icon        = "github-light"

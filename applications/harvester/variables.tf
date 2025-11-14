@@ -61,6 +61,14 @@ variable "nfs_storage" {
   }))
 }
 
+variable "paperless_auth" {
+  type = object({
+    admin_mail     = string
+    admin_password = string
+    admin_user     = string
+  })
+}
+
 variable "radicale_users" {
   type = map(string)
 }

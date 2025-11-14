@@ -72,10 +72,10 @@ module "app_paperless" {
       storage_request = "100Gi"
     }
   }
-  replicas     = 1
+  replicas     = 0
   service_port = 80
   tailscale = {
-    hostname = "paperless"
+    hostname = "paperless2"
     host_ip  = local.primary_ingress_ip
     tailnet  = var.tailscale_tailnet
   }
