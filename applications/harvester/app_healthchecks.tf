@@ -106,6 +106,7 @@ module "app_healthchecks" {
       ports = [
         {
           container          = 8000
+          internal_hostname  = "health"
           service            = 80
           tailscale_hostname = "health"
         }

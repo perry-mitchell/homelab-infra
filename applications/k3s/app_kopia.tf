@@ -70,14 +70,14 @@ module "app_kopia" {
       storage_request = "1Ti"
     }
   }
-  replicas = 1
+  replicas = 0
   run_as = {
     user  = 0
     group = 0
   }
   service_port = 80
   tailscale = {
-    hostname = "kopia"
+    hostname = "kopia2"
     host_ip  = local.primary_ingress_ip
     tailnet  = var.tailscale_tailnet
   }

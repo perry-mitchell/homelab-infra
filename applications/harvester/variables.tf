@@ -44,6 +44,13 @@ variable "kimai_admin" {
   })
 }
 
+variable "kopia_admin" {
+  type = object({
+    password = string
+    username = string
+  })
+}
+
 variable "longhorn_storage_class" {
   type    = string
   default = "harvester-longhorn"

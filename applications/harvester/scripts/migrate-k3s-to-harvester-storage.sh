@@ -7,13 +7,13 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SOURCE_KUBECONFIG="$SCRIPT_DIR/../../k3s/kube.config"
 TARGET_KUBECONFIG="$SCRIPT_DIR/../kube.config"
 
-SOURCE_NAMESPACE="family"
-SOURCE_DEPLOYMENT="paperless"
-SOURCE_PVC="nfs-paperless-data"
+SOURCE_NAMESPACE="backup"
+SOURCE_DEPLOYMENT="kopia"
+SOURCE_PVC="nfs-kopia-temp"
 
-TARGET_NAMESPACE="organisation"
-TARGET_DEPLOYMENT="paperless"
-TARGET_PVC="torrens-paperless-data"
+TARGET_NAMESPACE="backup"
+TARGET_DEPLOYMENT="kopia"
+TARGET_PVC="torrens-kopia-temp"
 
 # Port for data transfer
 TRANSFER_PORT=8080
