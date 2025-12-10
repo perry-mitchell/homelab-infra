@@ -64,7 +64,7 @@ module "db_init_paperless" {
 module "app_paperless" {
   source = "../../modules-harvester/service"
 
-  depends_on = [module.db_init_kimai]
+  depends_on = [module.db_init_paperless]
 
   cluster_name = var.cluster_name
   containers = {

@@ -63,136 +63,136 @@ module "nextcloud_dns_tailscale" {
   subdomain_name = "nextcloud"
 }
 
-resource "helm_release" "nextcloud" {
-  depends_on = [module.db_init_nextcloud]
+# resource "helm_release" "nextcloud" {
+#   depends_on = [module.db_init_nextcloud]
 
-  name      = "nextcloud"
-  namespace = kubernetes_namespace.family.metadata[0].name
+#   name      = "nextcloud"
+#   namespace = kubernetes_namespace.family.metadata[0].name
 
-  repository = "https://nextcloud.github.io/helm"
-  chart      = "nextcloud"
-  version    = "6.6.6"
-  wait       = true
+#   repository = "https://nextcloud.github.io/helm"
+#   chart      = "nextcloud"
+#   version    = "6.6.6"
+#   wait       = true
 
-  set {
-    name  = "nextcloud.host"
-    value = module.nextcloud_dns_tailscale.dns_name
-  }
+#   set {
+#     name  = "nextcloud.host"
+#     value = module.nextcloud_dns_tailscale.dns_name
+#   }
 
-  set {
-    name  = "nextcloud.username"
-    value = var.nextcloud_auth.username
-  }
+#   set {
+#     name  = "nextcloud.username"
+#     value = var.nextcloud_auth.username
+#   }
 
-  set {
-    name  = "nextcloud.password"
-    value = var.nextcloud_auth.password
-  }
+#   set {
+#     name  = "nextcloud.password"
+#     value = var.nextcloud_auth.password
+#   }
 
-  set {
-    name = "nextcloud.trustedDomains"
-    value = join(" ", [
-      "nextcloud",
-      module.nextcloud_dns_tailscale.dns_name,
-      module.nextcloud_dns.dns_name,
-      local.nextcloud_k8s_host
-    ])
-  }
+#   set {
+#     name = "nextcloud.trustedDomains"
+#     value = join(" ", [
+#       "nextcloud",
+#       module.nextcloud_dns_tailscale.dns_name,
+#       module.nextcloud_dns.dns_name,
+#       local.nextcloud_k8s_host
+#     ])
+#   }
 
-  set {
-    name  = "nextcloud.datadir"
-    value = "/var/www/html/data"
-  }
+#   set {
+#     name  = "nextcloud.datadir"
+#     value = "/var/www/html/data"
+#   }
 
-  set {
-    name  = "ingress.enabled"
-    value = "false"
-  }
+#   set {
+#     name  = "ingress.enabled"
+#     value = "false"
+#   }
 
-  # Database
+#   # Database
 
-  set {
-    name  = "internalDatabase.enabled"
-    value = "false"
-  }
+#   set {
+#     name  = "internalDatabase.enabled"
+#     value = "false"
+#   }
 
-  set {
-    name  = "externalDatabase.enabled"
-    value = "true"
-  }
+#   set {
+#     name  = "externalDatabase.enabled"
+#     value = "true"
+#   }
 
-  set {
-    name  = "externalDatabase.type"
-    value = "mysql"
-  }
+#   set {
+#     name  = "externalDatabase.type"
+#     value = "mysql"
+#   }
 
-  set {
-    name  = "externalDatabase.host"
-    value = "${local.mariadb_service_hostname}:3306"
-  }
+#   set {
+#     name  = "externalDatabase.host"
+#     value = "${local.mariadb_service_hostname}:3306"
+#   }
 
-  set {
-    name  = "externalDatabase.database"
-    value = "nextcloud"
-  }
+#   set {
+#     name  = "externalDatabase.database"
+#     value = "nextcloud"
+#   }
 
-  set {
-    name  = "externalDatabase.user"
-    value = "nextcloud"
-  }
+#   set {
+#     name  = "externalDatabase.user"
+#     value = "nextcloud"
+#   }
 
-  set {
-    name  = "externalDatabase.password"
-    value = random_password.nextcloud_database_user.result
-  }
+#   set {
+#     name  = "externalDatabase.password"
+#     value = random_password.nextcloud_database_user.result
+#   }
 
-  set {
-    name  = "redis.enabled"
-    value = "true"
-  }
+#   set {
+#     name  = "redis.enabled"
+#     value = "true"
+#   }
 
-  set {
-    name  = "redis.auth.enabled"
-    value = "false"
-  }
+#   set {
+#     name  = "redis.auth.enabled"
+#     value = "false"
+#   }
 
-  set {
-    name  = "redis.global.storageClass"
-    value = "longhorn"
-  }
+#   set {
+#     name  = "redis.global.storageClass"
+#     value = "longhorn"
+#   }
 
-  # Persistence
+#   # Persistence
 
-  set {
-    name  = "persistence.enabled"
-    value = "true"
-  }
+#   set {
+#     name  = "persistence.enabled"
+#     value = "true"
+#   }
 
-  set {
-    name  = "persistence.storageClass"
-    value = "longhorn"
-  }
+#   set {
+#     name  = "persistence.storageClass"
+#     value = "longhorn"
+#   }
 
-  set {
-    name  = "persistence.size"
-    value = "30Gi"
-  }
+#   set {
+#     name  = "persistence.size"
+#     value = "30Gi"
+#   }
 
-  set {
-    name  = "persistence.nextcloudData.enabled"
-    value = "true"
-  }
+#   set {
+#     name  = "persistence.nextcloudData.enabled"
+#     value = "true"
+#   }
 
-  set {
-    name  = "persistence.nextcloudData.storageClass"
-    value = kubernetes_storage_class.nextcloud_storage_nfs.metadata.0.name
-  }
+#   set {
+#     name  = "persistence.nextcloudData.storageClass"
+#     value = kubernetes_storage_class.nextcloud_storage_nfs.metadata.0.name
+#   }
 
-  set {
-    name  = "persistence.nextcloudData.size"
-    value = "500Gi"
-  }
-}
+#   set {
+#     name  = "persistence.nextcloudData.size"
+#     value = "500Gi"
+#   }
+# }
 
 resource "kubernetes_service" "nextcloud_local" {
   metadata {

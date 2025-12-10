@@ -60,6 +60,13 @@ variable "network_cidrs" {
   type = set(string)
 }
 
+variable "nextcloud_auth" {
+  type = object({
+    username = string
+    password = string
+  })
+}
+
 variable "nfs_storage" {
   type = map(object({
     export       = string
