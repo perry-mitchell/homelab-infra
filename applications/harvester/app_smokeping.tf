@@ -29,4 +29,5 @@ module "app_smokeping" {
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "smokeping"
   namespace              = kubernetes_namespace.monitoring.metadata.0.name
+  replicas = local.deployments_enabled.service ? 1 : 0
 }

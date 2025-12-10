@@ -29,5 +29,5 @@ module "app_z2m" {
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "z2m"
   namespace              = kubernetes_namespace.smart_home.metadata.0.name
-  replicas               = 1
+  replicas               = local.deployments_enabled.service ? 1 : 0
 }

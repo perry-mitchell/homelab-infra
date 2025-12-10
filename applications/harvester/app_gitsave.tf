@@ -40,5 +40,5 @@ module "app_gitsave" {
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "gitsave"
   namespace              = kubernetes_namespace.backup.metadata.0.name
-  replicas = 1
+  replicas = local.deployments_enabled.service ? 1 : 0
 }

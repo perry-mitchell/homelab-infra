@@ -116,4 +116,5 @@ module "app_healthchecks" {
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "healthchecks"
   namespace              = kubernetes_namespace.monitoring.metadata.0.name
+  replicas = local.deployments_enabled.service ? 1 : 0
 }

@@ -34,6 +34,7 @@ module "db_webtrees_mariadb" {
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "webtrees-mariadb"
   namespace              = kubernetes_namespace.family.metadata.0.name
+  replicas = local.deployments_enabled.datasource ? 1 : 0
 }
 
 resource "random_password" "webtrees_database_user" {
@@ -104,4 +105,5 @@ module "app_webtrees" {
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "webtrees"
   namespace              = kubernetes_namespace.family.metadata.0.name
+  replicas = local.deployments_enabled.service ? 1 : 0
 }

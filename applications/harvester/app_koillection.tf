@@ -32,6 +32,7 @@ module "db_koillection_postgres" {
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "koillection-postgres"
   namespace              = kubernetes_namespace.collecting.metadata.0.name
+  replicas = local.deployments_enabled.datasource ? 1 : 0
 }
 
 resource "random_password" "koillection_database_user" {
@@ -111,4 +112,5 @@ module "app_koillection" {
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "koillection"
   namespace              = kubernetes_namespace.collecting.metadata.0.name
+  replicas = local.deployments_enabled.service ? 1 : 0
 }

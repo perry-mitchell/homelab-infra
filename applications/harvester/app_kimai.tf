@@ -30,6 +30,7 @@ module "db_kimai_mariadb" {
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "kimai-mariadb"
   namespace              = kubernetes_namespace.freelancing.metadata.0.name
+  replicas = local.deployments_enabled.datasource ? 1 : 0
 }
 
 resource "random_password" "kimai_database_user" {
@@ -95,4 +96,5 @@ module "app_kimai" {
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "kimai"
   namespace              = kubernetes_namespace.freelancing.metadata.0.name
+  replicas = local.deployments_enabled.service ? 1 : 0
 }

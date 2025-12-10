@@ -40,4 +40,5 @@ module "db_redis_shared" {
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "redis"
   namespace              = kubernetes_namespace.shared_data.metadata.0.name
+  replicas = local.deployments_enabled.datasource ? 1 : 0
 }

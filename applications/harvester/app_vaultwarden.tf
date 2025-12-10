@@ -26,5 +26,5 @@ module "app_vaultwarden" {
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "vaultwarden"
   namespace              = kubernetes_namespace.authentication.metadata.0.name
-  replicas               = 1
+  replicas               = local.deployments_enabled.service ? 1 : 0
 }

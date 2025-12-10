@@ -4,13 +4,16 @@ resource "kubernetes_namespace" "tailscale" {
   }
 }
 
+# Tailscale versions:
+#   https://tailscale.com/changelog
+
 resource "helm_release" "tailscale" {
   name      = "tailscale-operator"
   namespace = resource.kubernetes_namespace.tailscale.metadata[0].name
 
   repository = "https://pkgs.tailscale.com/helmcharts"
   chart      = "tailscale-operator"
-  version    = "1.78.1"
+  version    = "1.90.9"
   wait       = true
 
   set {

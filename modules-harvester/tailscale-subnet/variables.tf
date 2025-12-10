@@ -26,3 +26,8 @@ variable "longhorn_storage_class" {
 variable "namespace" {
   type = string
 }
+
+variable "replicas" {
+  default = 1
+  type = number
+}

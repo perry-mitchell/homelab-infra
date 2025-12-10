@@ -31,4 +31,5 @@ module "app_tautulli" {
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "tautulli"
   namespace              = kubernetes_namespace.entertainment.metadata.0.name
+  replicas = local.deployments_enabled.service ? 1 : 0
 }

@@ -1,4 +1,6 @@
 resource "kubernetes_pod" "tailscale_subnet" {
+  count = var.replicas
+
   metadata {
     name      = "tailscale-subnet"
     namespace = var.namespace
@@ -97,4 +99,9 @@ resource "kubernetes_pod" "tailscale_subnet" {
       metadata[0].annotations
     ]
   }
+}
+
+moved {
+  from = kubernetes_pod.tailscale_subnet
+  to = kubernetes_pod.tailscale_subnet.0
 }

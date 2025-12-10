@@ -31,4 +31,5 @@ module "app_overseerr" {
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "overseerr"
   namespace              = kubernetes_namespace.entertainment.metadata.0.name
+  replicas = local.deployments_enabled.service ? 1 : 0
 }

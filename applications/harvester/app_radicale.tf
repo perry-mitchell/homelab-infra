@@ -53,5 +53,5 @@ module "app_radicale" {
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "radicale"
   namespace              = kubernetes_namespace.organisation.metadata.0.name
-  replicas               = 1
+  replicas               = local.deployments_enabled.service ? 1 : 0
 }

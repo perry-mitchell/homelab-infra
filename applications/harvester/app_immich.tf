@@ -36,7 +36,7 @@ module "db_immich_postgres" {
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "immich-postgres"
   namespace              = kubernetes_namespace.home_media.metadata.0.name
-  replicas = 1
+  replicas = local.deployments_enabled.datasource ? 1 : 0
 }
 
 resource "random_password" "immich_database_user" {
@@ -99,7 +99,7 @@ module "app_immich_ml" {
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "immich-ml"
   namespace              = kubernetes_namespace.home_media.metadata.0.name
-  replicas = 1
+  replicas = local.deployments_enabled.service ? 1 : 0
 }
 
 module "app_immich" {
@@ -152,5 +152,5 @@ module "app_immich" {
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "immich"
   namespace              = kubernetes_namespace.home_media.metadata.0.name
-  replicas = 1
+  replicas = local.deployments_enabled.service ? 1 : 0
 }

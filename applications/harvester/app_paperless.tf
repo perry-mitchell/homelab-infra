@@ -34,6 +34,7 @@ module "db_paperless_mariadb" {
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "paperless-mariadb"
   namespace              = kubernetes_namespace.organisation.metadata.0.name
+  replicas = local.deployments_enabled.datasource ? 1 : 0
 }
 
 resource "random_password" "paperless_database_user" {
@@ -114,5 +115,5 @@ module "app_paperless" {
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "paperless"
   namespace              = kubernetes_namespace.organisation.metadata.0.name
-  replicas               = 1
+  replicas               = local.deployments_enabled.service ? 1 : 0
 }

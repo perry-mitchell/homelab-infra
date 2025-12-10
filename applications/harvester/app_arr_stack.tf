@@ -187,5 +187,5 @@ module "app_arr_stack" {
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "arr"
   namespace              = kubernetes_namespace.torrenting.metadata.0.name
-  replicas               = 1
+  replicas               = local.deployments_enabled.service ? 1 : 0
 }

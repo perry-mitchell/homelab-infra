@@ -41,6 +41,7 @@ module "db_nextcloud_mariadb" {
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "nextcloud-mariadb"
   namespace              = kubernetes_namespace.storage.metadata.0.name
+  replicas = local.deployments_enabled.datasource ? 1 : 0
 }
 
 resource "random_password" "nextcloud_database_user" {
@@ -119,9 +120,7 @@ resource "helm_release" "nextcloud" {
     name = "nextcloud.trustedDomains"
     value = join(" ", [
       "nextcloud",
-      # module.nextcloud_dns_tailscale.dns_name,
       local.nextcloud_host,
-      # module.nextcloud_dns.dns_name,
       local.nextcloud_k8s_host
     ])
   }
@@ -251,6 +250,28 @@ resource "helm_release" "nextcloud" {
     name  = "nextcloud.extraEnv[2].value"
     value = "10.0.0.0/8 172.16.0.0/12 192.168.0.0/16"
   }
+
+  # Shutdown
+
+  set {
+    name  = "replicaCount"
+    value = local.deployments_enabled.service ? 1 : 0
+  }
+
+  set {
+    name  = "cronjob.enabled"
+    value = local.deployments_enabled.service
+  }
+
+  set {
+    name  = "redis.master.count"
+    value = local.deployments_enabled.datasource ? 1 : 0
+  }
+
+  set {
+    name  = "redis.replica.replicaCount"
+    value = local.deployments_enabled.datasource ? 3 : 0
+  }
 }
 #endregion
 
@@ -259,11 +280,6 @@ resource "kubernetes_service" "nextcloud_tailscale" {
   metadata {
     name      = "nextcloud-tailscale"
     namespace = kubernetes_namespace.storage.metadata[0].name
-    annotations = {
-      # "tailscale.com/expose"   = "true"
-      # "tailscale.com/hostname" = "nextcloud"
-      # "tailscale.com/https" = "true"
-    }
   }
 
   spec {
@@ -300,7 +316,6 @@ resource "kubernetes_ingress_v1" "nextcloud_tailscale" {
 
     dynamic "rule" {
       for_each = toset([
-        # module.nextcloud_dns_tailscale.dns_name
         local.nextcloud_host
       ])
 

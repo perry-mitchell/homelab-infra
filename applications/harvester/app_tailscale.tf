@@ -12,4 +12,5 @@ module "tailscale_subnet" {
     }
   }
   longhorn_storage_class = var.longhorn_storage_class
+  replicas = local.deployments_enabled.network ? 1 : 0
 }
