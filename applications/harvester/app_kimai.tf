@@ -70,7 +70,7 @@ module "app_kimai" {
         ADMINMAIL       = var.kimai_admin.email
         ADMINPASS       = var.kimai_admin.password
         DATABASE_URL    = "mysql://kimai:${random_password.kimai_database_user.result}@${"kimai-mariadb"}:3306/kimai?charset=utf8mb4"
-        TRUSTED_HOSTS   = "localhost,kimai.atlas-dragon.ts.net"
+        TRUSTED_HOSTS   = "localhost|kimai.atlas-dragon.ts.net"
         TRUSTED_PROXIES = "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
         TZ              = "Europe/Helsinki"
       }

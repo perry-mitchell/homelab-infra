@@ -7,6 +7,10 @@ resource "kubernetes_deployment" "deployment" {
   spec {
     replicas = var.replicas
 
+    strategy {
+      type = "Recreate"
+    }
+
     selector {
       match_labels = {
         application = var.name
