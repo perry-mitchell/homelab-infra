@@ -34,6 +34,12 @@ resource "kubernetes_namespace" "family" {
   }
 }
 
+resource "kubernetes_namespace" "food" {
+  metadata {
+    name = "food"
+  }
+}
+
 resource "kubernetes_namespace" "freelancing" {
   metadata {
     name = "freelancing"
