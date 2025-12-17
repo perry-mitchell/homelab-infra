@@ -64,6 +64,12 @@ resource "kubernetes_namespace" "organisation" {
   }
 }
 
+resource "kubernetes_namespace" "programming" {
+  metadata {
+    name = "programming"
+  }
+}
+
 resource "kubernetes_namespace" "shared_data" {
   metadata {
     name = "shared-data"

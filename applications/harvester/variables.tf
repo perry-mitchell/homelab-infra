@@ -5,18 +5,22 @@ variable "cluster_name" {
 
 variable "db_mariadb_root" {
   type = string
+  sensitive = true
 }
 
 variable "db_postgres_root" {
   type = string
+  sensitive = true
 }
 
 variable "db_postgres_pgvecto_rs_root" {
   type = string
+  sensitive = true
 }
 
 variable "db_redis_root" {
   type = string
+  sensitive = true
 }
 
 variable "gitsave" {
@@ -42,6 +46,7 @@ variable "kimai_admin" {
     email    = string
     password = string
   })
+  sensitive = true
 }
 
 variable "kopia_admin" {
@@ -49,6 +54,7 @@ variable "kopia_admin" {
     password = string
     username = string
   })
+  sensitive = true
 }
 
 variable "longhorn_storage_class" {
@@ -65,6 +71,7 @@ variable "nextcloud_auth" {
     username = string
     password = string
   })
+  sensitive = true
 }
 
 variable "nfs_storage" {
@@ -81,6 +88,7 @@ variable "paperless_auth" {
     admin_password = string
     admin_user     = string
   })
+  sensitive = true
 }
 
 variable "radicale_users" {
@@ -89,10 +97,12 @@ variable "radicale_users" {
 
 variable "state_encryption_passphrase" {
   type = string
+  sensitive = true
 }
 
 variable "tailscale_container_auth" {
   type = string
+  sensitive = true
 }
 
 variable "tailscale_oauth" {
@@ -100,6 +110,7 @@ variable "tailscale_oauth" {
     client_id     = string
     client_secret = string
   })
+  sensitive = true
 }
 
 variable "tailscale_tailnet" {
@@ -116,6 +127,7 @@ variable "vpn_provider" {
     username         = string
     password         = string
   })
+  sensitive = true
 }
 
 variable "webtrees_admin" {
@@ -125,4 +137,5 @@ variable "webtrees_admin" {
     password = string
     username = string
   })
+  sensitive = true
 }

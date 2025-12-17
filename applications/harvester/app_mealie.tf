@@ -68,6 +68,8 @@ module "db_init_mealie" {
 module "app_mealie" {
   source = "../../modules-harvester/service"
 
+  depends_on = [ module.db_init_mealie ]
+
   cluster_name = var.cluster_name
   containers = {
     mealie = {
