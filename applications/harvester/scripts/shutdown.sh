@@ -7,7 +7,9 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 read -sp "Enter SSH password for rancher user: " SSH_PASSWORD
 echo ""
 
+KUBECONFIG_PATH="$SCRIPT_DIR/../kube.config"
 bash $SCRIPT_DIR/download-kube-config.sh $SSH_PASSWORD
+export KUBECONFIG="$KUBECONFIG_PATH"
 
 # Get node names and their IPs
 NODE_DATA=$(kubectl get nodes --output json | jq -r '.items[] | "\(.metadata.name) \(.status.addresses[] | select(.type=="InternalIP") | .address)"')
@@ -58,7 +60,7 @@ while IFS= read -r line; do
     NODE_IP=$(echo "$line" | awk '{print $2}')
 
     echo "Shutting down $NODE_NAME ($NODE_IP)..."
-    sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no "rancher@$NODE_IP" "sudo /sbin/shutdown -h now" || echo "Warning: Failed to shutdown $NODE_NAME"
+    sshpass -p "$SSH_PASSWORD" ssh -n -o StrictHostKeyChecking=no "rancher@$NODE_IP" "sudo /sbin/shutdown -h now" || echo "Warning: Failed to shutdown $NODE_NAME"
 
     echo "Waiting 60 seconds before next node..."
     sleep 60
