@@ -1,5 +1,5 @@
 locals {
-  mealie_host = "nextcloud.${var.tailscale_tailnet}"
+  mealie_host = "mealie.${var.tailscale_tailnet}"
   mealie_url = "https://${local.mealie_host}"
 }
 

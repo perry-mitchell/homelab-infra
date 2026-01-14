@@ -1,3 +1,11 @@
+variable "adventurelog_django_admin" {
+  type = object({
+    email = string
+    password = string
+    username = string
+  })
+}
+
 variable "cluster_name" {
   default = "torrens"
   type    = string

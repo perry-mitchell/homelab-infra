@@ -93,3 +93,9 @@ resource "kubernetes_namespace" "torrenting" {
     name = "torrenting"
   }
 }
+
+resource "kubernetes_namespace" "travel" {
+  metadata {
+    name = "travel"
+  }
+}
