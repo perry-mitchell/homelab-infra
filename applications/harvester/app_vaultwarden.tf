@@ -4,10 +4,7 @@ module "app_vaultwarden" {
   cluster_name = var.cluster_name
   containers = {
     vaultwarden = {
-      image = {
-        tag = "latest"
-        uri = "vaultwarden/server"
-      }
+      image = local.images.vaultwarden
       longhorn_mounts = {
         data = {
           container_path  = "/data"

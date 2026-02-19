@@ -9,10 +9,7 @@ module "app_tautulli" {
         PUID = "99"
         TZ   = "Europe/Helsinki"
       }
-      image = {
-        tag = "latest"
-        uri = "lscr.io/linuxserver/tautulli"
-      }
+      image = local.images.tautulli
       longhorn_mounts = {
         config = {
           container_path  = "/config"

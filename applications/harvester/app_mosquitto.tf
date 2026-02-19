@@ -7,10 +7,7 @@ module "app_mosquitto" {
       environment = {
         TZ = "Europe/Helsinki"
       }
-      image = {
-        tag = "2"
-        uri = "eclipse-mosquitto"
-      }
+      image = local.images.mosquitto
       longhorn_mounts = {
         data = {
           container_path  = "/mosquitto/data"

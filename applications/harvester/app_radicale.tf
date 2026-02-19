@@ -27,10 +27,7 @@ module "app_radicale" {
       environment = {
         TZ = "Europe/Helsinki"
       }
-      image = {
-        tag = "3.1.9"
-        uri = "11notes/radicale"
-      }
+      image = local.images.radicale
       longhorn_mounts = {
         var = {
           container_path  = "/radicale/var"

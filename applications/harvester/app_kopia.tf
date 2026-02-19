@@ -12,10 +12,7 @@ module "app_kopia" {
         TZ                                   = "Europe/Helsinki"
         USERNAME                             = var.kopia_admin.username
       }
-      image = {
-        tag = "latest"
-        uri = "ghcr.io/imagegenius/kopia"
-      }
+      image = local.images.kopia
       longhorn_mounts = {
         cache = {
           container_path = "/cache"

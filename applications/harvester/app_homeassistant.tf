@@ -12,10 +12,7 @@ module "app_whisper" {
         WHISPER_LANG  = "en"
         WHISPER_BEAM  = "4"
       }
-      image = {
-        tag = "latest"
-        uri = "lscr.io/linuxserver/faster-whisper"
-      }
+      image = local.images.faster_whisper
       longhorn_mounts = {
         config = {
           container_path  = "/config"
@@ -51,10 +48,7 @@ module "app_piper" {
         PUID         = "99"
         TZ           = "Europe/Helsinki"
       }
-      image = {
-        tag = "latest"
-        uri = "lscr.io/linuxserver/piper"
-      }
+      image = local.images.piper
       longhorn_mounts = {
         config = {
           container_path  = "/config"
@@ -89,10 +83,7 @@ module "app_homeassistant" {
         PUID = "99"
         TZ   = "Europe/Helsinki"
       }
-      image = {
-        tag = "2025.2.5"
-        uri = "lscr.io/linuxserver/homeassistant"
-      }
+      image = local.images.homeassistant
       longhorn_mounts = {
         config = {
           container_path  = "/config"

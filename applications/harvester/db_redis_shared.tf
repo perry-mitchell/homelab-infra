@@ -18,10 +18,7 @@ module "db_redis_shared" {
         REDIS_PASSWORD       = var.db_redis_root
       }
       fs_group = 1001
-      image = {
-        tag = "latest"
-        uri = "bitnami/redis"
-      }
+      image = local.images.redis
       longhorn_mounts = {
         data = {
           container_path  = "/bitnami/redis/data"

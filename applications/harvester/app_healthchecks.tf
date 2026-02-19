@@ -13,10 +13,7 @@ module "db_healthchecks_mariadb" {
         MARIADB_ROOT_PASSWORD = var.db_mariadb_root
         TZ                    = "Europe/Helsinki"
       }
-      image = {
-        tag = "12"
-        uri = "mariadb"
-      }
+      image = local.images.healthchecks_db
       longhorn_mounts = {
         mysql = {
           container_path  = "/var/lib/mysql"
@@ -93,10 +90,7 @@ module "app_healthchecks" {
         SECRET_KEY          = random_password.healthchecks_secret.result
         SITE_ROOT           = local.healthchecks_url
       }
-      image = {
-        tag = "latest"
-        uri = "healthchecks/healthchecks"
-      }
+      image = local.images.healthchecks
       longhorn_mounts = {
         data = {
           container_path  = "/data"

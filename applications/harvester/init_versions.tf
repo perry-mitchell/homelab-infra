@@ -1,56 +1,56 @@
 locals {
-  # Terraform provider versions
-  provider_versions = {
-    b2         = "0.9.0"
-    harvester  = "0.6.4"
-    helm       = "2.16.1"
-    htpasswd   = "~> 1.0"
-    kubernetes = "2.33.0"
-    namecheap  = ">= 2.2.0"
-  }
-
-  # Helm chart versions
-  helm_versions = {
-    csi_driver_smb = "v1.17.0"
-    nextcloud      = "8.5.2"
-  }
-
   # Container image definitions (uri + tag)
   images = {
     adventurelog = {
-      uri = "ghcr.io/elliotwutingfeng/adventurelog"
-      tag = "16-3.5"
-    }
-    adventurelog_db = {
-      uri = "mariadb"
+      uri = "ghcr.io/adventurelog/adventurelog"
       tag = "latest"
     }
-    atuin = {
-      uri = "ghcr.io/elliotwutingfeng/atuin"
-      tag = "16"
+    adventurelog_backend = {
+      uri = "ghcr.io/seanmorley15/adventurelog-backend"
+      tag = "latest"
     }
-    atuin_db = {
-      uri = "docker.io/library/postgres"
+    adventurelog_frontend = {
+      uri = "ghcr.io/seanmorley15/adventurelog-frontend"
+      tag = "latest"
+    }
+   adventurelog_postgis = {
+      uri = "postgis/postgis"
+      tag = "16-3.5"
+    }
+    atuin = {
+      uri = "ghcr.io/atuinsh/atuin"
       tag = "18.10.0"
     }
+    atuin_db = {
+      uri = "postgres"
+      tag = "16"
+    }
     ddclient = {
-      uri = "ghcr.io/linuxserver/ddclient"
+      uri = "lscr.io/linuxserver/ddclient"
+      tag = "latest"
+    }
+    faster_whisper = {
+      uri = "lscr.io/linuxserver/faster-whisper"
       tag = "latest"
     }
     gitsave = {
-      uri = "docker.io/library/alpine"
+      uri = "timwitzdam/gitsave"
       tag = "latest"
     }
     gluetun = {
-      uri = "docker.io/qmcgaw/gluetun"
+      uri = "qmcgaw/gluetun"
       tag = "latest"
     }
     healthchecks = {
-      uri = "docker.io/linuxserver/healthchecks"
+      uri = "healthchecks/healthchecks"
+      tag = "latest"
+    }
+    healthchecks_db = {
+      uri = "mariadb"
       tag = "12"
     }
     homeassistant = {
-      uri = "ghcr.io/home-assistant/home-assistant"
+      uri = "lscr.io/linuxserver/homeassistant"
       tag = "2025.2.5"
     }
     immich_server = {
@@ -66,87 +66,111 @@ locals {
       tag = "pg14-v0.3.0"
     }
     kimai = {
-      uri = "docker.io/kimai/kimai-apache"
-      tag = "12"
-    }
-    kimai_db = {
-      uri = "docker.io/library/postgres"
+      uri = "kimai/kimai2"
       tag = "apache"
     }
+    kimai_db = {
+      uri = "mariadb"
+      tag = "12"
+    }
     koillection = {
-      uri = "docker.io/koillection/koillection"
+      uri = "koillection/koillection"
       tag = "1.7.0"
     }
     koillection_postgres = {
-      uri = "docker.io/library/postgres"
+      uri = "postgres"
       tag = "16"
     }
     kopia = {
-      uri = "docker.io/kopia/kopia"
+      uri = "ghcr.io/imagegenius/kopia"
       tag = "latest"
     }
     mariadb = {
-      uri = "docker.io/library/mariadb"
+      uri = "mariadb"
       tag = "12"
+    }
+    mealie = {
+      uri = "hkotel/mealie"
+      tag = "latest"
+    }
+    mealie_db = {
+      uri = "postgres"
+      tag = "16"
     }
     mosquitto = {
-      uri = "docker.io/eclipse-mosquitto"
+      uri = "eclipse-mosquitto"
       tag = "2"
     }
-    nextcloud = {
-      uri = "docker.io/library/nextcloud"
+    nextcloud_db = {
+      uri = "mariadb"
       tag = "12"
     }
+    overseerr = {
+      uri = "lscr.io/linuxserver/overseerr"
+      tag = "latest"
+    }
     paperless_ngx = {
-      uri = "docker.io/paperlessngx/paperless-ngx"
+      uri = "paperlessngx/paperless-ngx"
+      tag = "latest"
+    }
+    paperless_db = {
+      uri = "mariadb"
+      tag = "12"
+    }
+    piper = {
+      uri = "lscr.io/linuxserver/piper"
       tag = "latest"
     }
     postgres = {
-      uri = "docker.io/library/postgres"
+      uri = "postgres"
       tag = "16"
     }
+    redis = {
+      uri = "bitnami/redis"
+      tag = "latest"
+    }
     prowlarr = {
-      uri = "docker.io/linuxserver/prowlarr"
+      uri = "lscr.io/linuxserver/prowlarr"
       tag = "latest"
     }
     qbittorrent = {
-      uri = "docker.io/linuxserver/qbittorrent"
+      uri = "lscr.io/linuxserver/qbittorrent"
       tag = "latest"
     }
     radarr = {
-      uri = "docker.io/linuxserver/radarr"
+      uri = "lscr.io/linuxserver/radarr"
       tag = "latest"
     }
     radicale = {
-      uri = "docker.io/radicale/radicale"
+      uri = "11notes/radicale"
       tag = "3.1.9"
     }
     smokeping = {
-      uri = "docker.io/linuxserver/smokeping"
+      uri = "lscr.io/linuxserver/smokeping"
       tag = "latest"
     }
     sonarr = {
-      uri = "docker.io/linuxserver/sonarr"
+      uri = "lscr.io/linuxserver/sonarr"
       tag = "latest"
     }
     tautulli = {
-      uri = "docker.io/linuxserver/tautulli"
+      uri = "lscr.io/linuxserver/tautulli"
       tag = "latest"
     }
     vaultwarden = {
-      uri = "docker.io/vaultwarden/server"
+      uri = "vaultwarden/server"
       tag = "latest"
     }
     webtrees = {
-      uri = "docker.io/linuxserver/webtrees"
-      tag = "12"
-    }
-    webtrees_db = {
-      uri = "docker.io/library/mysql"
+      uri = "nathanvaughn/webtrees"
       tag = "latest"
     }
+    webtrees_db = {
+      uri = "mariadb"
+      tag = "12"
+    }
     z2m = {
-      uri = "docker.io/zigbee2mqtt/zigbee2mqtt"
+      uri = "koenkk/zigbee2mqtt"
       tag = "latest"
     }
   }

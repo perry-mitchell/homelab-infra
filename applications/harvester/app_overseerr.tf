@@ -9,10 +9,7 @@ module "app_overseerr" {
         PUID = "99"
         TZ   = "Europe/Helsinki"
       }
-      image = {
-        tag = "latest"
-        uri = "lscr.io/linuxserver/overseerr"
-      }
+      image = local.images.overseerr
       longhorn_mounts = {
         config = {
           container_path  = "/config"

@@ -4,10 +4,7 @@ module "app_smokeping" {
   cluster_name = var.cluster_name
   containers = {
     smokeping = {
-      image = {
-        tag = "latest"
-        uri = "lscr.io/linuxserver/smokeping"
-      }
+      image = local.images.smokeping
       longhorn_mounts = {
         data = {
           container_path  = "/data"

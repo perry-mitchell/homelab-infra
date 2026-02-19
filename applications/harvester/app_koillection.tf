@@ -10,10 +10,7 @@ module "db_koillection_postgres" {
         POSTGRES_USER     = "root"
         TZ                = "Europe/Helsinki"
       }
-      image = {
-        tag = "16"
-        uri = "postgres"
-      }
+      image = local.images.koillection_postgres
       longhorn_mounts = {
         data = {
           container_path  = "/var/lib/postgresql/data"
@@ -90,10 +87,7 @@ module "app_koillection" {
         DB_PASSWORD         = random_password.koillection_database_user.result
         DB_VERSION          = 16
       }
-      image = {
-        tag = "1.7.0"
-        uri = "koillection/koillection"
-      }
+      image = local.images.koillection
       longhorn_mounts = {
         uploads = {
           container_path  = "/uploads"

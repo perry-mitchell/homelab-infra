@@ -4,10 +4,7 @@ module "app_ddclient" {
   cluster_name = var.cluster_name
   containers = {
     ddclient = {
-      image = {
-        tag = "latest"
-        uri = "lscr.io/linuxserver/ddclient"
-      }
+      image = local.images.ddclient
       longhorn_mounts = {
         data = {
           container_path  = "/config"
