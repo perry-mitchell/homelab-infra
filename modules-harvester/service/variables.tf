@@ -26,15 +26,16 @@ variable "containers" {
       storage_request = optional(string, "50Gi")
     })), {})
     ports = optional(list(object({
-      container = number
-      internal_hostname = optional(string, null)
-      public_access = optional(object({
-        cluster_ip = string
-        hostname = string
-      }), null)
-      service   = number
-      tailscale_hostname = optional(string, null)
-    })), [])
+       container = number
+       internal_hostname = optional(string, null)
+       public_access = optional(object({
+         cluster_ip = optional(string, null)
+         hostname = string
+         ingress_class = optional(string, null)
+       }), null)
+       service   = number
+       tailscale_hostname = optional(string, null)
+     })), [])
     restart_policy = optional(string, null)
     run_as = optional(object({
       user  = number
@@ -59,4 +60,9 @@ variable "namespace" {
 variable "replicas" {
   type    = number
   default = 1
+}
+
+variable "public_ingress_class" {
+  type    = string
+  default = "nginx-public"
 }

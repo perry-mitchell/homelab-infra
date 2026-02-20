@@ -16,5 +16,5 @@ module "app_ddclient" {
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "ddclient"
   namespace              = kubernetes_namespace.dns.metadata.0.name
-  replicas = local.deployments_enabled.service ? 1 : 0
+  replicas               = local.deployments_enabled.service ? 1 : 0
 }

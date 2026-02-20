@@ -65,6 +65,11 @@ variable "kopia_admin" {
   sensitive = true
 }
 
+variable "letsencrypt_email" {
+  description = "Email for Let's Encrypt certificate notifications"
+  type        = string
+}
+
 variable "longhorn_storage_class" {
   type    = string
   default = "harvester-longhorn"
@@ -97,6 +102,10 @@ variable "paperless_auth" {
     admin_user     = string
   })
   sensitive = true
+}
+
+variable "public_domains" {
+  type    = list(string)
 }
 
 variable "radicale_users" {

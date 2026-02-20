@@ -1,7 +1,7 @@
 resource "random_password" "radicale_salt" {
   length           = 8
   special          = true
-  override_special = "!@#%&*()-_=+[]{}<>:?"
+  override_special = "./"
 }
 
 resource "htpasswd_password" "radicale_users" {
