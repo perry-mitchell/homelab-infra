@@ -9,10 +9,7 @@ module "app_gitsave" {
         ENCRYPTION_SECRET = var.gitsave.encryption_secret
         JWT_SECRET   = var.gitsave.jwt
       }
-      image = {
-        tag = "latest"
-        uri = "timwitzdam/gitsave"
-      }
+      image = local.images.gitsave
       longhorn_mounts = {
         data = {
           container_path  = "/app/data"

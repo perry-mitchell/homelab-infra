@@ -11,6 +11,16 @@ variable "cluster_name" {
   type    = string
 }
 
+variable "drone_ci" {
+  type = object({
+    github_client_id     = string
+    github_client_secret = string
+    rpc_secret           = string
+    admin_user           = string
+  })
+  sensitive = true
+}
+
 variable "db_mariadb_root" {
   type = string
   sensitive = true
@@ -65,6 +75,11 @@ variable "kopia_admin" {
   sensitive = true
 }
 
+variable "letsencrypt_email" {
+  description = "Email for Let's Encrypt certificate notifications"
+  type        = string
+}
+
 variable "longhorn_storage_class" {
   type    = string
   default = "harvester-longhorn"
@@ -97,6 +112,10 @@ variable "paperless_auth" {
     admin_user     = string
   })
   sensitive = true
+}
+
+variable "public_domain" {
+  type = string
 }
 
 variable "radicale_users" {

@@ -1,7 +1,7 @@
 resource "random_password" "radicale_salt" {
   length           = 8
   special          = true
-  override_special = "!@#%&*()-_=+[]{}<>:?"
+  override_special = "./"
 }
 
 resource "htpasswd_password" "radicale_users" {
@@ -27,10 +27,7 @@ module "app_radicale" {
       environment = {
         TZ = "Europe/Helsinki"
       }
-      image = {
-        tag = "3.1.9"
-        uri = "11notes/radicale"
-      }
+      image = local.images.radicale
       longhorn_mounts = {
         var = {
           container_path  = "/radicale/var"

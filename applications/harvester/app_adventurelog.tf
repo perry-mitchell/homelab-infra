@@ -43,10 +43,7 @@ module "db_adventurelog_postgis" {
   containers = {
     "adventurelog-postgis" = {
       environment = local.adventurelog_env
-      image = {
-        tag = "16-3.5"
-        uri = "postgis/postgis"
-      }
+      image = local.images.adventurelog_postgis
       longhorn_mounts = {
         postgres = {
           container_path  = "/var/lib/postgresql/data"
@@ -75,10 +72,7 @@ module "app_adventurelog" {
   containers = {
     "adventurelog-backend" = {
       environment = local.adventurelog_env
-      image = {
-        tag = "latest"
-        uri = "ghcr.io/seanmorley15/adventurelog-backend"
-      }
+      image = local.images.adventurelog_backend
       longhorn_mounts = {
         media = {
           container_path = "/code/media"
@@ -95,10 +89,7 @@ module "app_adventurelog" {
     }
     "adventurelog-frontend" = {
       environment = local.adventurelog_env
-      image = {
-        tag = "latest"
-        uri = "ghcr.io/seanmorley15/adventurelog-frontend"
-      }
+      image = local.images.adventurelog_frontend
       ports = [
         {
           container = 3000

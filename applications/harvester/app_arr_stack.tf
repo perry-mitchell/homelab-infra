@@ -47,10 +47,7 @@ module "app_arr_stack" {
         VPN_TYPE                  = "openvpn"
         TZ                        = "Europe/Helsinki"
       }
-      image = {
-        tag = "latest"
-        uri = "qmcgaw/gluetun"
-      }
+      image = local.images.gluetun
       longhorn_mounts = {
         config = {
           container_path  = "/gluetun"
@@ -69,10 +66,7 @@ module "app_arr_stack" {
         PUID = "99"
         TZ   = "Europe/Helsinki"
       }
-      image = {
-        tag = "latest"
-        uri = "lscr.io/linuxserver/prowlarr"
-      }
+      image = local.images.prowlarr
       longhorn_mounts = {
         config = {
           container_path  = "/config"
@@ -91,10 +85,7 @@ module "app_arr_stack" {
         PUID = "99"
         TZ   = "Europe/Helsinki"
       }
-      image = {
-        tag = "latest"
-        uri = "lscr.io/linuxserver/sonarr"
-      }
+      image = local.images.sonarr
       longhorn_mounts = {
         config = {
           container_path  = "/config"
@@ -123,10 +114,7 @@ module "app_arr_stack" {
         PUID = "99"
         TZ   = "Europe/Helsinki"
       }
-      image = {
-        tag = "latest"
-        uri = "lscr.io/linuxserver/radarr"
-      }
+      image = local.images.radarr
       longhorn_mounts = {
         config = {
           container_path  = "/config"
@@ -157,10 +145,7 @@ module "app_arr_stack" {
         TZ              = "Europe/Helsinki"
         WEBUI_PORT      = "8080"
       }
-      image = {
-        tag = "latest"
-        uri = "lscr.io/linuxserver/qbittorrent"
-      }
+      image = local.images.qbittorrent
       longhorn_mounts = {
         config = {
           container_path  = "/config"

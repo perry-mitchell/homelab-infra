@@ -7,10 +7,7 @@ module "app_z2m" {
       environment = {
         TZ = "Europe/Helsinki"
       }
-      image = {
-        tag = "latest"
-        uri = "koenkk/zigbee2mqtt"
-      }
+      image = local.images.z2m
       longhorn_mounts = {
         data = {
           container_path  = "/app/data"

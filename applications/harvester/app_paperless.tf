@@ -12,10 +12,7 @@ module "db_paperless_mariadb" {
         MARIADB_ROOT_PASSWORD = var.db_mariadb_root
         TZ                    = "Europe/Helsinki"
       }
-      image = {
-        tag = "12"
-        uri = "mariadb"
-      }
+      image = local.images.paperless_db
       longhorn_mounts = {
         mysql = {
           container_path  = "/var/lib/mysql"
@@ -89,10 +86,7 @@ module "app_paperless" {
         USERMAP_UID                    = "99"
         USERMAP_GID                    = "100"
       }
-      image = {
-        tag = "latest"
-        uri = "paperlessngx/paperless-ngx"
-      }
+      image = local.images.paperless_ngx
       longhorn_mounts = {
         config = {
           container_path  = "/config"

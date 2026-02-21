@@ -15,10 +15,7 @@ module "db_mealie_postgres" {
         POSTGRES_USER     = "root"
         TZ                = "Europe/Helsinki"
       }
-      image = {
-        tag = "16"
-        uri = "postgres"
-      }
+      image = local.images.mealie_db
       longhorn_mounts = {
         data = {
           container_path  = "/var/lib/postgresql/data"
@@ -84,10 +81,7 @@ module "app_mealie" {
         POSTGRES_PORT = "5432"
         POSTGRES_DB ="mealie"
       }
-      image = {
-        tag = "latest"
-        uri = "hkotel/mealie"
-      }
+      image = local.images.mealie
       longhorn_mounts = {
         data = {
           container_path  = "/app/data"

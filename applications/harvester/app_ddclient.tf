@@ -4,10 +4,7 @@ module "app_ddclient" {
   cluster_name = var.cluster_name
   containers = {
     ddclient = {
-      image = {
-        tag = "latest"
-        uri = "lscr.io/linuxserver/ddclient"
-      }
+      image = local.images.ddclient
       longhorn_mounts = {
         data = {
           container_path  = "/config"
@@ -19,5 +16,5 @@ module "app_ddclient" {
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "ddclient"
   namespace              = kubernetes_namespace.dns.metadata.0.name
-  replicas = local.deployments_enabled.service ? 1 : 0
+  replicas               = local.deployments_enabled.service ? 1 : 0
 }

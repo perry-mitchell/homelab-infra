@@ -12,10 +12,7 @@ module "db_webtrees_mariadb" {
         MARIADB_ROOT_PASSWORD = var.db_mariadb_root
         TZ                    = "Europe/Helsinki"
       }
-      image = {
-        tag = "12"
-        uri = "mariadb"
-      }
+      image = local.images.webtrees_db
       longhorn_mounts = {
         mysql = {
           container_path  = "/var/lib/mysql"
@@ -83,10 +80,7 @@ module "app_webtrees" {
         WT_PASS     = var.webtrees_admin.password
         WT_USER     = var.webtrees_admin.username
       }
-      image = {
-        tag = "latest"
-        uri = "nathanvaughn/webtrees"
-      }
+      image = local.images.webtrees
       longhorn_mounts = {
         data = {
           container_path  = "/var/www/webtrees/data"

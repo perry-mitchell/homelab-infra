@@ -8,10 +8,7 @@ module "db_kimai_mariadb" {
         MARIADB_ROOT_PASSWORD = var.db_mariadb_root
         TZ                    = "Europe/Helsinki"
       }
-      image = {
-        tag = "12"
-        uri = "mariadb"
-      }
+      image = local.images.kimai_db
       longhorn_mounts = {
         mysql = {
           container_path  = "/var/lib/mysql"
@@ -74,10 +71,7 @@ module "app_kimai" {
         TRUSTED_PROXIES = "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
         TZ              = "Europe/Helsinki"
       }
-      image = {
-        tag = "apache"
-        uri = "kimai/kimai2"
-      }
+      image = local.images.kimai
       longhorn_mounts = {
         data = {
           container_path  = "/opt/kimai/var/data"

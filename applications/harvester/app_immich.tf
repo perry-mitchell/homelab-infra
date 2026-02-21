@@ -14,10 +14,7 @@ module "db_immich_postgres" {
         POSTGRES_USER     = "root"
         TZ                = "Europe/Helsinki"
       }
-      image = {
-        tag = "pg14-v0.3.0"
-        uri = "tensorchord/pgvecto-rs"
-      }
+      image = local.images.immich_postgres
       longhorn_mounts = {
         data = {
           container_path  = "/var/lib/postgresql/data"
@@ -77,10 +74,7 @@ module "app_immich_ml" {
         IMMICH_PORT = "3003"
         TZ          = "Europe/Helsinki"
       }
-      image = {
-        tag = local.immich_tag
-        uri = "ghcr.io/immich-app/immich-machine-learning"
-      }
+      image = local.images.immich_ml
       longhorn_mounts = {
         "model-cache" = {
           container_path  = "/cache"
@@ -124,10 +118,7 @@ module "app_immich" {
         REDIS_PORT         = "6379"
         TZ                 = "Europe/Helsinki"
       }
-      image = {
-        tag = local.immich_tag
-        uri = "ghcr.io/immich-app/immich-server"
-      }
+      image = local.images.immich_server
       nfs_mounts = {
         upload = {
           create_subdir   = true

@@ -19,10 +19,7 @@ module "db_nextcloud_mariadb" {
         MARIADB_ROOT_PASSWORD = var.db_mariadb_root
         TZ                    = "Europe/Helsinki"
       }
-      image = {
-        tag = "12"
-        uri = "mariadb"
-      }
+      image = local.images.nextcloud_db
       longhorn_mounts = {
         mysql = {
           container_path  = "/var/lib/mysql"

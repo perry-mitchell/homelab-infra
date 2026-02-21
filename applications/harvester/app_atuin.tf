@@ -10,10 +10,7 @@ module "db_atuin_postgres" {
         POSTGRES_USER     = "root"
         TZ                = "Europe/Helsinki"
       }
-      image = {
-        tag = "16"
-        uri = "postgres"
-      }
+      image = local.images.atuin_db
       longhorn_mounts = {
         data = {
           container_path  = "/var/lib/postgresql/data"
@@ -75,10 +72,7 @@ module "app_atuin" {
         ATUIN_DB_URI = "postgres://${"atuin"}:${random_password.atuin_database_user.result}@atuin-postgres/${"atuin"}"
         RUST_LOG = "info,atuin_server=debug"
       }
-      image = {
-        tag = "18.10.0"
-        uri = "ghcr.io/atuinsh/atuin"
-      }
+      image = local.images.atuin
       ports = [
         {
           container = 8888
