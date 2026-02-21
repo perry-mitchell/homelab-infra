@@ -11,6 +11,16 @@ variable "cluster_name" {
   type    = string
 }
 
+variable "drone_ci" {
+  type = object({
+    github_client_id     = string
+    github_client_secret = string
+    rpc_secret           = string
+    admin_user           = string
+  })
+  sensitive = true
+}
+
 variable "db_mariadb_root" {
   type = string
   sensitive = true
@@ -104,8 +114,8 @@ variable "paperless_auth" {
   sensitive = true
 }
 
-variable "public_domains" {
-  type    = list(string)
+variable "public_domain" {
+  type = string
 }
 
 variable "radicale_users" {

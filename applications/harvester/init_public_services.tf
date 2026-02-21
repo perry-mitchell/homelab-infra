@@ -3,7 +3,7 @@ module "cert_manager" {
 
   letsencrypt_email  = var.letsencrypt_email
   ingress_service_ip = "10.53.200.80"
-  public_hostnames   = var.public_domains
+  public_hostnames   = [var.public_domain, local.drone_host]
 }
 
 module "public_ingress" {
