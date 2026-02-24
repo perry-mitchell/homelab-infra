@@ -100,3 +100,51 @@ resource "helm_release" "drone" {
     value = local.deployments_enabled.service ? 1 : 0
   }
 }
+
+resource "helm_release" "drone_runner" {
+  name      = "drone-runner"
+  namespace = kubernetes_namespace.programming.metadata[0].name
+
+  repository = "https://charts.drone.io"
+  chart      = "drone-runner-docker"
+
+  set {
+    name  = "env.DRONE_RPC_HOST"
+    value = "drone:8080"
+  }
+
+  set {
+    name  = "env.DRONE_RPC_PROTO"
+    value = "http"
+  }
+
+  set_sensitive {
+    name  = "env.DRONE_RPC_SECRET"
+    value = var.drone_ci.rpc_secret
+  }
+
+  set {
+    name  = "dind.securityContext.privileged"
+    value = "true"
+  }
+
+  set {
+    name  = "autoscaling.enabled"
+    value = "true"
+  }
+
+  set {
+    name  = "autoscaling.minReplicas"
+    value = "1"
+  }
+
+  set {
+    name  = "autoscaling.maxReplicas"
+    value = "3"
+  }
+
+  set {
+    name  = "autoscaling.targetCPUUtilizationPercentage"
+    value = "80"
+  }
+}
