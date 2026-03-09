@@ -85,6 +85,10 @@ locals {
       uri = "ghcr.io/imagegenius/kopia"
       tag = "latest"
     }
+    maintenant = {
+      uri = "ghcr.io/kolapsis/maintenant"
+      tag = "latest"
+    }
     mariadb = {
       uri = "mariadb"
       tag = "12"
