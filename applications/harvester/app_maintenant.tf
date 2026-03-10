@@ -1,3 +1,9 @@
+resource "kubernetes_namespace" "maintenant" {
+  metadata {
+    name = "maintenant"
+  }
+}
+
 module "app_maintenant" {
   source = "../../modules-harvester/service"
 
@@ -5,8 +11,9 @@ module "app_maintenant" {
   containers = {
     maintenant = {
       environment = {
-        MAINTENANT_ADDR: "0.0.0.0:8080"
-        MAINTENANT_DB: "/data/maintenant.db"
+        MAINTENANT_ADDR = "0.0.0.0:8080"
+        MAINTENANT_DB = "/data/maintenant.db"
+        MAINTENANT_RUNTIME = "kubernetes"
       }
       image = local.images.maintenant
       longhorn_mounts = {
@@ -26,6 +33,6 @@ module "app_maintenant" {
   }
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "maintenant"
-  namespace              = kubernetes_namespace.monitoring.metadata.0.name
+  namespace              = kubernetes_namespace.maintenant.metadata.0.name
   replicas               = local.deployments_enabled.service ? 1 : 0
 }
