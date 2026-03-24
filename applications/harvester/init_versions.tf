@@ -177,5 +177,9 @@ locals {
       uri = "koenkk/zigbee2mqtt"
       tag = "latest"
     }
+    pinchflat = {
+      uri = "keglin/pinchflat"
+      tag = "dev"
+    }
   }
 }
