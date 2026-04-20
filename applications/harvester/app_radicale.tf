@@ -14,7 +14,7 @@ resource "htpasswd_password" "radicale_users" {
 locals {
   radicale_htpasswd = join("\n", [
     for user, hash in htpasswd_password.radicale_users :
-    "${user}:${hash.apr1}"
+    "${user}:${hash.bcrypt}"
   ])
 }
 
@@ -37,9 +37,11 @@ module "app_radicale" {
       }
       ports = [
         {
-          container          = 5232
-          service            = 80
-          # tailscale_hostname = "z2m"
+          container    = 5232
+          service      = 80
+          public_access = {
+            hostname = "radicale.${var.public_domain}"
+          }
         }
       ]
       static_mounts = {

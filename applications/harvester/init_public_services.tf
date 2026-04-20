@@ -4,8 +4,8 @@ module "cert_manager" {
   letsencrypt_email  = var.letsencrypt_email
   ingress_service_ip = "10.53.200.80"
   public_hostnames   = [
-    var.public_domain
-    #local.drone_host
+    var.public_domain,
+    "radicale.${var.public_domain}"
   ]
 }
 
