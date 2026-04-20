@@ -65,7 +65,8 @@ module "app_atuin" {
   cluster_name = var.cluster_name
   containers = {
     atuin = {
-      args = ["server", "start"]
+      command = ["atuin-server"]
+      args    = ["start"]
       environment = {
         ATUIN_HOST = "0.0.0.0"
         ATUIN_OPEN_REGISTRATION = "true"

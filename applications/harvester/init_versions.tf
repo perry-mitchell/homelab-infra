@@ -19,7 +19,7 @@ locals {
     }
     atuin = {
       uri = "ghcr.io/atuinsh/atuin"
-      tag = "18.10.0"
+      tag = "18.15.2"
     }
     atuin_db = {
       uri = "postgres"
@@ -55,11 +55,11 @@ locals {
     }
     immich_server = {
       uri = "ghcr.io/immich-app/immich-server"
-      tag = "v2.2.0"
+      tag = "v2.7.5"
     }
     immich_ml = {
       uri = "ghcr.io/immich-app/immich-machine-learning"
-      tag = "v2.2.0"
+      tag = "v2.7.5"
     }
     immich_postgres = {
       uri = "tensorchord/pgvecto-rs"
@@ -75,7 +75,7 @@ locals {
     }
     koillection = {
       uri = "koillection/koillection"
-      tag = "1.7.0"
+      tag = "1.8.0"
     }
     koillection_postgres = {
       uri = "postgres"
@@ -147,7 +147,7 @@ locals {
     }
     radicale = {
       uri = "11notes/radicale"
-      tag = "3.1.9"
+      tag = "3.7.0"
     }
     smokeping = {
       uri = "lscr.io/linuxserver/smokeping"

@@ -24,6 +24,7 @@ module "app_radicale" {
   cluster_name = var.cluster_name
   containers = {
     radicale = {
+      fs_group = 1000
       environment = {
         TZ = "Europe/Helsinki"
       }
