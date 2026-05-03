@@ -105,6 +105,10 @@ locals {
       uri = "eclipse-mosquitto"
       tag = "2"
     }
+    n8n = {
+      uri = "docker.n8n.io/n8nio/n8n"
+      tag = "2.17.3"
+    }
     nextcloud_db = {
       uri = "mariadb"
       tag = "12"
