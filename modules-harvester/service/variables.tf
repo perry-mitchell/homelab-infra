@@ -57,6 +57,11 @@ variable "namespace" {
   type = string
 }
 
+variable "service_account_name" {
+  type    = string
+  default = null
+}
+
 variable "replicas" {
   type    = number
   default = 1

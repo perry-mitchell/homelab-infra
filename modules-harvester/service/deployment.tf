@@ -25,6 +25,8 @@ resource "kubernetes_deployment" "deployment" {
       }
 
       spec {
+        service_account_name = var.service_account_name
+
         dynamic "security_context" {
           for_each = length([for c in var.containers : c if c.fs_group != null]) > 0 ? [1] : []
 

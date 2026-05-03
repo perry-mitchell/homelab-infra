@@ -16,4 +16,5 @@ Follow these rules when performing **ANY AND ALL** operations within the bounds 
  * Never run `tofu apply`, `tofu destroy` or any other `tofu` command that could be considered a write-operation, including anything under `tofu state ...` that isn't `list` or `show`. Only commands like `tofu plan`, `tofu output` etc. are acceptable. When in doubt, ask the user.
  * Mark sensitive values as sensitive, and pay close attention to never hardcode a secret or sensitive value in a manner that may result it in being committed by accident.
  * At the start of ANY plan or build operation, or any conversation for that matter, mention to the user that you've acknowledged these rules by simply saying "I have read and acknowledged the agent rules." - And ensure that you do so.
+ * If the user asks a broad or operational question about the cluster (e.g. troubleshooting, failure recovery), check for relevant documentation in `./applications/harvester/docs/` before answering.
 
