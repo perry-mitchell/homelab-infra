@@ -105,6 +105,10 @@ variable "nfs_storage" {
   }))
 }
 
+variable "opencode_ssh_public_keys" {
+  type = list(string)
+}
+
 variable "paperless_auth" {
   type = object({
     admin_mail     = string
