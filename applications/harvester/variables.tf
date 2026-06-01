@@ -6,6 +6,12 @@ variable "adventurelog_django_admin" {
   })
 }
 
+variable "arc_github_pat" {
+  description = "GitHub Personal Access Token for ARC runner authentication"
+  sensitive   = true
+  type        = string
+}
+
 variable "cluster_name" {
   default = "torrens"
   type    = string

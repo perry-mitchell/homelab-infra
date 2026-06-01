@@ -185,5 +185,9 @@ locals {
       uri = "keglin/pinchflat"
       tag = "dev"
     }
+    arc_runner = {
+      uri = "ghcr.io/perry-mitchell/homelab-infra/arc-runner-infersec"
+      tag = "latest"
+    }
   }
 }
