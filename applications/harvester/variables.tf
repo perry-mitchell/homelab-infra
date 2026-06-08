@@ -59,6 +59,15 @@ variable "healthchecks_email" {
   })
 }
 
+variable "hermes" {
+  type = object({
+    dashboard_password = string
+    dashboard_secret   = string
+    dashboard_username = string
+  })
+  sensitive = true
+}
+
 variable "kimai_admin" {
   type = object({
     email    = string

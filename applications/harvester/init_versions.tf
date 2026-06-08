@@ -185,5 +185,9 @@ locals {
       uri = "keglin/pinchflat"
       tag = "dev"
     }
+    hermes_agent = {
+      uri = "nousresearch/hermes-agent"
+      tag = "v2026.6.5"
+    }
   }
 }
