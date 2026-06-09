@@ -37,8 +37,9 @@ module "app_radicale" {
       }
       ports = [
         {
-          container    = 5232
-          service      = 80
+          container         = 5232
+          service           = 80
+          internal_hostname = "radicale"
           public_access = {
             hostname = "radicale.${var.public_domain}"
           }

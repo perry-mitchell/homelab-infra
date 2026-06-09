@@ -94,6 +94,25 @@ variable "longhorn_storage_class" {
   default = "harvester-longhorn"
 }
 
+variable "mcp_caldav" {
+  type = object({
+    pass = string
+    user = string
+  })
+  sensitive = true
+}
+
+variable "mcp_email" {
+  type = object({
+    credential_secret    = string
+    outlook_app_password = string
+    outlook_user         = string
+    # fastmail_app_password = string
+    # fastmail_user         = string
+  })
+  sensitive = true
+}
+
 variable "network_cidrs" {
   type = set(string)
 }
