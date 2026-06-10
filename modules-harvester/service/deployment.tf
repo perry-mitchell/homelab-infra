@@ -79,6 +79,20 @@ resource "kubernetes_deployment" "deployment" {
               }
             }
 
+            dynamic "liveness_probe" {
+              for_each = container.value.liveness_probe != null ? [1] : []
+
+              content {
+                exec {
+                  command = container.value.liveness_probe.command
+                }
+
+                period_seconds    = container.value.liveness_probe.period_seconds
+                timeout_seconds   = container.value.liveness_probe.timeout_seconds
+                failure_threshold = container.value.liveness_probe.failure_threshold
+              }
+            }
+
             dynamic "volume_mount" {
               for_each = {
                 for mount_name, mount in local.nfs_mounts : mount_name => mount

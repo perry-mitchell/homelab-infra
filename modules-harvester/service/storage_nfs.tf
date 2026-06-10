@@ -37,6 +37,8 @@ resource "kubernetes_storage_class" "storage_nfs" {
     share  = each.value.share
     subDir = each.value.sub_dir
   }
+
+  mount_options = ["soft", "timeo=30", "retrans=3"]
 }
 
 resource "kubernetes_persistent_volume_claim" "storage_nfs" {

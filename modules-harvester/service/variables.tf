@@ -13,6 +13,12 @@ variable "containers" {
       tag = string
       uri = string
     })
+    liveness_probe = optional(object({
+      command           = list(string)
+      period_seconds    = optional(number, 300)
+      timeout_seconds   = optional(number, 10)
+      failure_threshold = optional(number, 3)
+    }), null)
     longhorn_mounts = optional(map(object({
       container_path  = string
       storage_request = string
