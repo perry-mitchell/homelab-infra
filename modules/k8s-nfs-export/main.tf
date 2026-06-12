@@ -4,7 +4,7 @@ resource "helm_release" "nfs_csi" {
 
   repository = "https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts"
   chart      = "csi-driver-nfs"
-  version    = "4.9.0"
+  version    = "4.13.2"
   wait       = true
 
   set {
