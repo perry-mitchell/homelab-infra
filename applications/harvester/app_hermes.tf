@@ -31,5 +31,5 @@ module "app_hermes" {
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "hermes"
   namespace              = kubernetes_namespace.agents.metadata.0.name
-  replicas               = local.deployments_enabled.service ? 1 : 0
+  replicas               = 0
 }
