@@ -34,6 +34,10 @@ terraform {
       source  = "loafoe/htpasswd"
       version = "~> 1.0"
     }
+    kubectl = {
+      source  = "alekc/kubectl"
+      version = ">= 2.0"
+    }
     kubernetes = {
       source  = "opentofu/kubernetes"
       version = "2.33.0"

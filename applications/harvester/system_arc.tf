@@ -4,6 +4,6 @@ module "arc" {
   github_pat              = var.arc_github_pat
   kubeconfig_path         = "./kube.config"
   longhorn_storage_class  = var.longhorn_storage_class
-  repository              = "perry-mitchell/infersec"
+  repository              = var.arc_repository
   runner_image            = local.images.arc_runner
 }

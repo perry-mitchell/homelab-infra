@@ -1,10 +1,10 @@
-resource "kubernetes_namespace" "arc_system" {
+resource "kubernetes_namespace_v1" "arc_system" {
   metadata {
     name = "arc-system"
   }
 }
 
-resource "kubernetes_namespace" "arc_runners" {
+resource "kubernetes_namespace_v1" "arc_runners" {
   metadata {
     name = var.runner_namespace
   }
@@ -13,7 +13,7 @@ resource "kubernetes_namespace" "arc_runners" {
 resource "kubernetes_secret" "github_pat" {
   metadata {
     name      = "arc-github-pat"
-    namespace = resource.kubernetes_namespace.arc_system.metadata[0].name
+    namespace = resource.kubernetes_namespace_v1.arc_system.metadata[0].name
   }
 
   data = {
@@ -23,7 +23,7 @@ resource "kubernetes_secret" "github_pat" {
 
 resource "helm_release" "arc" {
   name       = "actions-runner-controller"
-  namespace  = resource.kubernetes_namespace.arc_system.metadata[0].name
+  namespace  = resource.kubernetes_namespace_v1.arc_system.metadata[0].name
   repository = "https://actions-runner-controller.github.io/actions-runner-controller"
   chart      = "actions-runner-controller"
   version    = "0.23.3"
@@ -56,7 +56,7 @@ resource "kubernetes_persistent_volume_claim" "npm_cache" {
     storage_class_name = var.longhorn_storage_class
   }
 
-  depends_on = [resource.kubernetes_namespace.arc_runners]
+  depends_on = [resource.kubernetes_namespace_v1.arc_runners]
 }
 
 resource "kubernetes_persistent_volume_claim" "general_cache" {
@@ -75,11 +75,11 @@ resource "kubernetes_persistent_volume_claim" "general_cache" {
     storage_class_name = var.longhorn_storage_class
   }
 
-  depends_on = [resource.kubernetes_namespace.arc_runners]
+  depends_on = [resource.kubernetes_namespace_v1.arc_runners]
 }
 
-resource "kubernetes_manifest" "runner_deployment" {
-  manifest = {
+resource "kubectl_manifest" "runner_deployment" {
+  yaml_body = yamlencode({
     apiVersion = "actions.summerwind.dev/v1alpha1"
     kind       = "RunnerDeployment"
     metadata = {
@@ -90,11 +90,11 @@ resource "kubernetes_manifest" "runner_deployment" {
       replicas = var.runner_replicas
       template = {
         spec = {
-          repository = var.repository
-          image      = "${var.runner_image.uri}:${var.runner_image.tag}"
-          labels     = var.runner_labels
-          ephemeral  = true
-          dockerEnabled = true
+          repository     = var.repository
+          image          = "${var.runner_image.uri}:${var.runner_image.tag}"
+          labels         = var.runner_labels
+          ephemeral      = true
+          dockerEnabled  = true
 
           resources = {
             requests = {
@@ -131,7 +131,7 @@ resource "kubernetes_manifest" "runner_deployment" {
         }
       }
     }
-  }
+  })
 
   depends_on = [helm_release.arc]
 }

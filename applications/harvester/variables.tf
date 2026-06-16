@@ -12,6 +12,11 @@ variable "arc_github_pat" {
   type        = string
 }
 
+variable "arc_repository" {
+  description = "GitHub repository for ARC runners to target (owner/repo)"
+  type        = string
+}
+
 variable "cluster_name" {
   default = "torrens"
   type    = string
