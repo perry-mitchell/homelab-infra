@@ -167,7 +167,7 @@ locals {
     }
     vaultwarden = {
       uri = "vaultwarden/server"
-      tag = "latest"
+      tag = "1.36.0"
     }
     webtrees = {
       uri = "nathanvaughn/webtrees"
