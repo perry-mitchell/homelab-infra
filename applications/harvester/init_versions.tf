@@ -197,5 +197,13 @@ locals {
       uri = "dockersilas/caldav-streamable-mcp"
       tag = "latest"
     }
+    gbrain = {
+      uri = "skywirex/gbrain"
+      tag = "v0.42.40.0-20260612"
+    }
+    gbrain_postgres = {
+      uri = "pgvector/pgvector"
+      tag = "pg16"
+    }
   }
 }
