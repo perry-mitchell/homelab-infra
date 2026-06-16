@@ -4,9 +4,8 @@ resource "harvester_image" "image" {
   name         = coalesce(var.image_name, var.name)
   namespace    = var.image_namespace
   display_name = coalesce(var.image_name, var.name)
-  source_type  = "download"
-  url          = var.image_url
-
+  source_type        = "download"
+  url                = var.image_url
   storage_class_name = "harvester-longhorn"
 }
 

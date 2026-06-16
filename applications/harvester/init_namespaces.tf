@@ -99,3 +99,9 @@ resource "kubernetes_namespace" "travel" {
     name = "travel"
   }
 }
+
+resource "kubernetes_namespace" "agents" {
+  metadata {
+    name = "agents"
+  }
+}

@@ -59,6 +59,15 @@ variable "healthchecks_email" {
   })
 }
 
+variable "hermes" {
+  type = object({
+    dashboard_password = string
+    dashboard_secret   = string
+    dashboard_username = string
+  })
+  sensitive = true
+}
+
 variable "kimai_admin" {
   type = object({
     email    = string
@@ -83,6 +92,25 @@ variable "letsencrypt_email" {
 variable "longhorn_storage_class" {
   type    = string
   default = "harvester-longhorn"
+}
+
+variable "mcp_caldav" {
+  type = object({
+    pass = string
+    user = string
+  })
+  sensitive = true
+}
+
+variable "mcp_email" {
+  type = object({
+    credential_secret    = string
+    outlook_app_password = string
+    outlook_user         = string
+    # fastmail_app_password = string
+    # fastmail_user         = string
+  })
+  sensitive = true
 }
 
 variable "network_cidrs" {

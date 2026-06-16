@@ -185,5 +185,17 @@ locals {
       uri = "keglin/pinchflat"
       tag = "dev"
     }
+    hermes_agent = {
+      uri = "nousresearch/hermes-agent"
+      tag = "v2026.6.5"
+    }
+    better_email_mcp = {
+      uri = "n24q02m/better-email-mcp"
+      tag = "1.32.1"
+    }
+    caldav_mcp = {
+      uri = "dockersilas/caldav-streamable-mcp"
+      tag = "latest"
+    }
   }
 }
