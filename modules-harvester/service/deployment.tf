@@ -112,6 +112,26 @@ resource "kubernetes_deployment" "deployment" {
                 sub_path   = replace(volume_mount.key, "/", "_")
               }
             }
+
+            dynamic "liveness_probe" {
+              for_each = container.value.liveness_probe != null ? [1] : []
+
+              content {
+                failure_threshold     = container.value.liveness_probe.failure_threshold
+                initial_delay_seconds = container.value.liveness_probe.initial_delay_seconds
+                period_seconds        = container.value.liveness_probe.period_seconds
+                success_threshold     = container.value.liveness_probe.success_threshold
+                timeout_seconds       = container.value.liveness_probe.timeout_seconds
+
+                dynamic "exec" {
+                  for_each = container.value.liveness_probe.exec_command != null ? [1] : []
+
+                  content {
+                    command = container.value.liveness_probe.exec_command
+                  }
+                }
+              }
+            }
           }
         }
 

@@ -13,6 +13,14 @@ module "app_kopia" {
         USERNAME                             = var.kopia_admin.username
       }
       image = local.images.kopia
+      liveness_probe = {
+        failure_threshold     = 1
+        initial_delay_seconds = 0
+        period_seconds        = 300
+        success_threshold     = 1
+        timeout_seconds       = 15
+        exec_command          = ["/bin/sh", "-c", "ls /source/photos > /dev/null 2>&1"]
+      }
       longhorn_mounts = {
         cache = {
           container_path = "/cache"

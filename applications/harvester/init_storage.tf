@@ -9,7 +9,7 @@ resource "helm_release" "csi_smb" {
 }
 
 module "nfs_storage_export" {
-  source = "../../modules/k8s-nfs-export"
+  source = "../../modules-harvester/k8s-nfs-export"
 
   storage_name = "torrens"
 }

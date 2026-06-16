@@ -31,6 +31,7 @@ resource "kubernetes_storage_class" "storage_nfs" {
   reclaim_policy         = each.value.reclaim
   volume_binding_mode    = "Immediate"
   allow_volume_expansion = true
+  mount_options          = ["soft", "retrans=3", "timeo=30"]
 
   parameters = {
     server = each.value.server
