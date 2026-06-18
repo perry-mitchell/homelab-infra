@@ -93,3 +93,9 @@ variable "target_port" {
   type    = number
   default = 80
 }
+
+variable "enable_live_migration" {
+  description = "Patch the kubevirt VM template with kubevirt.io/allow-pod-bridge-network-live-migration so bridge-networked VMs can be live-migrated during node drains (e.g. Harvester upgrades)."
+  type        = bool
+  default     = true
+}

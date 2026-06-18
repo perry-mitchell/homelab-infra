@@ -1,9 +1,9 @@
 resource "harvester_image" "image" {
   count = var.image_url != null ? 1 : 0
 
-  name         = coalesce(var.image_name, var.name)
-  namespace    = var.image_namespace
-  display_name = coalesce(var.image_name, var.name)
+  name               = coalesce(var.image_name, var.name)
+  namespace          = var.image_namespace
+  display_name       = coalesce(var.image_name, var.name)
   source_type        = "download"
   url                = var.image_url
   storage_class_name = "harvester-longhorn"
@@ -40,12 +40,12 @@ resource "harvester_virtualmachine" "vm" {
   }
 
   disk {
-    name       = "rootdisk"
-    type       = "disk"
-    size       = var.disk_size
-    bus        = var.disk_bus
-    boot_order = 1
-    image      = local.image_id
+    name        = "rootdisk"
+    type        = "disk"
+    size        = var.disk_size
+    bus         = var.disk_bus
+    boot_order  = 1
+    image       = local.image_id
     auto_delete = true
   }
 
@@ -55,6 +55,24 @@ resource "harvester_virtualmachine" "vm" {
       user_data_secret_name = harvester_cloudinit_secret.cloudinit[0].name
     }
   }
+}
+
+resource "null_resource" "live_migration" {
+  count = var.enable_live_migration ? 1 : 0
+
+  triggers = {
+    vm_id = harvester_virtualmachine.vm.id
+  }
+
+  provisioner "local-exec" {
+    interpreter = ["bash", "-c"]
+    command     = <<-EOT
+      kubectl --kubeconfig=${path.cwd}/kube.config patch vm ${var.name} -n ${var.namespace} --type=merge \
+        -p '{"spec":{"template":{"metadata":{"annotations":{"kubevirt.io/allow-pod-bridge-network-live-migration":"true"}}}}}'
+    EOT
+  }
+
+  depends_on = [harvester_virtualmachine.vm]
 }
 
 resource "kubernetes_service" "vm" {

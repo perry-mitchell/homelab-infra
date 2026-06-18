@@ -6,5 +6,8 @@ terraform {
     kubernetes = {
       source = "opentofu/kubernetes"
     }
+    null = {
+      source = "hashicorp/null"
+    }
   }
 }
