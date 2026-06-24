@@ -41,13 +41,15 @@ variable "db_redis_root" {
   sensitive = true
 }
 
-# variable "gbrain" {
-#   type = object({
-#     openai_api_key    = optional(string, "")
-#     anthropic_api_key = optional(string, "")
-#   })
-#   sensitive = true
-# }
+variable "gbrain" {
+  type = object({
+    embedding_dimensions  = number
+    embedding_model       = string
+    infersec_api_base_url = string
+    infersec_api_key      = string
+  })
+  sensitive = true
+}
 
 variable "gitsave" {
   type = object({
