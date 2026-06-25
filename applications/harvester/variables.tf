@@ -113,13 +113,12 @@ variable "mcp_caldav" {
 }
 
 variable "mcp_email" {
-  type = object({
-    credential_secret    = string
-    outlook_app_password = string
-    outlook_user         = string
-    # fastmail_app_password = string
-    # fastmail_user         = string
-  })
+  type = list(object({
+    email        = string
+    app_password = string
+    type         = string
+    imap_host    = optional(string, "")
+  }))
   sensitive = true
 }
 

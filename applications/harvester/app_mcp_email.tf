@@ -1,3 +1,22 @@
+locals {
+  mcp_email_imap_hosts = {
+    outlook  = ""
+    fastmail = "imap.fastmail.com"
+    custom   = ""
+  }
+  mcp_email_entries = [
+    for a in var.mcp_email : {
+      email = a.email
+      pass  = a.app_password
+      host  = a.imap_host != "" ? a.imap_host : lookup(local.mcp_email_imap_hosts, a.type, "")
+    }
+  ]
+  mcp_email_credentials = join(",", [
+    for e in local.mcp_email_entries :
+    e.host == "" ? "${e.email}:${e.pass}" : "${e.email}:${e.pass}:${e.host}"
+  ])
+}
+
 resource "random_password" "mcp_email_credential_secret" {
   length  = 32
   special = false
@@ -10,13 +29,11 @@ module "app_mcp_email" {
   containers = {
     email = {
       environment = {
-        CREDENTIAL_SECRET  = random_password.mcp_email_credential_secret.result
-        EMAIL_APP_PASSWORD = var.mcp_email.outlook_app_password
-        EMAIL_PROVIDER     = "outlook"
-        EMAIL_USER         = var.mcp_email.outlook_user
-        HOST               = "0.0.0.0"
-        MCP_AUTH_DISABLE   = "1"
-        PORT               = "8080"
+        CREDENTIAL_SECRET = random_password.mcp_email_credential_secret.result
+        EMAIL_CREDENTIALS = local.mcp_email_credentials
+        HOST              = "0.0.0.0"
+        MCP_AUTH_DISABLE  = "1"
+        PORT              = "8080"
       }
       fs_group = 1000
       image = local.images.better_email_mcp
