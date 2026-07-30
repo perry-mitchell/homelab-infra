@@ -93,6 +93,7 @@ module "app_homeassistant" {
       ports = [
         {
           container          = 8123
+          internal_hostname  = "homeassistant"
           service            = 80
           tailscale_hostname = "homeassistant"
         }
