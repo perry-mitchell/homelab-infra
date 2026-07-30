@@ -51,7 +51,7 @@ locals {
     }
     homeassistant = {
       uri = "lscr.io/linuxserver/homeassistant"
-      tag = "2025.2.5"
+      tag = "2026.7.4"
     }
     immich_server = {
       uri = "ghcr.io/immich-app/immich-server"
