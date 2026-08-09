@@ -1,6 +1,6 @@
 variable "adventurelog_django_admin" {
   type = object({
-    email = string
+    email    = string
     password = string
     username = string
   })
@@ -22,22 +22,22 @@ variable "drone_ci" {
 }
 
 variable "db_mariadb_root" {
-  type = string
+  type      = string
   sensitive = true
 }
 
 variable "db_postgres_root" {
-  type = string
+  type      = string
   sensitive = true
 }
 
 variable "db_postgres_pgvecto_rs_root" {
-  type = string
+  type      = string
   sensitive = true
 }
 
 variable "db_redis_root" {
-  type = string
+  type      = string
   sensitive = true
 }
 
@@ -54,18 +54,18 @@ variable "gbrain" {
 variable "gitsave" {
   type = object({
     encryption_secret = string
-    jwt = string
+    jwt               = string
   })
 }
 
 variable "healthchecks_email" {
   type = object({
-    from = string
-    host = string
+    from     = string
+    host     = string
     password = string
-    port = number
-    tls = bool
-    user = string
+    port     = number
+    tls      = bool
+    user     = string
   })
 }
 
@@ -74,6 +74,16 @@ variable "hermes" {
     dashboard_password = string
     dashboard_secret   = string
     dashboard_username = string
+  })
+  sensitive = true
+}
+
+variable "infersec" {
+  type = object({
+    license_key    = string
+    master_key     = string
+    public_url     = string
+    session_secret = string
   })
   sensitive = true
 }
@@ -164,12 +174,12 @@ variable "radicale_users" {
 }
 
 variable "state_encryption_passphrase" {
-  type = string
+  type      = string
   sensitive = true
 }
 
 variable "tailscale_container_auth" {
-  type = string
+  type      = string
   sensitive = true
 }
 

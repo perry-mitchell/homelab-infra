@@ -105,3 +105,9 @@ resource "kubernetes_namespace" "agents" {
     name = "agents"
   }
 }
+
+resource "kubernetes_namespace" "infersec" {
+  metadata {
+    name = "infersec"
+  }
+}
