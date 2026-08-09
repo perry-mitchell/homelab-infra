@@ -156,6 +156,14 @@ module "app_infersec" {
         DB_PRIMARY_PASSWORD        = random_password.infersec_database_user.result
         DB_PRIMARY_PORT            = "3306"
         DB_PRIMARY_USER            = "infersec"
+        EMAIL_ACTION_BASE_URL      = var.infersec.public_url
+        EMAIL_FROM_ADDRESS         = var.infersec_email.from_address
+        EMAIL_FROM_NAME            = var.infersec_email.from_name
+        EMAIL_HOST                 = var.infersec_email.host
+        EMAIL_PASSWORD             = var.infersec_email.password
+        EMAIL_PORT                 = tostring(var.infersec_email.port)
+        EMAIL_SECURE               = tostring(var.infersec_email.secure)
+        EMAIL_USER                 = var.infersec_email.user
         HTTPS                      = "true"
         INFERSEC_SECRET_MASTER_KEY = var.infersec.master_key
         LICENSE_KEY                = var.infersec.license_key

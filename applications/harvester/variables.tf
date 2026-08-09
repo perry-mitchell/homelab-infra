@@ -88,6 +88,19 @@ variable "infersec" {
   sensitive = true
 }
 
+variable "infersec_email" {
+  type = object({
+    from_address = string
+    from_name    = string
+    host         = string
+    password     = string
+    port         = number
+    secure       = bool
+    user         = string
+  })
+  sensitive = true
+}
+
 variable "kimai_admin" {
   type = object({
     email    = string
