@@ -61,7 +61,13 @@
 Set in Longhorn UI -> Settings, or via kubectl:
 
 ```
-node-down-pod-deletion-policy = delete-when-node-is-down
+node-down-pod-deletion-policy = delete-both-statefulset-and-deployment-pod
 ```
 
-This ensures pods and volumes auto-migrate when a node dies without manual intervention.
+This ensures pods (both Deployment and StatefulSet) and volumes auto-migrate
+when a node dies without manual intervention.
+
+Valid choices for this setting (enforced by the `validator.longhorn.io` webhook):
+`do-nothing`, `delete-statefulset-pod`, `delete-deployment-pod`,
+`delete-both-statefulset-and-deployment-pod`. This value is also pinned in
+`init_longhorn.tf`; keep the two in sync.

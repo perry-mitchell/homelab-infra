@@ -15,3 +15,19 @@ resource "kubernetes_manifest" "harvester_backup_target" {
     force_conflicts = true
   }
 }
+
+resource "kubernetes_manifest" "longhorn_node_down_pod_deletion_policy" {
+  manifest = {
+    apiVersion = "longhorn.io/v1beta2"
+    kind       = "Setting"
+    metadata = {
+      name      = "node-down-pod-deletion-policy"
+      namespace = "longhorn-system"
+    }
+    value = "delete-both-statefulset-and-deployment-pod"
+  }
+
+  field_manager {
+    force_conflicts = true
+  }
+}
