@@ -209,5 +209,13 @@ locals {
       uri = "pgvector/pgvector"
       tag = "pg16"
     }
+    infersec = {
+      uri = "rg.nl-ams.scw.cloud/infersec-public/infersec-production/selfhosted"
+      tag = "1.90.5"
+    }
+    versity = {
+      uri = "versity/versitygw"
+      tag = "v1.7.0"
+    }
   }
 }

@@ -9,6 +9,7 @@ variable "containers" {
     command      = optional(list(string), null)
     environment  = optional(map(string), {})
     fs_group     = optional(number, null)
+    hostname     = optional(string, null)
     image = object({
       tag = string
       uri = string
@@ -34,16 +35,16 @@ variable "containers" {
       storage_request = optional(string, "50Gi")
     })), {})
     ports = optional(list(object({
-       container = number
-       internal_hostname = optional(string, null)
-       public_access = optional(object({
-         cluster_ip = optional(string, null)
-         hostname = string
-         ingress_class = optional(string, null)
-       }), null)
-       service   = number
-       tailscale_hostname = optional(string, null)
-     })), [])
+      container         = number
+      internal_hostname = optional(string, null)
+      public_access = optional(object({
+        cluster_ip    = optional(string, null)
+        hostname      = string
+        ingress_class = optional(string, null)
+      }), null)
+      service            = number
+      tailscale_hostname = optional(string, null)
+    })), [])
     restart_policy = optional(string, null)
     run_as = optional(object({
       user  = number
