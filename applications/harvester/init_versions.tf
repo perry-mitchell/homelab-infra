@@ -13,7 +13,7 @@ locals {
       uri = "ghcr.io/seanmorley15/adventurelog-frontend"
       tag = "latest"
     }
-   adventurelog_postgis = {
+    adventurelog_postgis = {
       uri = "postgis/postgis"
       tag = "16-3.5"
     }
@@ -52,6 +52,10 @@ locals {
     homeassistant = {
       uri = "lscr.io/linuxserver/homeassistant"
       tag = "2026.7.4"
+    }
+    homepage = {
+      uri = "ghcr.io/gethomepage/homepage"
+      tag = "latest"
     }
     immich_server = {
       uri = "ghcr.io/immich-app/immich-server"
@@ -187,7 +191,7 @@ locals {
     }
     hermes_agent = {
       uri = "nousresearch/hermes-agent"
-      tag = "v2026.7.20"
+      tag = "v2026.8.3"
     }
     better_email_mcp = {
       uri = "n24q02m/better-email-mcp"

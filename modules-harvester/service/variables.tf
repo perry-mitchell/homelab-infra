@@ -50,7 +50,8 @@ variable "containers" {
       user  = number
       group = number
     }), null)
-    static_mounts = optional(map(string), {})
+    static_mounts        = optional(map(string), {})
+    binary_static_mounts = optional(map(string), {})
   }))
 }
 

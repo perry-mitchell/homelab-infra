@@ -78,6 +78,14 @@ variable "hermes" {
   sensitive = true
 }
 
+variable "homepage_seoai" {
+  type = list(object({
+    name = string
+    href = string
+    icon = optional(string)
+  }))
+}
+
 variable "infersec" {
   type = object({
     license_key    = string
@@ -205,6 +213,10 @@ variable "tailscale_oauth" {
 }
 
 variable "tailscale_tailnet" {
+  type = string
+}
+
+variable "unraid_url" {
   type = string
 }
 

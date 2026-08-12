@@ -118,6 +118,16 @@ resource "kubernetes_deployment" "deployment" {
               }
             }
 
+            dynamic "volume_mount" {
+              for_each = container.value.binary_static_mounts != null ? container.value.binary_static_mounts : {}
+
+              content {
+                name       = "${var.name}-${container.key}-static-files"
+                mount_path = volume_mount.key
+                sub_path   = replace(volume_mount.key, "/", "_")
+              }
+            }
+
             dynamic "liveness_probe" {
               for_each = container.value.liveness_probe != null ? [1] : []
 
@@ -168,7 +178,7 @@ resource "kubernetes_deployment" "deployment" {
           for_each = {
             for container_name, container in var.containers :
             container_name => container
-            if container.static_mounts != null && length(container.static_mounts) > 0
+            if(container.static_mounts != null && length(container.static_mounts) > 0) || (container.binary_static_mounts != null && length(container.binary_static_mounts) > 0)
           }
 
           content {

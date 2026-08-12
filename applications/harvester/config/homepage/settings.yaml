@@ -1,0 +1,15 @@
+title: Homelab
+theme: dark
+headerStyle: underlined
+target: _blank
+background: /images/background.jpg
+layout:
+  Personal:
+    style: row
+    columns: 4
+  Professional:
+    style: row
+    columns: 3
+  SEOAI:
+    style: row
+    columns: 3

@@ -2,7 +2,7 @@ resource "kubernetes_config_map" "static_files" {
   for_each = {
     for container_name, container in var.containers :
     container_name => container
-    if length(container.static_mounts) > 0
+    if length(container.static_mounts) > 0 || length(container.binary_static_mounts) > 0
   }
 
   metadata {
@@ -12,6 +12,11 @@ resource "kubernetes_config_map" "static_files" {
 
   data = {
     for file_path, content in each.value.static_mounts :
+    replace(file_path, "/", "_") => content
+  }
+
+  binary_data = {
+    for file_path, content in each.value.binary_static_mounts :
     replace(file_path, "/", "_") => content
   }
 }
