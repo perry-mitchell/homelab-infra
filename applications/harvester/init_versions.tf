@@ -205,6 +205,10 @@ locals {
       uri = "ghcr.io/perry-mitchell/homelab-infra/torium"
       tag = "0.1.0@sha256:90b60ef1be491c7bf722268fda3320b9e8e4a8a1b78cb96ad24cf6fbeaef66d5"
     }
+    kubernetes_mcp = {
+      uri = "quay.io/containers/kubernetes_mcp_server"
+      tag = "v0.0.66"
+    }
     gbrain = {
       uri = "skywirex/gbrain"
       tag = "v0.42.40.0-20260612"
