@@ -215,7 +215,7 @@ locals {
     }
     infersec = {
       uri = "rg.nl-ams.scw.cloud/infersec-public/infersec-production/selfhosted"
-      tag = "1.90.5"
+      tag = "1.92.0"
     }
     versity = {
       uri = "versity/versitygw"
