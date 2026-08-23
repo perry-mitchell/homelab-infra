@@ -31,7 +31,7 @@ reads the pre-created `arc-github-pat` secret (`github_token` key) in
 
 ## Setup / updates
 
-1. Create a fine-grained PAT on `perry-mitchell/infersec` with **Actions: Read
+1. Create a fine-grained PAT on `<infersec-repo>` with **Actions: Read
    and write** and **Administration: Read and write** (needed to register
    runners). Put it in `terraform.tfvars` (git ignored):
    ```tfvars
