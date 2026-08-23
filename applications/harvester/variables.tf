@@ -6,6 +6,18 @@ variable "adventurelog_django_admin" {
   })
 }
 
+variable "arc_github_pat" {
+  description = "GitHub PAT used by ARC to register ephemeral runners for infersec CI"
+  type        = string
+  sensitive   = true
+}
+
+variable "arc_repository" {
+  description = "GitHub repository that ARC registers runners against (owner/repo)"
+  type        = string
+  default     = "perry-mitchell/infersec"
+}
+
 variable "cluster_name" {
   default = "torrens"
   type    = string
