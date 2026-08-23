@@ -15,7 +15,6 @@ variable "arc_github_pat" {
 variable "arc_repository" {
   description = "GitHub repository that ARC registers runners against (owner/repo)"
   type        = string
-  default     = "perry-mitchell/infersec"
 }
 
 variable "cluster_name" {
