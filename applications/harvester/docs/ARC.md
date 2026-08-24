@@ -31,9 +31,9 @@ reads the pre-created `arc-github-pat` secret (`github_token` key) in
 
 ## Setup / updates
 
-1. Create a **classic** PAT with `repo` scope. Do **not** use a fine-grained
-   PAT: it can register the scale set, but GitHub never assigns jobs to it
-   (known upstream issue). Put it in `terraform.tfvars` (git ignored):
+1. Create a **classic** PAT with `repo` scope (the documented, battle-tested
+   option for repository-level scale sets). Put it in `terraform.tfvars`
+   (git ignored):
    ```tfvars
    arc_github_pat = "ghp_..."
    ```
@@ -71,11 +71,21 @@ kubectl get runnerscalesets -A
 kubectl -n infersec-ci get ephemeralrunnersets
 ```
 
-If jobs queue forever with the listener healthy and `"assigned job"=0` in its
-logs, the PAT is the prime suspect: fine-grained PATs register scale sets but
-never receive job assignments — use a classic PAT with `repo` scope. Also
-confirm the workflow uses both `self-hosted` and `e2e-self-hosted` labels. If
-the controller logs show
+If jobs queue forever: the **first thing to check is the runner version**.
+GitHub stops queueing jobs to runners whose software is more than 30 days
+behind the latest `actions/runner` release — and it fails *silently*: the
+scale set shows Online, the listener reports healthy with `"assigned
+job"=0`, and nothing errors anywhere (see
+actions/actions-runner-controller#4601). Fix: bump the base image in
+`config/arc-runner/Dockerfile` to the current
+[runner release](https://github.com/actions/runner/releases), bump
+`IMAGE_VERSION` in the build workflow and `images.arc_runner` in
+`init_versions.tf`, rebuild, reapply. Check
+[deprecated versions](https://github.com/actions/runner/blob/main/.github/deprecated-runners.json)
+when in doubt.
+
+Also confirm the workflow uses both `self-hosted` and `e2e-self-hosted`
+labels. If the controller logs show
 `failed to get kubernetes secret: "infersec-ci/arc-github-pat"`, the manager
 RoleBinding in `infersec-ci` points at the wrong ServiceAccount — the
 `controllerServiceAccount.name` value must match the controller chart's
