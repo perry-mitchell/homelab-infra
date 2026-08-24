@@ -73,4 +73,8 @@ kubectl -n infersec-ci get ephemeralrunnersets
 
 If jobs queue forever: check the listener pod logs (usually a PAT permission
 problem), and confirm the workflow uses both `self-hosted` and
-`e2e-self-hosted` labels.
+`e2e-self-hosted` labels. If the controller logs show
+`failed to get kubernetes secret: "infersec-ci/arc-github-pat"`, the manager
+RoleBinding in `infersec-ci` points at the wrong ServiceAccount — the
+`controllerServiceAccount.name` value must match the controller chart's
+generated SA (`gha-runner-scale-set-controller-gha-rs-controller`).
