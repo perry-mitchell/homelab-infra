@@ -2,7 +2,11 @@
 # Base is the official runner image used by gha-runner-scale-set with
 # containerMode=dind (the Docker daemon runs as a sidecar; this image only
 # needs the docker CLI + compose plugin to talk to it).
-FROM ghcr.io/actions/actions-runner:2.334.0
+# NOTE: keep the base image within 30 days of the latest actions/runner
+# release - GitHub silently stops queueing jobs to deprecated runner
+# versions (jobs queue forever, nothing errors). See
+# actions/actions-runner-controller#4601.
+FROM ghcr.io/actions/actions-runner:2.336.0
 
 USER root
 

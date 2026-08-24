@@ -31,11 +31,11 @@ reads the pre-created `arc-github-pat` secret (`github_token` key) in
 
 ## Setup / updates
 
-1. Create a fine-grained PAT on `<infersec-repo>` with **Actions: Read
-   and write** and **Administration: Read and write** (needed to register
-   runners). Put it in `terraform.tfvars` (git ignored):
+1. Create a **classic** PAT with `repo` scope (the documented, battle-tested
+   option for repository-level scale sets). Put it in `terraform.tfvars`
+   (git ignored):
    ```tfvars
-   arc_github_pat = "github_pat_..."
+   arc_github_pat = "ghp_..."
    ```
 2. Ensure the runner image exists in GHCR. It is built by the
    `Build ARC Runner Image` workflow — dispatch it manually after merging
@@ -71,6 +71,22 @@ kubectl get runnerscalesets -A
 kubectl -n infersec-ci get ephemeralrunnersets
 ```
 
-If jobs queue forever: check the listener pod logs (usually a PAT permission
-problem), and confirm the workflow uses both `self-hosted` and
-`e2e-self-hosted` labels.
+If jobs queue forever: the **first thing to check is the runner version**.
+GitHub stops queueing jobs to runners whose software is more than 30 days
+behind the latest `actions/runner` release — and it fails *silently*: the
+scale set shows Online, the listener reports healthy with `"assigned
+job"=0`, and nothing errors anywhere (see
+actions/actions-runner-controller#4601). Fix: bump the base image in
+`config/arc-runner/Dockerfile` to the current
+[runner release](https://github.com/actions/runner/releases), bump
+`IMAGE_VERSION` in the build workflow and `images.arc_runner` in
+`init_versions.tf`, rebuild, reapply. Check
+[deprecated versions](https://github.com/actions/runner/blob/main/.github/deprecated-runners.json)
+when in doubt.
+
+Also confirm the workflow uses both `self-hosted` and `e2e-self-hosted`
+labels. If the controller logs show
+`failed to get kubernetes secret: "infersec-ci/arc-github-pat"`, the manager
+RoleBinding in `infersec-ci` points at the wrong ServiceAccount — the
+`controllerServiceAccount.name` value must match the controller chart's
+generated SA (`gha-runner-scale-set-controller-gha-rs-controller`).
