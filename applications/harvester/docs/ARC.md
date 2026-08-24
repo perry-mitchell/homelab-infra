@@ -51,9 +51,11 @@ build workflow whenever the Dockerfile changes, then rebuild.
 ## Knobs
 
  * `max_runners` / `min_runners` — autoscaling bounds (defaults: 2 / 0).
- * `runner_cpu_request` / `runner_memory_request` — per runner pod
-   (defaults: `4` CPU / `12Gi` — sized for parallel E2E suites with
-   llama.cpp). Peak cluster usage ≈ max_runners × requests.
+ * `runner_cpu_request` / `runner_cpu_limit` / `runner_memory_request` —
+   per runner pod (defaults: `3000m` / `6000m` / `12Gi`). The CPU limit caps
+   build/llama.cpp spikes so the rest of the homelab is protected; suite
+   parallelism inside the runner is bounded by `E2E_MAX_PARALLEL_SUITES`
+   (3) in the infersec workflow, keeping peak memory ~8Gi.
  * `runner_labels` — labels for `runs-on` targeting.
 
 ## Troubleshooting

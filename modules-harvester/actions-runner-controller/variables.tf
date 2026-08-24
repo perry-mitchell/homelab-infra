@@ -57,7 +57,13 @@ variable "max_runners" {
 variable "runner_cpu_request" {
   description = "CPU request per runner pod"
   type        = string
-  default     = "4"
+  default     = "3000m"
+}
+
+variable "runner_cpu_limit" {
+  description = "CPU limit per runner pod (caps usage spikes from builds/llama.cpp against the rest of the cluster)"
+  type        = string
+  default     = "6000m"
 }
 
 variable "runner_memory_request" {
