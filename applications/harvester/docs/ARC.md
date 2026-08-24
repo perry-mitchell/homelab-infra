@@ -31,11 +31,11 @@ reads the pre-created `arc-github-pat` secret (`github_token` key) in
 
 ## Setup / updates
 
-1. Create a fine-grained PAT on `<infersec-repo>` with **Actions: Read
-   and write** and **Administration: Read and write** (needed to register
-   runners). Put it in `terraform.tfvars` (git ignored):
+1. Create a **classic** PAT with `repo` scope. Do **not** use a fine-grained
+   PAT: it can register the scale set, but GitHub never assigns jobs to it
+   (known upstream issue). Put it in `terraform.tfvars` (git ignored):
    ```tfvars
-   arc_github_pat = "github_pat_..."
+   arc_github_pat = "ghp_..."
    ```
 2. Ensure the runner image exists in GHCR. It is built by the
    `Build ARC Runner Image` workflow — dispatch it manually after merging
@@ -71,9 +71,11 @@ kubectl get runnerscalesets -A
 kubectl -n infersec-ci get ephemeralrunnersets
 ```
 
-If jobs queue forever: check the listener pod logs (usually a PAT permission
-problem), and confirm the workflow uses both `self-hosted` and
-`e2e-self-hosted` labels. If the controller logs show
+If jobs queue forever with the listener healthy and `"assigned job"=0` in its
+logs, the PAT is the prime suspect: fine-grained PATs register scale sets but
+never receive job assignments — use a classic PAT with `repo` scope. Also
+confirm the workflow uses both `self-hosted` and `e2e-self-hosted` labels. If
+the controller logs show
 `failed to get kubernetes secret: "infersec-ci/arc-github-pat"`, the manager
 RoleBinding in `infersec-ci` points at the wrong ServiceAccount — the
 `controllerServiceAccount.name` value must match the controller chart's
