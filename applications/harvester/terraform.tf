@@ -42,5 +42,9 @@ terraform {
       source  = "namecheap/namecheap"
       version = ">= 2.2.0"
     }
+    null = {
+      source  = "opentofu/null"
+      version = "~> 3.2"
+    }
   }
 }

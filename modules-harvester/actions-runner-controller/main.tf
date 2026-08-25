@@ -31,6 +31,18 @@ resource "helm_release" "controller" {
   wait       = true
 }
 
+# ARC applies scaleSetLabels only when the controller CREATES the GitHub-side
+# scale set - a labels change on an existing scale set never reaches GitHub
+# (k8s objects update, job matching keeps using the old labels). This trigger
+# resource makes any runner_labels change plan a replacement of the helm
+# release below, destroying and recreating the scale set with the new labels -
+# the declarative equivalent of `tofu taint module.arc.helm_release.scale_set`.
+resource "null_resource" "scale_set_labels" {
+  triggers = {
+    labels = join(",", var.runner_labels)
+  }
+}
+
 resource "helm_release" "scale_set" {
   name       = "infersec-e2e"
   namespace  = kubernetes_namespace_v1.runners.metadata[0].name
@@ -38,6 +50,10 @@ resource "helm_release" "scale_set" {
   chart      = "gha-runner-scale-set"
   version    = var.scale_set_chart_version
   wait       = true
+
+  lifecycle {
+    replace_triggered_by = [null_resource.scale_set_labels.id]
+  }
 
   values = [
     yamlencode({
