@@ -5,7 +5,13 @@ module "arc" {
   repository   = var.arc_repository
   runner_image = local.images.arc_runner
 
-  # Two E2E jobs (console + selfhosted) per PR, plus headroom for a
-  # concurrent branch before jobs start queuing
+  # Same pool serves both audiences via separate labels: E2E test jobs
+  # target e2e-self-hosted, release/deploy/image-build jobs target
+  # deploy-self-hosted (see infersec production-deploy.yml and
+  # build-public-images.yml)
+  runner_labels = ["e2e-self-hosted", "deploy-self-hosted"]
+
+  # Two E2E jobs (console + selfhosted) per PR, plus deploy/build work and
+  # headroom before jobs start queuing
   max_runners = 4
 }
