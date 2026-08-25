@@ -73,7 +73,8 @@ resource "helm_release" "scale_set" {
                   memory = var.runner_memory_request
                 }
                 limits = {
-                  cpu = var.runner_cpu_limit
+                  cpu    = var.runner_cpu_limit
+                  memory = var.runner_memory_limit
                 }
               }
             }

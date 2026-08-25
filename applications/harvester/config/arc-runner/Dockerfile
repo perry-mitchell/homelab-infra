@@ -41,6 +41,20 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# Firefox-specific Playwright dependencies (chromium needs none of these;
+# names verified against ubuntu:24.04 - libxtst6 has no t64 variant)
+RUN apt-get update \
+    && apt-get install -y \
+        libdbus-glib-1-2 \
+        libgtk-3-0t64 \
+        libxt6t64 \
+        libxtst6 \
+        libx11-xcb1 \
+        libxcursor1 \
+        libgdk-pixbuf-2.0-0 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 # Docker CLI + compose plugin (daemon is provided by the dind sidecar)
 RUN install -m 0755 -d /etc/apt/keyrings \
     && curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc \

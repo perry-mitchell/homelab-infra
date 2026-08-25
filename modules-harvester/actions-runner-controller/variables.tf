@@ -71,3 +71,9 @@ variable "runner_memory_request" {
   type        = string
   default     = "12Gi"
 }
+
+variable "runner_memory_limit" {
+  description = "Memory limit per runner pod (bounds e2e suite memory usage; request is runner_memory_request)"
+  type        = string
+  default     = "14Gi"
+}
