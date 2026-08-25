@@ -12,7 +12,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}/arc-runner-infersec
   # Bump alongside the tag pinned in applications/harvester/init_versions.tf
-  IMAGE_VERSION: "1.1.0"
+  IMAGE_VERSION: "1.2.0"
 
 jobs:
   build-and-push:
