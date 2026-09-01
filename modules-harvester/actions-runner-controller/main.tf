@@ -10,7 +10,7 @@ resource "kubernetes_namespace_v1" "runners" {
   }
 }
 
-# Referenced by the scale set via `githubConfigSecret` (pre-defined secret variation)
+# Referenced by the scale sets via `githubConfigSecret` (pre-defined secret variation)
 resource "kubernetes_secret" "github_pat" {
   metadata {
     name      = "arc-github-pat"
@@ -34,17 +34,22 @@ resource "helm_release" "controller" {
 # ARC applies scaleSetLabels only when the controller CREATES the GitHub-side
 # scale set - a labels change on an existing scale set never reaches GitHub
 # (k8s objects update, job matching keeps using the old labels). This trigger
-# resource makes any runner_labels change plan a replacement of the helm
-# release below, destroying and recreating the scale set with the new labels -
-# the declarative equivalent of `tofu taint module.arc.helm_release.scale_set`.
+# resource makes any labels change for a scale set plan a replacement of its
+# helm release below, destroying and recreating the scale set with the new
+# labels - the declarative equivalent of
+# `tofu taint 'module.arc.helm_release.scale_set["infersec-e2e"]'`.
 resource "null_resource" "scale_set_labels" {
+  for_each = var.scale_sets
+
   triggers = {
-    labels = join(",", var.runner_labels)
+    labels = join(",", each.value.labels)
   }
 }
 
 resource "helm_release" "scale_set" {
-  name       = "infersec-e2e"
+  for_each = var.scale_sets
+
+  name       = each.key
   namespace  = kubernetes_namespace_v1.runners.metadata[0].name
   repository = "oci://ghcr.io/actions/actions-runner-controller-charts"
   chart      = "gha-runner-scale-set"
@@ -52,7 +57,7 @@ resource "helm_release" "scale_set" {
   wait       = true
 
   lifecycle {
-    replace_triggered_by = [null_resource.scale_set_labels.id]
+    replace_triggered_by = [null_resource.scale_set_labels[each.key].id]
   }
 
   values = [
@@ -60,9 +65,9 @@ resource "helm_release" "scale_set" {
       githubConfigUrl    = "https://github.com/${var.repository}"
       githubConfigSecret = kubernetes_secret.github_pat.metadata[0].name
 
-      scaleSetLabels = var.runner_labels
-      minRunners     = var.min_runners
-      maxRunners     = var.max_runners
+      scaleSetLabels = each.value.labels
+      minRunners     = each.value.min_runners
+      maxRunners     = each.value.max_runners
 
       containerMode = {
         type = "dind"
@@ -85,12 +90,12 @@ resource "helm_release" "scale_set" {
               command = ["/home/runner/run.sh"]
               resources = {
                 requests = {
-                  cpu    = var.runner_cpu_request
-                  memory = var.runner_memory_request
+                  cpu    = each.value.cpu_request
+                  memory = each.value.memory_request
                 }
                 limits = {
-                  cpu    = var.runner_cpu_limit
-                  memory = var.runner_memory_limit
+                  cpu    = each.value.cpu_limit
+                  memory = each.value.memory_limit
                 }
               }
             }

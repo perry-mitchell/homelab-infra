@@ -1,5 +1,5 @@
 variable "github_pat" {
-  description = "GitHub Personal Access Token used by the scale set to register runners (needs Actions: read/write on the target repository)"
+  description = "GitHub Personal Access Token used by the scale sets to register runners (needs Actions: read/write on the target repository)"
   type        = string
   sensitive   = true
 }
@@ -31,49 +31,20 @@ variable "scale_set_chart_version" {
 }
 
 variable "runner_namespace" {
-  description = "Dedicated namespace for runner pods (listener + ephemeral runners)"
+  description = "Dedicated namespace for runner pods (listeners + ephemeral runners)"
   type        = string
   default     = "infersec-ci"
 }
 
-variable "runner_labels" {
-  description = "Labels applied to runners in the scale set (used by `runs-on`)"
-  type        = list(string)
-  default     = ["e2e-self-hosted"]
-}
-
-variable "min_runners" {
-  description = "Minimum number of idle runner pods"
-  type        = number
-  default     = 0
-}
-
-variable "max_runners" {
-  description = "Maximum number of concurrent runner pods"
-  type        = number
-  default     = 2
-}
-
-variable "runner_cpu_request" {
-  description = "CPU request per runner pod"
-  type        = string
-  default     = "3000m"
-}
-
-variable "runner_cpu_limit" {
-  description = "CPU limit per runner pod (caps usage spikes from builds/llama.cpp against the rest of the cluster)"
-  type        = string
-  default     = "6000m"
-}
-
-variable "runner_memory_request" {
-  description = "Memory request per runner pod"
-  type        = string
-  default     = "12Gi"
-}
-
-variable "runner_memory_limit" {
-  description = "Memory limit per runner pod (bounds e2e suite memory usage; request is runner_memory_request)"
-  type        = string
-  default     = "14Gi"
+variable "scale_sets" {
+  description = "Runner scale sets to create, keyed by release name. Labels are used by `runs-on` targeting; resource defaults are sized for the heavy e2e/deploy pool (llama.cpp + parallel suites)."
+  type = map(object({
+    labels         = list(string)
+    min_runners    = optional(number, 0)
+    max_runners    = optional(number, 2)
+    cpu_request    = optional(string, "3000m")
+    cpu_limit      = optional(string, "6000m")
+    memory_request = optional(string, "12Gi")
+    memory_limit   = optional(string, "14Gi")
+  }))
 }
