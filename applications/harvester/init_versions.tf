@@ -51,7 +51,7 @@ locals {
     }
     homeassistant = {
       uri = "lscr.io/linuxserver/homeassistant"
-      tag = "2026.7.4"
+      tag = "2026.8.3"
     }
     homepage = {
       uri = "ghcr.io/gethomepage/homepage"
@@ -183,7 +183,7 @@ locals {
     }
     z2m = {
       uri = "koenkk/zigbee2mqtt"
-      tag = "latest"
+      tag = "2.13.0"
     }
     pinchflat = {
       uri = "keglin/pinchflat"
@@ -224,7 +224,7 @@ locals {
     # Custom image built by .github/workflows/build-arc-runner.yml (bump tag when the Dockerfile changes)
     arc_runner = {
       uri = "ghcr.io/perry-mitchell/homelab-infra/arc-runner-infersec"
-      tag = "1.3.0"
+      tag = "1.4.0"
     }
     versity = {
       uri = "versity/versitygw"

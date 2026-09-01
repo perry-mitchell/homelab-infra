@@ -5,13 +5,27 @@ module "arc" {
   repository   = var.arc_repository
   runner_image = local.images.arc_runner
 
-  # Same pool serves both audiences via separate labels: E2E test jobs
-  # target e2e-self-hosted, release/deploy/image-build jobs target
-  # deploy-self-hosted (see infersec production-deploy.yml and
-  # build-public-images.yml)
-  runner_labels = ["e2e-self-hosted", "deploy-self-hosted"]
+  scale_sets = {
+    # Heavy pool: E2E test jobs target e2e-self-hosted, release/deploy/image
+    # build jobs target deploy-self-hosted (see infersec production-deploy.yml
+    # and build-public-images.yml). Sized for llama.cpp + parallel suites -
+    # module defaults apply.
+    infersec-e2e = {
+      labels      = ["e2e-self-hosted", "deploy-self-hosted"]
+      max_runners = 4
+    }
 
-  # Two E2E jobs (console + selfhosted) per PR, plus deploy/build work and
-  # headroom before jobs start queuing
-  max_runners = 4
+    # Light pool: unit/lint/smoke test jobs and website deploys target
+    # ci-self-hosted (see infersec tests.yml and
+    # production-deploy-website.yml) - no llama.cpp, no parallel browser
+    # suites, so a much lower resource ceiling
+    infersec-ci = {
+      labels         = ["ci-self-hosted"]
+      max_runners    = 4
+      cpu_request    = "500m"
+      cpu_limit      = "2000m"
+      memory_request = "2Gi"
+      memory_limit   = "4Gi"
+    }
+  }
 }

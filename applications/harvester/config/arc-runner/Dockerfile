@@ -65,6 +65,13 @@ RUN install -m 0755 -d /etc/apt/keyrings \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# rsync + ssh for the website deployment job (infersec
+# production-deploy-website.yml runs on the light ci-self-hosted pool)
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends rsync openssh-client \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 # llama.cpp for inference E2E tests (kept in sync with infersec CI)
 RUN LLAMA_VERSION="b9354" \
     && curl -fSL -o /tmp/llama-cpp.tar.gz \

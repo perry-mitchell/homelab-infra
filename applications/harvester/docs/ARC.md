@@ -8,7 +8,8 @@ runners inside the Harvester cluster.
 | Component | Location |
 |---|---|
 | ARC controller (`gha-runner-scale-set-controller`) | `arc-system` namespace |
-| Runner scale set (`infersec-e2e`) | `infersec-ci` namespace |
+| Heavy runner scale set (`infersec-e2e`) | `infersec-ci` namespace |
+| Light runner scale set (`infersec-ci`) | `infersec-ci` namespace |
 | Runner pods (dind, ephemeral) | `infersec-ci` namespace |
 | Custom runner image | `ghcr.io/perry-mitchell/homelab-infra/arc-runner-infersec` |
 
@@ -50,13 +51,23 @@ build workflow whenever the Dockerfile changes, then rebuild.
 
 ## Knobs
 
- * `max_runners` / `min_runners` — autoscaling bounds (defaults: 2 / 0).
- * `runner_cpu_request` / `runner_cpu_limit` / `runner_memory_request` —
-   per runner pod (defaults: `3000m` / `6000m` / `12Gi`). The CPU limit caps
-   build/llama.cpp spikes so the rest of the homelab is protected; suite
-   parallelism inside the runner is bounded by `E2E_MAX_PARALLEL_SUITES`
-   (3) in the infersec workflow, keeping peak memory ~8Gi.
- * `runner_labels` — labels for `runs-on` targeting.
+Scale sets are configured via the module's `scale_sets` map in
+`system_arc.tf` (keyed by release name):
+
+ * `infersec-e2e` — heavy pool: labels `e2e-self-hosted` (E2E test jobs)
+   and `deploy-self-hosted` (release/deploy/image build jobs),
+   `max_runners = 4`, module default resources (`3000m`/`12Gi` requests,
+   `6000m`/`14Gi` limits). The CPU limit caps build/llama.cpp spikes so the
+   rest of the homelab is protected; suite parallelism inside the runner is
+   bounded by `E2E_MAX_PARALLEL_SUITES` (3) in the infersec workflow,
+   keeping peak memory ~8Gi.
+ * `infersec-ci` — light pool: label `ci-self-hosted` (unit/lint/smoke
+   tests, website deploys), `max_runners = 4`, `500m`/`2Gi` requests and
+   `2000m`/`4Gi` limits — no llama.cpp, no parallel browser suites.
+
+All sizing knobs (`max_runners`, `min_runners`, `cpu_request`, `cpu_limit`,
+`memory_request`, `memory_limit`, `labels`) are per scale set; module
+defaults match the heavy pool.
 
 ## Troubleshooting
 
