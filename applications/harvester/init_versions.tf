@@ -169,6 +169,10 @@ locals {
       uri = "lscr.io/linuxserver/tautulli"
       tag = "latest"
     }
+    trek = {
+      uri = "mauriceboe/trek"
+      tag = "4.2.1"
+    }
     vaultwarden = {
       uri = "vaultwarden/server"
       tag = "1.37.1"

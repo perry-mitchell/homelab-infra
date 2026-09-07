@@ -47,4 +47,17 @@ resource "helm_release" "public_ingress" {
     name  = "controller.service.nodePorts.https"
     value = "30443"
   }
+
+  # TREK accepts uploads up to 500 MB (backup restores, video files); the chart
+  # default of 1m would reject them. Long read timeout keeps idle WebSockets
+  # (TREK real-time sync on /ws) from being dropped after 60s.
+  set {
+    name  = "controller.config.proxy-body-size"
+    value = "500m"
+  }
+
+  set {
+    name  = "controller.config.proxy-read-timeout"
+    value = "3600"
+  }
 }
