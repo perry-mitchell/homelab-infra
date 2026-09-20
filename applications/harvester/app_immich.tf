@@ -1,7 +1,3 @@
-locals {
-  immich_tag = "v2.2.0"
-}
-
 module "db_immich_postgres" {
   source = "../../modules-harvester/service"
 
@@ -56,7 +52,7 @@ module "db_init_immich" {
   db_username = "root"
   extra_sql_lines = [
     "ALTER USER immich WITH SUPERUSER",
-    "CREATE EXTENSION IF NOT EXISTS vectors",
+    "CREATE EXTENSION IF NOT EXISTS vchord CASCADE",
     "CREATE EXTENSION IF NOT EXISTS earthdistance CASCADE"
   ]
   name      = "immich"
@@ -105,18 +101,19 @@ module "app_immich" {
   containers = {
     immich = {
       environment = {
-        DB_DATABASE_NAME   = "immich"
-        DB_HOSTNAME        = "immich-postgres"
-        DB_PASSWORD        = random_password.immich_database_user.result
-        DB_PORT            = "5432"
-        DB_USERNAME        = "immich"
-        IMMICH_CONFIG_FILE = "/usr/src/app/immich.json"
-        IMMICH_PORT        = "2283"
-        REDIS_DBINDEX      = local.redis_db_reservations.immich
-        REDIS_HOSTNAME     = local.shared_redis_cluster_hostname
-        REDIS_PASSWORD     = var.db_redis_root
-        REDIS_PORT         = "6379"
-        TZ                 = "Europe/Helsinki"
+        DB_DATABASE_NAME    = "immich"
+        DB_HOSTNAME         = "immich-postgres"
+        DB_PASSWORD         = random_password.immich_database_user.result
+        DB_PORT             = "5432"
+        DB_USERNAME         = "immich"
+        DB_VECTOR_EXTENSION = "vectorchord"
+        IMMICH_CONFIG_FILE  = "/usr/src/app/immich.json"
+        IMMICH_PORT         = "2283"
+        REDIS_DBINDEX       = local.redis_db_reservations.immich
+        REDIS_HOSTNAME      = local.shared_redis_cluster_hostname
+        REDIS_PASSWORD      = var.db_redis_root
+        REDIS_PORT          = "6379"
+        TZ                  = "Europe/Helsinki"
       }
       image = local.images.immich_server
       nfs_mounts = {

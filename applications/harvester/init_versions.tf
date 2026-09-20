@@ -59,15 +59,15 @@ locals {
     }
     immich_server = {
       uri = "ghcr.io/immich-app/immich-server"
-      tag = "v2.7.5"
+      tag = "v3.2.2"
     }
     immich_ml = {
       uri = "ghcr.io/immich-app/immich-machine-learning"
-      tag = "v2.7.5"
+      tag = "v3.2.2"
     }
     immich_postgres = {
-      uri = "tensorchord/pgvecto-rs"
-      tag = "pg14-v0.3.0"
+      uri = "ghcr.io/immich-app/postgres"
+      tag = "14-vectorchord0.4.3-pgvectors0.3.0@sha256:87c050465fb969a68c7ac23e375e21f4c95cfacd0edce5fa1bc31e63b7891891"
     }
     kimai = {
       uri = "kimai/kimai2"
