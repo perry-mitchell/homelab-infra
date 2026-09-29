@@ -195,7 +195,7 @@ locals {
     }
     hermes_agent = {
       uri = "nousresearch/hermes-agent"
-      tag = "v2026.8.27"
+      tag = "v2026.9.24"
     }
     better_email_mcp = {
       uri = "n24q02m/better-email-mcp"
