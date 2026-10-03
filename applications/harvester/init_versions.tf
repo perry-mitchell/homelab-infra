@@ -19,7 +19,7 @@ locals {
     }
     atuin = {
       uri = "ghcr.io/atuinsh/atuin"
-      tag = "18.15.2"
+      tag = "18.23"
     }
     atuin_db = {
       uri = "postgres"
@@ -51,7 +51,7 @@ locals {
     }
     homeassistant = {
       uri = "lscr.io/linuxserver/homeassistant"
-      tag = "2026.8.3"
+      tag = "2026.9.4"
     }
     homepage = {
       uri = "ghcr.io/gethomepage/homepage"
@@ -59,11 +59,11 @@ locals {
     }
     immich_server = {
       uri = "ghcr.io/immich-app/immich-server"
-      tag = "v3.2.2"
+      tag = "v3.2.4"
     }
     immich_ml = {
       uri = "ghcr.io/immich-app/immich-machine-learning"
-      tag = "v3.2.2"
+      tag = "v3.2.4"
     }
     immich_postgres = {
       uri = "ghcr.io/immich-app/postgres"
@@ -79,7 +79,7 @@ locals {
     }
     koillection = {
       uri = "koillection/koillection"
-      tag = "1.8.0"
+      tag = "1.8.4"
     }
     koillection_postgres = {
       uri = "postgres"
@@ -155,7 +155,7 @@ locals {
     }
     radicale = {
       uri = "11notes/radicale"
-      tag = "3.7.0"
+      tag = "3.8.1"
     }
     smokeping = {
       uri = "lscr.io/linuxserver/smokeping"
@@ -171,11 +171,11 @@ locals {
     }
     trek = {
       uri = "mauriceboe/trek"
-      tag = "4.2.1"
+      tag = "4.3.3"
     }
     vaultwarden = {
       uri = "vaultwarden/server"
-      tag = "1.37.1"
+      tag = "1.37.3"
     }
     webtrees = {
       uri = "nathanvaughn/webtrees"
@@ -187,7 +187,7 @@ locals {
     }
     z2m = {
       uri = "koenkk/zigbee2mqtt"
-      tag = "2.13.0"
+      tag = "2.14.1"
     }
     pinchflat = {
       uri = "keglin/pinchflat"
@@ -199,7 +199,7 @@ locals {
     }
     better_email_mcp = {
       uri = "n24q02m/better-email-mcp"
-      tag = "1.32.1"
+      tag = "1.41.5"
     }
     caldav_mcp = {
       uri = "dockersilas/caldav-streamable-mcp"
@@ -211,11 +211,11 @@ locals {
     }
     kubernetes_mcp = {
       uri = "quay.io/containers/kubernetes_mcp_server"
-      tag = "v0.0.66"
+      tag = "v0.0.67"
     }
     gbrain = {
       uri = "skywirex/gbrain"
-      tag = "v0.42.40.0-20260612"
+      tag = "v0.51.6.0"
     }
     gbrain_postgres = {
       uri = "pgvector/pgvector"
@@ -232,7 +232,7 @@ locals {
     }
     versity = {
       uri = "versity/versitygw"
-      tag = "v1.7.0"
+      tag = "v1.8.0"
     }
   }
 }
