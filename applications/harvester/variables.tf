@@ -80,6 +80,16 @@ variable "healthchecks_email" {
   })
 }
 
+variable "herdr_ssh_public_keys" {
+  type = list(string)
+}
+
+variable "herdr_infersec_api_key" {
+  type      = string
+  sensitive = true
+  default   = ""
+}
+
 variable "hermes" {
   type = object({
     dashboard_password = string
@@ -225,6 +235,12 @@ variable "tailscale_oauth" {
 
 variable "tailscale_tailnet" {
   type = string
+}
+
+variable "tailscale_vm_auth_key" {
+  type      = string
+  sensitive = true
+  default   = ""
 }
 
 variable "unraid_url" {
