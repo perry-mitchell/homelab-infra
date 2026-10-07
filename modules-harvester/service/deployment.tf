@@ -84,6 +84,25 @@ resource "kubernetes_deployment" "deployment" {
               }
             }
 
+            dynamic "resources" {
+              for_each = container.value.resources != null ? [1] : []
+
+              content {
+                requests = {
+                  for key, value in {
+                    cpu    = container.value.resources.cpu_request
+                    memory = container.value.resources.memory_request
+                  } : key => value if value != null
+                }
+                limits = {
+                  for key, value in {
+                    cpu    = container.value.resources.cpu_limit
+                    memory = container.value.resources.memory_limit
+                  } : key => value if value != null
+                }
+              }
+            }
+
             dynamic "volume_mount" {
               for_each = {
                 for mount_name, mount in local.nfs_mounts : mount_name => mount

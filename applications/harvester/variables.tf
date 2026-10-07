@@ -207,6 +207,19 @@ variable "paperless_auth" {
   sensitive = true
 }
 
+variable "pal1_server_name" {
+  description = "Name of the pal1 Palworld server as shown in the community server browser"
+  default     = "Perry & Friends"
+  type        = string
+}
+
+variable "pal1_server_password" {
+  description = "Optional password players must enter to join the pal1 Palworld server. Leave empty for none (required for the Steam community listing)."
+  default     = ""
+  sensitive   = true
+  type        = string
+}
+
 variable "public_domain" {
   type = string
 }

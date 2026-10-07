@@ -121,6 +121,10 @@ locals {
       uri = "lscr.io/linuxserver/overseerr"
       tag = "latest"
     }
+    pal1 = {
+      uri = "thijsvanloef/palworld-server-docker"
+      tag = "latest"
+    }
     paperless_ngx = {
       uri = "paperlessngx/paperless-ngx"
       tag = "latest"

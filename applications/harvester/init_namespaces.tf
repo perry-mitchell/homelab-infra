@@ -46,6 +46,12 @@ resource "kubernetes_namespace" "freelancing" {
   }
 }
 
+resource "kubernetes_namespace" "gaming" {
+  metadata {
+    name = "gaming"
+  }
+}
+
 resource "kubernetes_namespace" "home_media" {
   metadata {
     name = "home-media"

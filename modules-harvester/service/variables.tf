@@ -37,6 +37,8 @@ variable "containers" {
     ports = optional(list(object({
       container         = number
       internal_hostname = optional(string, null)
+      node_port         = optional(number, null)
+      protocol          = optional(string, "TCP")
       public_access = optional(object({
         cluster_ip    = optional(string, null)
         hostname      = string
@@ -45,6 +47,12 @@ variable "containers" {
       service            = number
       tailscale_hostname = optional(string, null)
     })), [])
+    resources = optional(object({
+      cpu_request    = optional(string, null)
+      cpu_limit      = optional(string, null)
+      memory_request = optional(string, null)
+      memory_limit   = optional(string, null)
+    }), null)
     restart_policy = optional(string, null)
     run_as = optional(object({
       user  = number
