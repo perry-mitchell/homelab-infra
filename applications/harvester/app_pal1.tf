@@ -22,19 +22,11 @@ module "app_pal1" {
           QUERY_PORT             = "27015"
           SERVER_NAME            = var.pal1_server_name
           TZ                     = "Europe/Helsinki"
-          UPDATE_ON_BOOT         = "true"
         },
         var.pal1_server_password != "" ? { SERVER_PASSWORD = var.pal1_server_password } : {}
       )
       fs_group = 1000
       image    = local.images.pal1
-      liveness_probe = {
-        exec_command          = ["rcon-cli", "Info"]
-        failure_threshold     = 10
-        initial_delay_seconds = 900
-        period_seconds        = 120
-        timeout_seconds       = 10
-      }
       longhorn_mounts = {
         game = {
           container_path  = "/palworld"
@@ -56,8 +48,8 @@ module "app_pal1" {
         },
       ]
       resources = {
-        memory_limit   = "16Gi"
-        memory_request = "8Gi"
+        memory_limit   = "32Gi"
+        memory_request = "16Gi"
       }
     }
   }
