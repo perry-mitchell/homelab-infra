@@ -217,9 +217,11 @@ locals {
       uri = "quay.io/containers/kubernetes_mcp_server"
       tag = "v0.0.67"
     }
+    # Custom image built by applications/harvester/scripts/build-gbrain-image.sh
+    # (append the printed @sha256 digest to the tag after pushing)
     gbrain = {
-      uri = "skywirex/gbrain"
-      tag = "v0.51.6.0"
+      uri = "ghcr.io/perry-mitchell/homelab-infra/gbrain"
+      tag = "v0.60.176.0@sha256:bbe0ec28be0221571aa05a2705a734a82af4f5925eb750fa29e48d87d754f51b"
     }
     gbrain_postgres = {
       uri = "pgvector/pgvector"
