@@ -59,11 +59,11 @@ locals {
     }
     immich_server = {
       uri = "ghcr.io/immich-app/immich-server"
-      tag = "v3.2.4"
+      tag = "v3.3.1"
     }
     immich_ml = {
       uri = "ghcr.io/immich-app/immich-machine-learning"
-      tag = "v3.2.4"
+      tag = "v3.3.1"
     }
     immich_postgres = {
       uri = "ghcr.io/immich-app/postgres"
