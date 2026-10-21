@@ -17,6 +17,14 @@ variable "arc_repository" {
   type        = string
 }
 
+variable "authentik" {
+  type = object({
+    bootstrap_password = string
+    secret_key         = string
+  })
+  sensitive = true
+}
+
 variable "cluster_name" {
   default = "torrens"
   type    = string
@@ -250,6 +258,17 @@ variable "webtrees_admin" {
     name     = string
     password = string
     username = string
+  })
+  sensitive = true
+}
+
+variable "workadventure" {
+  type = object({
+    map_storage_api_token = string
+    map_storage_password  = string
+    oidc_client_id        = string
+    oidc_client_secret    = string
+    turn_static_secret    = string
   })
   sensitive = true
 }

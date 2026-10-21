@@ -6,7 +6,9 @@ module "cert_manager" {
   public_hostnames = [
     var.public_domain,
     "radicale.${var.public_domain}",
-    "trek.${var.public_domain}"
+    "trek.${var.public_domain}",
+    "auth.${var.public_domain}",
+    "wa.${var.public_domain}"
   ]
 }
 

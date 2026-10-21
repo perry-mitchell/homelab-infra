@@ -71,6 +71,8 @@ locals {
         { "Home Assistant" = { href = "https://homeassistant.${var.tailscale_tailnet}", icon = "home-assistant" } },
         { "Z2M" = { href = "https://z2m.${var.tailscale_tailnet}", icon = "zigbee2mqtt" } },
         { "Smokeping" = { href = "https://smokeping.${var.tailscale_tailnet}", icon = "smokeping" } },
+        { "WorkAdventure" = { href = "https://wa.${var.public_domain}", icon = "mdi-map-marker-radius" } },
+        { "Authentik" = { href = "https://auth.${var.public_domain}", icon = "authentik" } },
         { "Maintenant" = { href = "https://maintenant.${var.tailscale_tailnet}", icon = "mdi-wrench-outline" } },
         { "Unraid" = { href = var.unraid_url, icon = "unraid" } },
       ]

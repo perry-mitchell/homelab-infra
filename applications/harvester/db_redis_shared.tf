@@ -1,9 +1,12 @@
 locals {
   shared_redis_cluster_hostname = "redis.${kubernetes_namespace.shared_data.metadata.0.name}"
   redis_db_reservations = {
-    immich    = 1
-    # nextcloud = 2
-    paperless = 3
+    immich = 1
+    # nextcloud     = 2
+    paperless       = 3
+    authentik_cache = 4
+    authentik_task  = 5
+    authentik_ws    = 6
   }
 }
 
@@ -18,7 +21,7 @@ module "db_redis_shared" {
         REDIS_PASSWORD       = var.db_redis_root
       }
       fs_group = 1001
-      image = local.images.redis
+      image    = local.images.redis
       longhorn_mounts = {
         data = {
           container_path  = "/bitnami/redis/data"
@@ -29,7 +32,7 @@ module "db_redis_shared" {
         {
           container         = 6379
           internal_hostname = "redis"
-          service = 6379
+          service           = 6379
         }
       ]
     }
@@ -37,5 +40,5 @@ module "db_redis_shared" {
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "redis"
   namespace              = kubernetes_namespace.shared_data.metadata.0.name
-  replicas = local.deployments_enabled.datasource ? 1 : 0
+  replicas               = local.deployments_enabled.datasource ? 1 : 0
 }

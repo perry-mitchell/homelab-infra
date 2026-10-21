@@ -234,5 +234,13 @@ locals {
       uri = "versity/versitygw"
       tag = "v1.7.0"
     }
+    authentik = {
+      uri = "ghcr.io/goauthentik/server"
+      tag = "2026.8.1"
+    }
+    coturn = {
+      uri = "coturn/coturn"
+      tag = "4.18.0-r0-debian"
+    }
   }
 }
