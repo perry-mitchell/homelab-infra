@@ -70,6 +70,7 @@ locals {
         { "qBittorrent" = { href = "https://torrent-entertainment.${var.tailscale_tailnet}", icon = "qbittorrent" } },
         { "Home Assistant" = { href = "https://homeassistant.${var.tailscale_tailnet}", icon = "home-assistant" } },
         { "Z2M" = { href = "https://z2m.${var.tailscale_tailnet}", icon = "zigbee2mqtt" } },
+        { "Companion" = { href = "https://companion.${var.tailscale_tailnet}", icon = "bitfocus-companion" } },
         { "Smokeping" = { href = "https://smokeping.${var.tailscale_tailnet}", icon = "smokeping" } },
         { "Maintenant" = { href = "https://maintenant.${var.tailscale_tailnet}", icon = "mdi-wrench-outline" } },
         { "Unraid" = { href = var.unraid_url, icon = "unraid" } },

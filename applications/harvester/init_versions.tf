@@ -25,6 +25,17 @@ locals {
       uri = "postgres"
       tag = "16"
     }
+    # Bitfocus Companion only publishes a floating "latest" stable tag
+    companion = {
+      uri = "ghcr.io/bitfocus/companion/companion"
+      tag = "latest"
+    }
+    # Custom image built by applications/harvester/scripts/build-companion-satellite-image.sh
+    # (append the printed @sha256 digest to the tag after pushing)
+    companion_satellite = {
+      uri = "ghcr.io/perry-mitchell/homelab-infra/companion-satellite"
+      tag = "1.1.1@sha256:9afb4fdfff6c865fce68cfb29eeadff7d996f0a398ac6b5a7741c02f1ddc7b15"
+    }
     ddclient = {
       uri = "lscr.io/linuxserver/ddclient"
       tag = "latest"

@@ -27,6 +27,8 @@ resource "kubernetes_deployment" "deployment" {
       spec {
         service_account_name = var.service_account_name
 
+        node_selector = var.node_selector
+
         hostname = try(
           [for c in var.containers : c.hostname if c.hostname != null][0],
           null
@@ -40,6 +42,23 @@ resource "kubernetes_deployment" "deployment" {
               [for c in var.containers : c.fs_group if c.fs_group != null][0],
               null
             )
+          }
+        }
+
+        dynamic "affinity" {
+          for_each = var.one_pod_per_node && var.replicas > 1 ? [1] : []
+
+          content {
+            pod_anti_affinity {
+              required_during_scheduling_ignored_during_execution {
+                label_selector {
+                  match_labels = {
+                    application = var.name
+                  }
+                }
+                topology_key = "kubernetes.io/hostname"
+              }
+            }
           }
         }
 
@@ -59,12 +78,13 @@ resource "kubernetes_deployment" "deployment" {
             command = container.value.command
 
             dynamic "security_context" {
-              for_each = (container.value.run_as != null || container.value.capabilities != null) ? [1] : []
+              for_each = (container.value.run_as != null || container.value.capabilities != null || container.value.privileged) ? [1] : []
 
               content {
                 run_as_user                = container.value.run_as != null ? container.value.run_as.user : null
                 run_as_group               = container.value.run_as != null ? container.value.run_as.group : null
                 allow_privilege_escalation = container.value.run_as != null ? true : null
+                privileged                 = container.value.privileged ? true : null
 
                 dynamic "capabilities" {
                   for_each = container.value.capabilities != null ? [1] : []
@@ -124,6 +144,15 @@ resource "kubernetes_deployment" "deployment" {
               content {
                 name       = "${var.cluster_name}-${volume_mount.key}"
                 mount_path = volume_mount.value.container_path
+              }
+            }
+
+            dynamic "volume_mount" {
+              for_each = container.value.host_mounts != null ? container.value.host_mounts : {}
+
+              content {
+                name       = "${var.name}-${container.key}-host-${volume_mount.key}"
+                mount_path = volume_mount.value.mount_path
               }
             }
 
@@ -194,10 +223,32 @@ resource "kubernetes_deployment" "deployment" {
         }
 
         dynamic "volume" {
+          for_each = merge([
+            for container_name, container in var.containers : {
+              for mount_name, mount in container.host_mounts : "${container_name}-${mount_name}" => {
+                container_name = container_name
+                host_path      = mount.host_path
+                type           = mount.type
+                mount_name     = mount_name
+              }
+            }
+          ]...)
+
+          content {
+            name = "${var.name}-${volume.value.container_name}-host-${volume.value.mount_name}"
+
+            host_path {
+              path = volume.value.host_path
+              type = volume.value.type
+            }
+          }
+        }
+
+        dynamic "volume" {
           for_each = {
             for container_name, container in var.containers :
-            container_name => container
-            if(container.static_mounts != null && length(container.static_mounts) > 0) || (container.binary_static_mounts != null && length(container.binary_static_mounts) > 0)
+                container_name => container
+                if(container.static_mounts != null && length(container.static_mounts) > 0) || (container.binary_static_mounts != null && length(container.binary_static_mounts) > 0)
           }
 
           content {

@@ -10,6 +10,12 @@ variable "containers" {
     environment  = optional(map(string), {})
     fs_group     = optional(number, null)
     hostname     = optional(string, null)
+    host_mounts = optional(map(object({
+      host_path  = string
+      mount_path = string
+      type       = optional(string, "Directory")
+    })), {})
+    privileged   = optional(bool, false)
     image = object({
       tag = string
       uri = string
@@ -75,6 +81,12 @@ variable "namespace" {
   type = string
 }
 
+variable "node_selector" {
+  description = "Pin pods to nodes matching these labels (e.g. the node a USB device is attached to)"
+  type        = map(string)
+  default     = {}
+}
+
 variable "service_account_name" {
   type    = string
   default = null
@@ -83,6 +95,12 @@ variable "service_account_name" {
 variable "replicas" {
   type    = number
   default = 1
+}
+
+variable "one_pod_per_node" {
+  description = "Spread replicas across nodes using required pod anti-affinity (at most one pod per node)"
+  type        = bool
+  default     = false
 }
 
 variable "public_ingress_class" {
