@@ -19,7 +19,7 @@ locals {
     }
     atuin = {
       uri = "ghcr.io/atuinsh/atuin"
-      tag = "18.23"
+      tag = "18.24.2"
     }
     atuin_db = {
       uri = "postgres"
@@ -62,7 +62,7 @@ locals {
     }
     homeassistant = {
       uri = "lscr.io/linuxserver/homeassistant"
-      tag = "2026.9.4"
+      tag = "2026.10.2"
     }
     homepage = {
       uri = "ghcr.io/gethomepage/homepage"
@@ -70,11 +70,11 @@ locals {
     }
     immich_server = {
       uri = "ghcr.io/immich-app/immich-server"
-      tag = "v3.3.1"
+      tag = "v3.3.5"
     }
     immich_ml = {
       uri = "ghcr.io/immich-app/immich-machine-learning"
-      tag = "v3.3.1"
+      tag = "v3.3.5"
     }
     immich_postgres = {
       uri = "ghcr.io/immich-app/postgres"
@@ -122,7 +122,7 @@ locals {
     }
     n8n = {
       uri = "docker.n8n.io/n8nio/n8n"
-      tag = "2.17.3"
+      tag = "2.45.2"
     }
     nextcloud_db = {
       uri = "mariadb"
@@ -170,7 +170,7 @@ locals {
     }
     radicale = {
       uri = "11notes/radicale"
-      tag = "3.8.1"
+      tag = "3.8.3"
     }
     smokeping = {
       uri = "lscr.io/linuxserver/smokeping"
@@ -186,11 +186,11 @@ locals {
     }
     trek = {
       uri = "mauriceboe/trek"
-      tag = "4.3.3"
+      tag = "4.3.4"
     }
     vaultwarden = {
       uri = "vaultwarden/server"
-      tag = "1.37.3"
+      tag = "1.37.4"
     }
     webtrees = {
       uri = "nathanvaughn/webtrees"
@@ -202,7 +202,7 @@ locals {
     }
     z2m = {
       uri = "koenkk/zigbee2mqtt"
-      tag = "2.14.1"
+      tag = "2.14.2"
     }
     pinchflat = {
       uri = "keglin/pinchflat"
@@ -249,7 +249,7 @@ locals {
     }
     versity = {
       uri = "versity/versitygw"
-      tag = "v1.8.0"
+      tag = "v1.9.0"
     }
   }
 }

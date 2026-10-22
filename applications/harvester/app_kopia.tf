@@ -65,6 +65,7 @@ module "app_kopia" {
   longhorn_storage_class = var.longhorn_storage_class
   name                   = "kopia"
   namespace              = kubernetes_namespace.backup.metadata.0.name
-  replicas = local.deployments_enabled.service ? 1 : 0
+  # Broken - scaled to 0 until fixed
+  replicas = 0
 }
 
