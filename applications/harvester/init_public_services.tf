@@ -5,6 +5,7 @@ module "cert_manager" {
   ingress_service_ip = "10.53.200.80"
   public_hostnames = [
     var.public_domain,
+    "kodus.${var.public_domain}",
     "radicale.${var.public_domain}",
     "trek.${var.public_domain}"
   ]

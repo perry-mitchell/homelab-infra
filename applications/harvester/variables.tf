@@ -138,6 +138,27 @@ variable "kimai_admin" {
   sensitive = true
 }
 
+variable "kodus_github_app" {
+  description = "GitHub App credentials for Kodus code review (webhook: https://kodus.<domain>/github/webhook, callback: https://kodus.<domain>/api/auth/callback/github)"
+  type = object({
+    app_id        = string
+    client_id     = string
+    client_secret = string
+    install_url   = string
+    private_key   = string
+  })
+  sensitive = true
+}
+
+variable "kodus_github_oauth" {
+  description = "GitHub OAuth app credentials for Kodus sign-in (callback: https://kodus.<domain>/api/auth/callback/github)"
+  type = object({
+    client_id     = string
+    client_secret = string
+  })
+  sensitive = true
+}
+
 variable "kopia_admin" {
   type = object({
     password = string
