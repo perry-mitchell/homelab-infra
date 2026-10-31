@@ -74,6 +74,7 @@ locals {
         { "Smokeping" = { href = "https://smokeping.${var.tailscale_tailnet}", icon = "smokeping" } },
         { "Maintenant" = { href = "https://maintenant.${var.tailscale_tailnet}", icon = "mdi-wrench-outline" } },
         { "Unraid" = { href = var.unraid_url, icon = "unraid" } },
+        { "Pi-hole" = { href = "https://192.168.200.104/admin", icon = "pihole" } },
       ]
     },
     {
@@ -81,6 +82,7 @@ locals {
         { "Kimai" = { href = "https://kimai.${var.tailscale_tailnet}", icon = "kimai" } },
         { "Infersec" = { href = "https://infersec.${var.tailscale_tailnet}", icon = "mdi-shield-check-outline" } },
         { "Infersec Console" = { href = "https://console.infersec.ai", icon = "mdi-console" } },
+        { "Kodus" = { href = "https://kodus.${var.public_domain}", icon = "mdi-code-braces" } },
       ]
     },
     {
