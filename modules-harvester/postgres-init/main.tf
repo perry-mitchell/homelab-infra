@@ -45,7 +45,7 @@ resource "kubernetes_job" "init_db" {
                         psql \
                             -h ${var.db_host} \
                             -U $DB_USER \
-                            -d postgres \
+                            -d ${var.create_database} \
                             -c "${local.sql}" || {
                                 RC=$?
                                 echo "PostgreSQL command  failed with exit code $RC"

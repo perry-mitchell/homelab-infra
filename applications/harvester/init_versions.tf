@@ -17,6 +17,14 @@ locals {
       uri = "postgis/postgis"
       tag = "16-3.5"
     }
+    antiquary = {
+      uri = "ghcr.io/perry-mitchell/antiquary"
+      tag = "1.1.4"
+    }
+    antiquary_postgres = {
+      uri = "postgres"
+      tag = "17-alpine"
+    }
     atuin = {
       uri = "ghcr.io/atuinsh/atuin"
       tag = "18.24.2"

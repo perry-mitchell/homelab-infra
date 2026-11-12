@@ -57,6 +57,7 @@ locals {
         { "Vaultwarden" = { href = "https://vaultwarden.${var.tailscale_tailnet}", icon = "vaultwarden" } },
         { "Adventurelog" = { href = "https://adventurelog.${var.tailscale_tailnet}", icon = "adventurelog" } },
         { "Koillection" = { href = "https://collect.${var.tailscale_tailnet}", icon = "koillection" } },
+        { "Antiquary" = { href = "https://antiquary.${var.tailscale_tailnet}", icon = "mdi-bookshelf" } },
         { "Mealie" = { href = "https://mealie.${var.tailscale_tailnet}", icon = "mealie" } },
         { "Paperless NGX" = { href = "https://paperless.${var.tailscale_tailnet}", icon = "paperless-ngx" } },
         { "Webtrees" = { href = "https://webtrees.${var.tailscale_tailnet}", icon = "webtrees" } },
