@@ -19,7 +19,7 @@ locals {
     }
     antiquary = {
       uri = "ghcr.io/perry-mitchell/antiquary"
-      tag = "1.1.4"
+      tag = "1.3.0"
     }
     antiquary_postgres = {
       uri = "postgres"
