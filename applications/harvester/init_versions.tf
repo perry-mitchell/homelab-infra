@@ -236,6 +236,12 @@ locals {
       uri = "quay.io/containers/kubernetes_mcp_server"
       tag = "v0.0.67"
     }
+    # Custom image built by applications/harvester/scripts/build-ebay-mcp-image.sh
+    # (append the printed @sha256 digest to the tag after pushing)
+    ebay_mcp = {
+      uri = "ghcr.io/perry-mitchell/homelab-infra/ebay-mcp"
+      tag = "2.0.11@sha256:128e91ca700512cad01fd62dec02ca2f296c0544478c8ecbc2cd89d9c57704c2"
+    }
     # Custom image built by applications/harvester/scripts/build-gbrain-image.sh
     # (append the printed @sha256 digest to the tag after pushing)
     gbrain = {
