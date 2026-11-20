@@ -11,6 +11,7 @@ module "app_mcp_ebay" {
         EBAY_MCP_TOOLS     = "browse"
         MCP_HOST           = "0.0.0.0"
         MCP_PORT           = "3000"
+        OAUTH_ENABLED      = "false"
       }
       image = local.images.ebay_mcp
       ports = [
