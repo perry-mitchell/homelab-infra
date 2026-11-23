@@ -185,6 +185,14 @@ variable "mcp_caldav" {
   sensitive = true
 }
 
+variable "mcp_ebay" {
+  type = object({
+    client_id     = string
+    client_secret = string
+  })
+  sensitive = true
+}
+
 variable "mcp_email" {
   type = list(object({
     email        = string
