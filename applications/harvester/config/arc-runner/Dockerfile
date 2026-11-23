@@ -6,7 +6,7 @@
 # release - GitHub silently stops queueing jobs to deprecated runner
 # versions (jobs queue forever, nothing errors). See
 # actions/actions-runner-controller#4601.
-FROM ghcr.io/actions/actions-runner:2.336.0
+FROM ghcr.io/actions/actions-runner:2.338.2
 
 USER root
 

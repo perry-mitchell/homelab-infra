@@ -259,7 +259,7 @@ locals {
     # Custom image built by .github/workflows/build-arc-runner.yml (bump tag when the Dockerfile changes)
     arc_runner = {
       uri = "ghcr.io/perry-mitchell/homelab-infra/arc-runner-infersec"
-      tag = "1.4.0"
+      tag = "1.5.0"
     }
     versity = {
       uri = "versity/versitygw"
