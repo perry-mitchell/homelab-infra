@@ -111,11 +111,16 @@ function splitImage(uri) {
   return { host: "registry-1.docker.io", repo: uri };
 }
 
+const isDateTag = (t) => /^v?\d{4}([.-]\d{1,2})+$/.test(t);
+
 const latestOf = (tags) => {
-  const cands = tags
+  const numeric = tags
     .filter((t) => /^[vV]?\d+([.-]\d+)*$/.test(t))
     .filter((t) => !/^v?\d{5,}$/.test(t))
-    .filter((t) => !/(rc|beta|alpha|test)/i.test(t))
+    .filter((t) => !/(rc|beta|alpha|test)/i.test(t));
+  const stable = numeric.filter((t) => !isDateTag(t));
+  const pool = stable.length ? stable : numeric;
+  const cands = pool
     .map((t) => ({ t, k: vkey(t) }))
     .sort((a, b) => cmp(a.k, b.k));
   return cands.length ? cands[cands.length - 1].t : null;
@@ -131,6 +136,8 @@ const results = await Promise.all(
       const tags = await regFetch(host, repo, img.tag);
       const latest = latestOf(tags);
       if (!latest) return { ...img, status: "no-numeric-tags" };
+      if (isDateTag(img.tag) !== isDateTag(latest))
+        return { ...img, status: "behind", latest };
       const c = cmp(vkey(latest), vkey(img.tag));
       if (c > 0) return { ...img, status: "behind", latest };
       if (c === 0) return { ...img, status: "current", latest };

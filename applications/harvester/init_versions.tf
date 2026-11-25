@@ -19,7 +19,7 @@ locals {
     }
     antiquary = {
       uri = "ghcr.io/perry-mitchell/antiquary"
-      tag = "1.7.0"
+      tag = "1.8.1"
     }
     antiquary_postgres = {
       uri = "postgres"
@@ -218,7 +218,7 @@ locals {
     }
     hermes_agent = {
       uri = "nousresearch/hermes-agent"
-      tag = "v2026.9.24"
+      tag = "v0.23.4"
     }
     better_email_mcp = {
       uri = "n24q02m/better-email-mcp"
